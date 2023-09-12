@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
           ),
 
           // Encoder Demo
-          _buildSeparator(context, 'Export To X Demo'),
+          _buildSeparator(context, 'Export Your Note'),
           _buildListTile(context, 'Export To JSON', () {
             _exportFile(_editorState, ExportFileType.documentJson);
           }),
@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
           }),
 
           // Decoder Demo
-          _buildSeparator(context, 'Import From X Demo'),
+          _buildSeparator(context, 'Import a New Note'),
           _buildListTile(context, 'Import From Document JSON', () {
             _importFile(ExportFileType.documentJson);
           }),
