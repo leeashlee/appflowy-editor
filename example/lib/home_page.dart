@@ -105,60 +105,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // AppFlowy Editor Demo
-          _buildSeparator(context, 'AppFlowy Editor Demo'),
-          _buildListTile(context, 'With Example.json', () {
-            final jsonString = rootBundle.loadString('assets/example.json');
-            _loadEditor(context, jsonString);
-          }),
-          _buildListTile(context, 'With Large Document (10000+ lines)', () {
-            final nodes = List.generate(
-              10000,
-              (index) =>
-                  paragraphNode(text: '$index ${generateRandomString(50)}'),
-            );
-            final editorState = EditorState(
-              document: Document(root: pageNode(children: nodes)),
-            );
-            final jsonString = Future.value(
-              jsonEncode(editorState.document.toJson()),
-            );
-            _loadEditor(context, jsonString);
-          }),
-          _buildListTile(context, 'With Example.html', () async {
-            final htmlString =
-                await rootBundle.loadString('assets/example.html');
-            final html = htmlToDocument(htmlString);
-            // final html = HTMLToNodesConverter(htmlString).toDocument();
-            final jsonString = Future<String>.value(
-              jsonEncode(
-                html.toJson(),
-              ).toString(),
-            );
-            if (mounted) {
-              _loadEditor(context, jsonString);
-            }
-          }),
-          _buildListTile(context, 'With Empty Document', () {
-            final jsonString = Future<String>.value(
-              jsonEncode(
-                EditorState.blank(withInitialText: true).document.toJson(),
-              ).toString(),
-            );
-            _loadEditor(context, jsonString);
-          }),
-
-          // Theme Demo
-          _buildSeparator(context, 'Theme Demo'),
-          _buildListTile(context, 'Custom Theme', () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CustomizeThemeForEditor(),
-              ),
-            );
-          }),
-
           // Encoder Demo
           _buildSeparator(context, 'Export To X Demo'),
           _buildListTile(context, 'Export To JSON', () {
