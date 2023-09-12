@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         surfaceTintColor: Colors.transparent,
-        title: const Text('AppFlowy Editor'),
+        title: const Text('Note Taking App'),
       ),
       body: SafeArea(child: _buildBody(context)),
     );
