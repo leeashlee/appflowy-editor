@@ -88,6 +88,11 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Note Taking App'),
       ),
       body: SafeArea(child: _buildBody(context)),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addNote,
+        tooltip: 'Add Notes',
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
@@ -190,6 +195,15 @@ class _HomePageState extends State<HomePage> {
       completer.complete();
     });
     return completer.future;
+  }
+
+  void _addNote() {
+    final jsonString = Future<String>.value(
+              jsonEncode(
+                EditorState.blank(withInitialText: true).document.toJson(),
+              ).toString(),
+            );
+            _loadEditor(context, jsonString);
   }
 
   void _exportFile(
