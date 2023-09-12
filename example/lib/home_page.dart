@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
       title: Text(
         text,
         style: const TextStyle(
-          color: Colors.blue,
+          color: Colors.deepPurple,
           fontSize: 14,
         ),
       ),
@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
       child: Text(
         text,
         style: const TextStyle(
-          color: Colors.grey,
+          color: Colors.deepPurpleAccent,
           fontSize: 12,
           fontWeight: FontWeight.bold,
         ),
