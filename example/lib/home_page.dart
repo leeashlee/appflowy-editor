@@ -110,6 +110,15 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
+          // saved notes
+          _buildSeparator(context, 'Your Saved Notes'),
+          /*_buildListTile(context, 'Export To JSON', () {
+            _exportFile(_editorState, ExportFileType.documentJson);
+          }),
+          _buildListTile(context, 'Export to Markdown', () {
+            _exportFile(_editorState, ExportFileType.markdown);
+          }),*/
+
           // Encoder Demo
           _buildSeparator(context, 'Export Your Note'),
           _buildListTile(context, 'Export To JSON', () {
