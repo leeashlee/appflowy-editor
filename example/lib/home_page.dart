@@ -30,7 +30,7 @@ extension on ExportFileType {
 
 class Note {
   String title = "UwU";
-  String body = "OwO";
+  EditorState body = EditorState.blank();
 }
 
 class HomePage extends StatefulWidget {
