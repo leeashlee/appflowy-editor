@@ -13,24 +13,24 @@ import 'package:flutter/services.dart';
 import 'package:universal_html/html.dart' as html;
 
 enum ExportFileType {
-  documentJson,
   markdown,
   html,
-  delta,
 }
 
 extension on ExportFileType {
   String get extension {
     switch (this) {
-      case ExportFileType.documentJson:
-      case ExportFileType.delta:
-        return 'json';
       case ExportFileType.markdown:
         return 'md';
       case ExportFileType.html:
         return 'html';
     }
   }
+}
+
+class Note {
+  String title = "UwU";
+  String body = "OwO";
 }
 
 class HomePage extends StatefulWidget {
@@ -42,7 +42,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  var notes = <Note>[];
   late WidgetBuilder _widgetBuilder;
   late EditorState _editorState;
   late Future<String> _jsonString;
@@ -97,49 +97,47 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDrawer(BuildContext context) {
+    var children = [
+      DrawerHeader(
+        padding: EdgeInsets.zero,
+        margin: EdgeInsets.zero,
+        child: Image.asset(
+          'assets/images/icon.png',
+          fit: BoxFit.fill,
+        ),
+      ),
+
+      // saved notes
+      _buildSeparator(context, 'Your Saved Notes'),
+    ];
+    for (final note in notes) {
+      children.add(_buildListTile(context, 'Note 1 example', () {
+        _switchFile(_editorState, ExportFileType.markdown);
+      }));
+    }
+
+    children.addAll([
+      // Encoder Demo
+      _buildSeparator(context, 'Export Your Note'),
+      _buildListTile(context, 'Export to Markdown', () {
+        _exportFile(_editorState, ExportFileType.markdown);
+      }),
+
+      _buildListTile(context, 'Export to HTML', () {
+        _exportFile(_editorState, ExportFileType.html);
+      }),
+
+      // Decoder Demo
+      _buildSeparator(context, 'Import a New Note'),
+      _buildListTile(context, 'Import From Markdown', () {
+        _importFile(ExportFileType.markdown);
+      }),
+    ]);
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            padding: EdgeInsets.zero,
-            margin: EdgeInsets.zero,
-            child: Image.asset(
-              'assets/images/icon.png',
-              fit: BoxFit.fill,
-            ),
-          ),
-
-          // saved notes
-          _buildSeparator(context, 'Your Saved Notes'),
-          /*_buildListTile(context, 'Export To JSON', () {
-            _exportFile(_editorState, ExportFileType.documentJson);
-          }),
-          _buildListTile(context, 'Export to Markdown', () {
-            _exportFile(_editorState, ExportFileType.markdown);
-          }),*/
-
-          // Encoder Demo
-          _buildSeparator(context, 'Export Your Note'),
-          _buildListTile(context, 'Export To JSON', () {
-            _exportFile(_editorState, ExportFileType.documentJson);
-          }),
-          _buildListTile(context, 'Export to Markdown', () {
-            _exportFile(_editorState, ExportFileType.markdown);
-          }),
-
-          // Decoder Demo
-          _buildSeparator(context, 'Import a New Note'),
-          _buildListTile(context, 'Import From Document JSON', () {
-            _importFile(ExportFileType.documentJson);
-          }),
-          _buildListTile(context, 'Import From Markdown', () {
-            _importFile(ExportFileType.markdown);
-          }),
-          _buildListTile(context, 'Import From Quill Delta', () {
-            _importFile(ExportFileType.delta);
-          }),
-        ],
+        children: children,
       ),
     );
   }
@@ -208,28 +206,22 @@ class _HomePageState extends State<HomePage> {
 
   void _addNote() {
     final jsonString = Future<String>.value(
-              jsonEncode(
-                EditorState.blank(withInitialText: true).document.toJson(),
-              ).toString(),
-            );
-            _loadEditor(context, jsonString);
+      jsonEncode(
+        EditorState.blank(withInitialText: true).document.toJson(),
+      ).toString(),
+    );
+    notes.add(Note());
+    _loadEditor(context, jsonString);
   }
 
-  void _exportFile(
-    EditorState editorState,
-    ExportFileType fileType,
-  ) async {
+  void _exportFile(EditorState editorState, ExportFileType fileType) async {
     var result = '';
 
     switch (fileType) {
-      case ExportFileType.documentJson:
-        result = jsonEncode(editorState.document.toJson());
-        break;
       case ExportFileType.markdown:
         result = documentToMarkdown(editorState.document);
         break;
       case ExportFileType.html:
-      case ExportFileType.delta:
         throw UnimplementedError();
     }
 
@@ -257,6 +249,14 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _switchFile(
+    EditorState editorState,
+    ExportFileType fileType,
+  ) {
+    _exportFile(editorState, fileType);
+    _importFile(fileType);
+  }
+
   void _importFile(ExportFileType fileType) async {
     final result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
@@ -280,16 +280,8 @@ class _HomePageState extends State<HomePage> {
 
     var jsonString = '';
     switch (fileType) {
-      case ExportFileType.documentJson:
-        jsonString = plainText;
-        break;
       case ExportFileType.markdown:
         jsonString = jsonEncode(markdownToDocument(plainText).toJson());
-        break;
-      case ExportFileType.delta:
-        final delta = Delta.fromJson(jsonDecode(plainText));
-        final document = quillDeltaEncoder.convert(delta);
-        jsonString = jsonEncode(document.toJson());
         break;
       case ExportFileType.html:
         throw UnimplementedError();
