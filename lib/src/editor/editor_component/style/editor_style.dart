@@ -50,7 +50,7 @@ class EditorStyle {
     TextStyleConfiguration? textStyleConfiguration,
     TextSpanDecoratorForAttribute? textSpanDecorator,
     this.defaultTextDirection,
-  })  : padding = padding ?? const EdgeInsets.symmetric(horizontal: 100),
+  })  : padding = padding ?? const EdgeInsets.symmetric(horizontal: 50),
         cursorColor = cursorColor ?? const Color(0xFF00BCF0),
         selectionColor =
             selectionColor ?? const Color.fromARGB(53, 111, 201, 231),

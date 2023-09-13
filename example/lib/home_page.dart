@@ -87,7 +87,9 @@ class _HomePageState extends State<HomePage> {
         surfaceTintColor: Colors.transparent,
         title: const Text('Note Taking App'),
       ),
-      body: SafeArea(child: _buildBody(context)),
+      body: SafeArea(
+        minimum: const EdgeInsets.symmetric(vertical: 70),
+        child: _buildBody(context)),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNote,
         tooltip: 'Add Notes',
