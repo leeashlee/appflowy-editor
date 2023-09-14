@@ -327,7 +327,7 @@ class _HomePageState extends State<HomePage> {
       case ExportFileType.markdown:
         notes.add(
           Note(
-            "Imported document \"called ${result?.files.single.name}\"",
+            "${result?.files.single.name}",
             EditorState(document: markdownToDocument(plainText)),
           ),
         );

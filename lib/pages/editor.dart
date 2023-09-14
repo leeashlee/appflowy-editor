@@ -1,6 +1,9 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as developer;
+
+import 'package:noel_notes/custom_icon_item_widget.dart';
 
 class Editor extends StatelessWidget {
   const Editor({
@@ -60,10 +63,53 @@ class Editor extends StatelessWidget {
           bulletedListItem,
           numberedListItem,
           linkItem,
-          buildTextColorItem(),
+          // presets for coloring text
+          /*buildTextColorItem(colorOptions: [
+            const ColorOption(
+              colorHex: "#ff0000",
+              name: "red",
+            )
+          ]),*/
           buildHighlightColorItem(),
           ...textDirectionItems,
           ...alignmentItems,
+          ToolbarItem(
+            id: 'editor.textColor',
+            group: 4,
+            isActive: onlyShowInTextType,
+            builder: (context, editorState, highlightColor) {
+              String? textColorHex;
+              final selection = editorState.selection!;
+              final nodes = editorState.getNodesInSelection(selection);
+              final isHighlight =
+                  nodes.allSatisfyInSelection(selection, (delta) {
+                return delta.everyAttributes((attributes) {
+                  textColorHex = attributes[AppFlowyRichTextKeys.textColor];
+                  return (textColorHex != null);
+                });
+              });
+              return CustomSVGIconItemWidget(
+                iconName: "toolbar/text_color",
+                isHighlight: isHighlight,
+                highlightColor: const Color.fromARGB(255, 212, 0, 0),
+                normalColor: Colors.blue,
+                iconSize: const Size.square(14),
+                tooltip: "AppFlowyEditorLocalizations.current.textColor",
+                onPressed: () {
+                  showColorMenu(
+                    context,
+                    editorState,
+                    selection,
+                    currentColorHex: "#00ff00",
+                    isTextColor: true,
+                    textColorOptions: [
+                      ColorOption(colorHex: "#ff0000", name: "red"),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
         ],
         editorState: editorState,
         scrollController: scrollController,
@@ -145,7 +191,8 @@ class Editor extends StatelessWidget {
           ? const EdgeInsets.only(left: 50, right: 50, top: 20)
           : const EdgeInsets.symmetric(horizontal: 20),
       cursorColor: Theme.of(context).colorScheme.primary,
-      selectionColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
+      selectionColor:
+          Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
       textStyleConfiguration: TextStyleConfiguration(
         text: TextStyle(
           fontSize: 18.0,
