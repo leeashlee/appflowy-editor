@@ -67,7 +67,7 @@ class Editor extends StatelessWidget {
         ],
         editorState: editorState,
         scrollController: scrollController,
-        style: FloatingToolbarStyle(backgroundColor: Theme.of(context).colorScheme.primaryContainer, toolbarActiveColor: Theme.of(context).colorScheme.onPrimaryContainer),
+        style: FloatingToolbarStyle(backgroundColor: Theme.of(context).colorScheme.surfaceVariant, toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant),
         child: _buildDesktopEditor(
           context, editorState, null,
           //scrollController,
@@ -166,8 +166,8 @@ class Editor extends StatelessWidget {
         code: TextStyle(
           fontSize: 14.0,
           fontStyle: FontStyle.italic,
-          color: Theme.of(context).colorScheme.onSecondaryContainer,
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          color: Theme.of(context).colorScheme.secondary,
+          backgroundColor: Theme.of(context).colorScheme.surface,
         ),
       ),
       textSpanDecorator: (context, node, index, text, textSpan) {
