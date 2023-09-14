@@ -91,10 +91,10 @@ class Editor extends StatelessWidget {
               return CustomSVGIconItemWidget(
                 iconName: "toolbar/text_color",
                 isHighlight: isHighlight,
-                highlightColor: Theme.of(context).colorScheme.primary,
-                normalColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                normalColor: Theme.of(context).colorScheme.primary,
                 iconSize: const Size.square(14),
-                tooltip: "AppFlowyEditorLocalizations.current.textColor",
+                tooltip: AppFlowyEditorLocalizations.current.textColor,
                 onPressed: () {
                   showColorMenu(
                     context,
