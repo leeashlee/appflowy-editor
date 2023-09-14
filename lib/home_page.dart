@@ -122,6 +122,11 @@ class _HomePageState extends State<HomePage> {
             child: const Icon(Icons.add),
           ),
           const SizedBox(height: 4),
+          FloatingActionButton(
+            onPressed: null,
+            tooltip: 'change theme',
+            child: const Icon(Icons.brightness_6),
+          ),
         ],
       ),
     );
