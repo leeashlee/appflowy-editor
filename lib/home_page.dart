@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 4),
           FloatingActionButton(
-            onPressed: _addNote,
+            onPressed: _saveNote,
             tooltip: 'Save Notes',
             child: const Icon(Icons.save),
           ),
@@ -244,6 +244,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _addNote() {
+    setState(() {
+      notes.add(Note("Note No. ${currNote++}", EditorState.blank()));
+      developer.log(jsonEncode(notes));
+    });
+  }
+
+  void _saveNote() {
     setState(() {
       notes.add(Note("Note No. ${currNote++}", EditorState.blank()));
       developer.log(jsonEncode(notes));
