@@ -22,12 +22,17 @@ mixin DefaultSelectableMixin {
     return Offset.zero;
   }
 
-  Rect getBlockRect() {
+  Rect getBlockRect({
+    bool shiftWithBaseOffset = false,
+  }) {
     final parentBox = containerKey.currentContext?.findRenderObject();
     final childBox = blockComponentKey.currentContext?.findRenderObject();
     if (parentBox is RenderBox && childBox is RenderBox) {
       final offset = childBox.localToGlobal(Offset.zero, ancestor: parentBox);
       final size = parentBox.size;
+      if (shiftWithBaseOffset) {
+        return offset & (size - offset as Size);
+      }
       return Offset.zero & (size - offset as Size);
     }
     return Rect.zero;

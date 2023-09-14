@@ -18,7 +18,7 @@ class ImageBlockKeys {
   /// The image src of a image block.
   ///
   /// The value is a String.
-  /// only support network image now.
+  /// It can be a url or a base64 string(web).
   static const String url = 'url';
 
   /// The height of a image block.
@@ -233,7 +233,9 @@ class ImageBlockComponentWidgetState extends State<ImageBlockComponentWidget>
   CursorStyle get cursorStyle => CursorStyle.cover;
 
   @override
-  Rect getBlockRect() {
+  Rect getBlockRect({
+    bool shiftWithBaseOffset = false,
+  }) {
     return getCursorRectInPosition(Position.invalid()) ?? Rect.zero;
   }
 
@@ -262,7 +264,7 @@ class ImageBlockComponentWidgetState extends State<ImageBlockComponentWidget>
     if (parentBox is RenderBox && dividerBox is RenderBox) {
       return [
         dividerBox.localToGlobal(Offset.zero, ancestor: parentBox) &
-            dividerBox.size
+            dividerBox.size,
       ];
     }
     return [Offset.zero & _renderBox!.size];
