@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   var notes = <Note>[
     Note(
-      "First default Note",
+      "Untitled",
       EditorState.blank(
           // withInitialText: false,
           ),
@@ -113,10 +113,22 @@ class _HomePageState extends State<HomePage> {
         minimum: const EdgeInsets.symmetric(vertical: 70),
         child: _buildBody(context),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addNote,
-        tooltip: 'Add Notes',
-        child: const Icon(Icons.add),
+      floatingActionButton: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          FloatingActionButton(
+            onPressed: _addNote,
+            tooltip: 'Add Notes',
+            child: const Icon(Icons.add),
+          ),
+          const SizedBox(height: 4),
+          FloatingActionButton(
+            onPressed: _addNote,
+            tooltip: 'Save Notes',
+            child: const Icon(Icons.save),
+          ),
+        ]
       ),
     );
   }
