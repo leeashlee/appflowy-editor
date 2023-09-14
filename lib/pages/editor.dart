@@ -91,8 +91,8 @@ class Editor extends StatelessWidget {
               return CustomSVGIconItemWidget(
                 iconName: "toolbar/text_color",
                 isHighlight: isHighlight,
-                highlightColor: const Color.fromARGB(255, 212, 0, 0),
-                normalColor: Colors.blue,
+                highlightColor: Theme.of(context).colorScheme.primary,
+                normalColor: Theme.of(context).colorScheme.onSurfaceVariant,
                 iconSize: const Size.square(14),
                 tooltip: "AppFlowyEditorLocalizations.current.textColor",
                 onPressed: () {
@@ -103,7 +103,7 @@ class Editor extends StatelessWidget {
                     currentColorHex: "#00ff00",
                     isTextColor: true,
                     textColorOptions: [
-                      ColorOption(colorHex: "#ff0000", name: "red"),
+                      const ColorOption(colorHex: "#ff0000", name: "red"),
                     ],
                   );
                 },
