@@ -1,15 +1,14 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'dart:developer' as developer;
 import 'package:appflowy_editor/appflowy_editor.dart';
-import 'package:example/pages/customize_theme_for_editor.dart';
-import 'package:example/pages/editor.dart';
+import 'package:NoelNotes/pages/customize_theme_for_editor.dart';
+import 'package:NoelNotes/pages/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:universal_html/html.dart' as html;
 
 enum ExportFileType {
@@ -29,8 +28,30 @@ extension on ExportFileType {
 }
 
 class Note {
-  String title = "UwU";
-  String body = jsonEncode(EditorState.blank().document.toJson());
+  String title;
+  EditorState body;
+
+  Note(this.title, this.body);
+
+  Map toJson() {
+    return {"title": title, "body": body.document.toJson()};
+  }
+
+  String getTitle() {
+    return title;
+  }
+
+  void setTitle(String title) {
+    this.title = title;
+  }
+
+  EditorState getBody() {
+    return body;
+  }
+
+  void setBody(EditorState body) {
+    this.body = body;
+  }
 }
 
 class HomePage extends StatefulWidget {
@@ -42,21 +63,25 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  var notes = <Note>[];
+  var notes = <Note>[
+    Note(
+      "First default Note",
+      EditorState.blank(
+          // withInitialText: false,
+          ),
+    ),
+  ];
+  var currNote = 0;
   late WidgetBuilder _widgetBuilder;
-  late EditorState _editorState;
-  late Future<String> _jsonString;
 
   @override
   void initState() {
     super.initState();
 
-    _jsonString = rootBundle.loadString('assets/example.json');
-
     _widgetBuilder = (context) => Editor(
-          jsonString: _jsonString,
+          editorState: notes[currNote].body,
           onEditorStateChange: (editorState) {
-            _editorState = editorState;
+            notes[currNote].setBody(editorState);
           },
         );
   }
@@ -66,12 +91,9 @@ class _HomePageState extends State<HomePage> {
     super.reassemble();
 
     _widgetBuilder = (context) => Editor(
-          jsonString: _jsonString,
+          editorState: notes[currNote].getBody(),
           onEditorStateChange: (editorState) {
-            _editorState = editorState;
-            _jsonString = Future.value(
-              jsonEncode(_editorState.document.toJson()),
-            );
+            notes[currNote].setBody(editorState);
           },
         );
   }
@@ -89,7 +111,8 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(vertical: 70),
-        child: _buildBody(context)),
+        child: _buildBody(context),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNote,
         tooltip: 'Add Notes',
@@ -112,21 +135,32 @@ class _HomePageState extends State<HomePage> {
       // saved notes
       _buildSeparator(context, 'Your Saved Notes'),
     ];
-    for (final note in notes) {
-      children.add(_buildListTile(context, 'Note 1 example', () {
-        _switchFile(_editorState, ExportFileType.markdown);
-      }));
+    developer.log("Notes length: ${notes.length}");
+    for (int i = 0; i < notes.length; i++) {
+      developer.log("Building ListTile No. $i");
+      children.add(
+        _buildListTile(context, notes[i].getTitle(), () {
+          developer.log("switching from $currNote to $i");
+          developer.log("${notes[currNote].getBody()}");
+          _switchFile(
+            notes[currNote].getBody(),
+            ExportFileType.markdown,
+            currNote,
+            i,
+          );
+        }),
+      );
     }
 
     children.addAll([
       // Encoder Demo
       _buildSeparator(context, 'Export Your Note'),
       _buildListTile(context, 'Export to Markdown', () {
-        _exportFile(_editorState, ExportFileType.markdown);
+        _exportFile(notes[currNote].getBody(), ExportFileType.markdown);
       }),
 
       _buildListTile(context, 'Export to HTML', () {
-        _exportFile(_editorState, ExportFileType.html);
+        _exportFile(notes[currNote].getBody(), ExportFileType.html);
       }),
 
       // Decoder Demo
@@ -184,36 +218,24 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> _loadEditor(
-    BuildContext context,
-    Future<String> jsonString,
-  ) async {
-    final completer = Completer<void>();
-    _jsonString = jsonString;
+  void _loadEditor(BuildContext context) {
     setState(
       () {
         _widgetBuilder = (context) => Editor(
-              jsonString: _jsonString,
+              editorState: notes[currNote].getBody(),
               onEditorStateChange: (editorState) {
-                _editorState = editorState;
+                notes[currNote].setBody(editorState);
               },
             );
       },
     );
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      completer.complete();
-    });
-    return completer.future;
   }
 
   void _addNote() {
-    final jsonString = Future<String>.value(
-      jsonEncode(
-        EditorState.blank(withInitialText: true).document.toJson(),
-      ).toString(),
-    );
-    notes.add(Note());
-    _loadEditor(context, jsonString);
+    setState(() {
+      notes.add(Note("Note No. ${currNote++}", EditorState.blank()));
+      developer.log(jsonEncode(notes));
+    });
   }
 
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
@@ -252,11 +274,21 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _switchFile(
-    EditorState editorState,
+    EditorState oldEditorState,
     ExportFileType fileType,
+    int old,
+    int neww,
   ) {
-    _exportFile(editorState, fileType);
-    _importFile(fileType);
+    setState(() {
+      //save old body
+      notes[old].setBody(oldEditorState);
+      // switch to neww
+      currNote = neww;
+      developer
+          .log("Old State: ${jsonEncode(oldEditorState.document.toJson())}");
+      developer.log("Old: $old");
+      developer.log("neww: $neww");
+    });
   }
 
   void _importFile(ExportFileType fileType) async {
@@ -273,24 +305,29 @@ class _HomePageState extends State<HomePage> {
       }
       plainText = await File(path).readAsString();
     } else {
-      final bytes = result?.files.first.bytes;
+      final bytes = result?.files.single.bytes;
       if (bytes == null) {
         return;
       }
       plainText = const Utf8Decoder().convert(bytes);
     }
 
-    var jsonString = '';
     switch (fileType) {
       case ExportFileType.markdown:
-        jsonString = jsonEncode(markdownToDocument(plainText).toJson());
+        notes.add(
+          Note(
+            "Imported document \"called ${result?.files.single.name}\"",
+            EditorState(document: markdownToDocument(plainText)),
+          ),
+        );
+
         break;
       case ExportFileType.html:
         throw UnimplementedError();
     }
 
     if (mounted) {
-      _loadEditor(context, Future<String>.value(jsonString));
+      _loadEditor(context);
     }
   }
 }

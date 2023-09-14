@@ -1,5 +1,5 @@
+import 'package:NoelNotes/home_page.dart';
 import 'package:appflowy_editor/appflowy_editor.dart';
-import 'package:example/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
