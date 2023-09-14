@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
       title: Text(
         text,
         style: const TextStyle(
-          color: Color.fromARGB(255, 255, 164, 194), 
+          color: Theme.of(context).colorScheme.primary, 
           fontSize: 14,
         ),
       ),
@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
       child: Text(
         text,
         style: const TextStyle(
-          color: Color.fromARGB(255, 255, 164, 194),
+          color: Theme.of(context).colorScheme.primary,
           fontSize: 12,
           fontWeight: FontWeight.bold,
         ),

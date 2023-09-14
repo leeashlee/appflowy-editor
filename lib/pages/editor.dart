@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +81,7 @@ class Editor extends StatelessWidget {
     ScrollController? scrollController,
   ) {
     return AppFlowyEditor(
-      editorStyle: customizeEditorStyle(),
+      editorStyle: customizeEditorStyle(context),
       editorState: editorState,
       scrollController: scrollController,
     );
@@ -136,27 +134,27 @@ class Editor extends StatelessWidget {
         ),
       ],
       characterShortcutEvents: standardCharacterShortcutEvents,
-      editorStyle: customizeEditorStyle(),
+      editorStyle: customizeEditorStyle(context),
     );
   }
 
-  EditorStyle customizeEditorStyle() {
+  EditorStyle customizeEditorStyle(BuildContext context) {
     return EditorStyle(
       padding: PlatformExtension.isDesktopOrWeb
           ? const EdgeInsets.only(left: 100, right: 100, top: 20)
           : const EdgeInsets.symmetric(horizontal: 20),
-      cursorColor: Theme.of(context as BuildContext).colorScheme.primary,
-      selectionColor: Theme.of(context as BuildContext).colorScheme.primaryContainer,
+      cursorColor: Theme.of(context).colorScheme.primary,
+      selectionColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
       textStyleConfiguration: TextStyleConfiguration(
-        text: const TextStyle(
+        text: TextStyle(
           fontSize: 18.0,
-          color: Theme.of(context as BuildContext).colorScheme.onPrimary,
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
         ),
         bold: const TextStyle(
           fontWeight: FontWeight.w900,
         ),
         href: TextStyle(
-          color: Theme.of(context as BuildContext).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.secondary,
           decoration: TextDecoration.combine(
             [
               TextDecoration.overline,
@@ -164,11 +162,11 @@ class Editor extends StatelessWidget {
             ],
           ),
         ),
-        code: const TextStyle(
+        code: TextStyle(
           fontSize: 14.0,
           fontStyle: FontStyle.italic,
-          color: Theme.of(context as BuildContext).colorScheme.onSecondary,
-          backgroundColor: Theme.of(context as BuildContext).colorScheme.secondaryContainer,
+          color: Theme.of(context).colorScheme.onSecondaryContainer,
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         ),
       ),
       textSpanDecorator: (context, node, index, text, textSpan) {
