@@ -198,8 +198,8 @@ class _HomePageState extends State<HomePage> {
       contentPadding: const EdgeInsets.only(left: 16),
       title: Text(
         text,
-        style: const TextStyle(
-          color: Theme.of(context).colorScheme.primary, 
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.primary,
           fontSize: 14,
         ),
       ),
@@ -215,7 +215,7 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.only(left: 16, top: 16, bottom: 4),
       child: Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           color: Theme.of(context).colorScheme.primary,
           fontSize: 12,
           fontWeight: FontWeight.bold,
