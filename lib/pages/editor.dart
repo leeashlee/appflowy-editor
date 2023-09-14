@@ -56,23 +56,143 @@ class Editor extends StatelessWidget {
     } else {
       return FloatingToolbar(
         items: [
-          paragraphItem,
+          //paragraphItem,
           ...headingItems,
           ...markdownFormatItems,
-          quoteItem,
-          bulletedListItem,
-          numberedListItem,
-          linkItem,
-          // presets for coloring text
-          /*buildTextColorItem(colorOptions: [
-            const ColorOption(
-              colorHex: "#ff0000",
-              name: "red",
-            )
-          ]),*/
-          buildHighlightColorItem(),
+          //quoteItem,
+          //bulletedListItem,
+          //numberedListItem,
+          //linkItem,
+          //buildHighlightColorItem(),
           ...textDirectionItems,
           ...alignmentItems,
+          ToolbarItem(
+            id: 'onlyShowInSingleSelectionAndTextType',
+            group: 1,
+            isActive: onlyShowInTextType,
+            builder: (context, editorState, highlightColor) {
+              final selection = editorState.selection!;
+              final node = editorState.getNodeAtPath(selection.start.path)!;
+              final isHighlight = node.type == 'paragraph';
+              final delta = (node.delta ?? Delta()).toJson();
+              return CustomSVGIconItemWidget(
+                iconName: "toolbar/text",
+                isHighlight: isHighlight,
+                highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                normalColor: Theme.of(context).colorScheme.primary,
+                iconSize: const Size.square(14),
+                tooltip: AppFlowyEditorLocalizations.current.text,
+                onPressed: () => editorState.formatNode(
+                  selection,
+                  (node) => node.copyWith(
+                    type: ParagraphBlockKeys.type,
+                    attributes: {
+                      blockComponentDelta: delta,
+                      blockComponentBackgroundColor:
+                          node.attributes[blockComponentBackgroundColor],
+                      blockComponentTextDirection:
+                          node.attributes[blockComponentTextDirection],
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+          ToolbarItem(
+            id: 'editor.quote',
+            group: 3,
+            isActive: onlyShowInSingleSelectionAndTextType,
+            builder: (context, editorState, highlightColor) {
+              final selection = editorState.selection!;
+              final node = editorState.getNodeAtPath(selection.start.path)!;
+              final isHighlight = node.type == 'quote';
+              return CustomSVGIconItemWidget(
+                iconName: 'toolbar/quote',
+                isHighlight: isHighlight,
+                highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                normalColor: Theme.of(context).colorScheme.primary,
+                iconSize: const Size.square(14),
+                tooltip: AppFlowyEditorLocalizations.current.quote,
+                onPressed: () => editorState.formatNode(
+                  selection,
+                  (node) => node.copyWith(
+                    type: isHighlight ? 'paragraph' : 'quote',
+                  ),
+                ),
+              );
+            },
+          ),
+          ToolbarItem(
+            id: 'editor.bulleted_list',
+            group: 3,
+            isActive: onlyShowInSingleSelectionAndTextType,
+            builder: (context, editorState, highlightColor) {
+              final selection = editorState.selection!;
+              final node = editorState.getNodeAtPath(selection.start.path)!;
+              final isHighlight = node.type == 'bulleted_list';
+              return CustomSVGIconItemWidget(
+                iconName: 'toolbar/bulleted_list',
+                isHighlight: isHighlight,
+                highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                normalColor: Theme.of(context).colorScheme.primary,
+                tooltip: AppFlowyEditorLocalizations.current.bulletedList,
+                onPressed: () => editorState.formatNode(
+                  selection,
+                  (node) => node.copyWith(
+                    type: isHighlight ? 'paragraph' : 'bulleted_list',
+                  ),
+                ),
+              );
+            },
+          ),
+          ToolbarItem(
+            id: 'editor.numbered_list',
+            group: 3,
+            isActive: onlyShowInSingleSelectionAndTextType,
+            builder: (context, editorState, highlightColor) {
+              final selection = editorState.selection!;
+              final node = editorState.getNodeAtPath(selection.start.path)!;
+              final isHighlight = node.type == 'numbered_list';
+              return CustomSVGIconItemWidget(
+                iconName: 'toolbar/numbered_list',
+                isHighlight: isHighlight,
+                highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                normalColor: Theme.of(context).colorScheme.primary,
+                tooltip: AppFlowyEditorLocalizations.current.numberedList,
+                onPressed: () => editorState.formatNode(
+                  selection,
+                  (node) => node.copyWith(
+                    type: isHighlight ? 'paragraph' : 'numbered_list',
+                  ),
+                ),
+              );
+            },
+          ),
+          ToolbarItem(
+            id: 'editor.link',
+            group: 4,
+            isActive: onlyShowInSingleSelectionAndTextType,
+            builder: (context, editorState, highlightColor) {
+              final selection = editorState.selection!;
+              final nodes = editorState.getNodesInSelection(selection);
+              final isHref = nodes.allSatisfyInSelection(selection, (delta) {
+                return delta.everyAttributes(
+                  (attributes) => attributes[AppFlowyRichTextKeys.href] != null,
+                );
+              });
+
+              return CustomSVGIconItemWidget(
+                iconName: 'toolbar/link',
+                isHighlight: isHref,
+                highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                normalColor: Theme.of(context).colorScheme.primary,
+                tooltip: AppFlowyEditorLocalizations.current.link,
+                onPressed: () {
+                  showLinkMenu(context, editorState, selection, isHref);
+                },
+              );
+            },
+          ),
           ToolbarItem(
             id: 'editor.textColor',
             group: 4,
@@ -103,7 +223,120 @@ class Editor extends StatelessWidget {
                     currentColorHex: "#00ff00",
                     isTextColor: true,
                     textColorOptions: [
-                      const ColorOption(colorHex: "#ff0000", name: "red"),
+                      ColorOption(
+                        colorHex: Colors.grey.toHex(),
+                        name: AppFlowyEditorLocalizations.current.fontColorGray,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.brown.toHex(),
+                        name:
+                            AppFlowyEditorLocalizations.current.fontColorBrown,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.yellow.toHex(),
+                        name:
+                            AppFlowyEditorLocalizations.current.fontColorYellow,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.green.toHex(),
+                        name:
+                            AppFlowyEditorLocalizations.current.fontColorGreen,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.blue.toHex(),
+                        name: AppFlowyEditorLocalizations.current.fontColorBlue,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.purple.toHex(),
+                        name:
+                            AppFlowyEditorLocalizations.current.fontColorPurple,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.pink.toHex(),
+                        name: AppFlowyEditorLocalizations.current.fontColorPink,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.red.toHex(),
+                        name: AppFlowyEditorLocalizations.current.fontColorRed,
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+          ToolbarItem(
+            id: 'editor.highlightColor',
+            group: 4,
+            isActive: onlyShowInTextType,
+            builder: (context, editorState, highlightColor) {
+              String? highlightColorHex;
+
+              final selection = editorState.selection!;
+              final nodes = editorState.getNodesInSelection(selection);
+              final isHighlight =
+                  nodes.allSatisfyInSelection(selection, (delta) {
+                return delta.everyAttributes((attributes) {
+                  highlightColorHex =
+                      attributes[AppFlowyRichTextKeys.highlightColor];
+                  return highlightColorHex != null;
+                });
+              });
+              return CustomSVGIconItemWidget(
+                iconName: 'toolbar/highlight_color',
+                iconSize: const Size.square(14),
+                isHighlight: isHighlight,
+                highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
+                normalColor: Theme.of(context).colorScheme.primary,
+                tooltip: AppFlowyEditorLocalizations.current.highlightColor,
+                onPressed: () {
+                  showColorMenu(
+                    context,
+                    editorState,
+                    selection,
+                    currentColorHex: "#00ff00",
+                    isTextColor: true,
+                    textColorOptions: [
+                      ColorOption(
+                        colorHex: Colors.grey.withOpacity(0.3).toHex(),
+                        name: AppFlowyEditorLocalizations
+                            .current.backgroundColorGray,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.brown.withOpacity(0.3).toHex(),
+                        name: AppFlowyEditorLocalizations
+                            .current.backgroundColorBrown,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.yellow.withOpacity(0.3).toHex(),
+                        name: AppFlowyEditorLocalizations
+                            .current.backgroundColorYellow,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.green.withOpacity(0.3).toHex(),
+                        name: AppFlowyEditorLocalizations
+                            .current.backgroundColorGreen,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.blue.withOpacity(0.3).toHex(),
+                        name: AppFlowyEditorLocalizations
+                            .current.backgroundColorBlue,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.purple.withOpacity(0.3).toHex(),
+                        name: AppFlowyEditorLocalizations
+                            .current.backgroundColorPurple,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.pink.withOpacity(0.3).toHex(),
+                        name: AppFlowyEditorLocalizations
+                            .current.backgroundColorPink,
+                      ),
+                      ColorOption(
+                        colorHex: Colors.red.withOpacity(0.3).toHex(),
+                        name: AppFlowyEditorLocalizations
+                            .current.backgroundColorRed,
+                      ),
                     ],
                   );
                 },
@@ -113,7 +346,9 @@ class Editor extends StatelessWidget {
         ],
         editorState: editorState,
         scrollController: scrollController,
-        style: FloatingToolbarStyle(backgroundColor: Theme.of(context).colorScheme.surfaceVariant, toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant),
+        style: FloatingToolbarStyle(
+            backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+            toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant),
         child: _buildDesktopEditor(
           context, editorState, null,
           //scrollController,
