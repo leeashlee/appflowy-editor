@@ -1,0 +1,481 @@
+diff --git a/example/lib/home_page.dart b/example/lib/home_page.dart
+index c752ac1..e9578da 100644
+--- a/example/lib/home_page.dart
++++ b/example/lib/home_page.dart
+@@ -1,15 +1,14 @@
+-import 'dart:async';
+ import 'dart:convert';
+ import 'dart:io';
+ import 'dart:math';
+
++import 'dart:developer' as developer;
+ import 'package:appflowy_editor/appflowy_editor.dart';
+-import 'package:example/pages/customize_theme_for_editor.dart';
+-import 'package:example/pages/editor.dart';
++import 'package:NoelNotes/pages/customize_theme_for_editor.dart';
++import 'package:NoelNotes/pages/editor.dart';
+ import 'package:file_picker/file_picker.dart';
+ import 'package:flutter/foundation.dart';
+ import 'package:flutter/material.dart';
+-import 'package:flutter/services.dart';
+ import 'package:universal_html/html.dart' as html;
+
+ enum ExportFileType {
+@@ -29,8 +28,30 @@ extension on ExportFileType {
+ }
+
+ class Note {
+-  String title = "UwU";
+-  String body = jsonEncode(EditorState.blank().document.toJson());
++  String title;
++  EditorState body;
++
++  Note(this.title, this.body);
++
++  Map toJson() {
++    return {"title": title, "body": body.document.toJson()};
++  }
++
++  String getTitle() {
++    return title;
++  }
++
++  void setTitle(String title) {
++    this.title = title;
++  }
++
++  EditorState getBody() {
++    return body;
++  }
++
++  void setBody(EditorState body) {
++    this.body = body;
++  }
+ }
+
+ class HomePage extends StatefulWidget {
+@@ -42,21 +63,25 @@ class HomePage extends StatefulWidget {
+
+ class _HomePageState extends State<HomePage> {
+   final _scaffoldKey = GlobalKey<ScaffoldState>();
+-  var notes = <Note>[];
++  var notes = <Note>[
++    Note(
++      "First default Note",
++      EditorState.blank(
++          // withInitialText: false,
++          ),
++    ),
++  ];
++  var currNote = 0;
+   late WidgetBuilder _widgetBuilder;
+-  late EditorState _editorState;
+-  late Future<String> _jsonString;
+
+   @override
+   void initState() {
+     super.initState();
+
+-    _jsonString = rootBundle.loadString('assets/example.json');
+-
+     _widgetBuilder = (context) => Editor(
+-          jsonString: _jsonString,
++          editorState: notes[currNote].body,
+           onEditorStateChange: (editorState) {
+-            _editorState = editorState;
++            notes[currNote].setBody(editorState);
+           },
+         );
+   }
+@@ -66,12 +91,9 @@ class _HomePageState extends State<HomePage> {
+     super.reassemble();
+
+     _widgetBuilder = (context) => Editor(
+-          jsonString: _jsonString,
++          editorState: notes[currNote].getBody(),
+           onEditorStateChange: (editorState) {
+-            _editorState = editorState;
+-            _jsonString = Future.value(
+-              jsonEncode(_editorState.document.toJson()),
+-            );
++            notes[currNote].setBody(editorState);
+           },
+         );
+   }
+@@ -89,7 +111,8 @@ class _HomePageState extends State<HomePage> {
+       ),
+       body: SafeArea(
+         minimum: const EdgeInsets.symmetric(vertical: 70),
+-        child: _buildBody(context)),
++        child: _buildBody(context),
++      ),
+       floatingActionButton: FloatingActionButton(
+         onPressed: _addNote,
+         tooltip: 'Add Notes',
+@@ -112,21 +135,32 @@ class _HomePageState extends State<HomePage> {
+       // saved notes
+       _buildSeparator(context, 'Your Saved Notes'),
+     ];
+-    for (final note in notes) {
+-      children.add(_buildListTile(context, 'Note 1 example', () {
+-        _switchFile(_editorState, ExportFileType.markdown);
+-      }));
++    developer.log("Notes length: ${notes.length}");
++    for (int i = 0; i < notes.length; i++) {
++      developer.log("Building ListTile No. $i");
++      children.add(
++        _buildListTile(context, notes[i].getTitle(), () {
++          developer.log("switching from $currNote to $i");
++          developer.log("${notes[currNote].getBody()}");
++          _switchFile(
++            notes[currNote].getBody(),
++            ExportFileType.markdown,
++            currNote,
++            i,
++          );
++        }),
++      );
+     }
+
+     children.addAll([
+       // Encoder Demo
+       _buildSeparator(context, 'Export Your Note'),
+       _buildListTile(context, 'Export to Markdown', () {
+-        _exportFile(_editorState, ExportFileType.markdown);
++        _exportFile(notes[currNote].getBody(), ExportFileType.markdown);
+       }),
+
+       _buildListTile(context, 'Export to HTML', () {
+-        _exportFile(_editorState, ExportFileType.html);
++        _exportFile(notes[currNote].getBody(), ExportFileType.html);
+       }),
+
+       // Decoder Demo
+@@ -184,36 +218,24 @@ class _HomePageState extends State<HomePage> {
+     );
+   }
+
+-  Future<void> _loadEditor(
+-    BuildContext context,
+-    Future<String> jsonString,
+-  ) async {
+-    final completer = Completer<void>();
+-    _jsonString = jsonString;
++  void _loadEditor(BuildContext context) {
+     setState(
+       () {
+         _widgetBuilder = (context) => Editor(
+-              jsonString: _jsonString,
++              editorState: notes[currNote].getBody(),
+               onEditorStateChange: (editorState) {
+-                _editorState = editorState;
++                notes[currNote].setBody(editorState);
+               },
+             );
+       },
+     );
+-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+-      completer.complete();
+-    });
+-    return completer.future;
+   }
+
+   void _addNote() {
+-    final jsonString = Future<String>.value(
+-      jsonEncode(
+-        EditorState.blank(withInitialText: true).document.toJson(),
+-      ).toString(),
+-    );
+-    notes.add(Note());
+-    _loadEditor(context, jsonString);
++    setState(() {
++      notes.add(Note("Note No. ${currNote++}", EditorState.blank()));
++      developer.log(jsonEncode(notes));
++    });
+   }
+
+   void _exportFile(EditorState editorState, ExportFileType fileType) async {
+@@ -252,11 +274,21 @@ class _HomePageState extends State<HomePage> {
+   }
+
+   void _switchFile(
+-    EditorState editorState,
++    EditorState oldEditorState,
+     ExportFileType fileType,
++    int old,
++    int neww,
+   ) {
+-    _exportFile(editorState, fileType);
+-    _importFile(fileType);
++    setState(() {
++      //save old body
++      notes[old].setBody(oldEditorState);
++      // switch to neww
++      currNote = neww;
++      developer
++          .log("Old State: ${jsonEncode(oldEditorState.document.toJson())}");
++      developer.log("Old: $old");
++      developer.log("neww: $neww");
++    });
+   }
+
+   void _importFile(ExportFileType fileType) async {
+@@ -273,24 +305,29 @@ class _HomePageState extends State<HomePage> {
+       }
+       plainText = await File(path).readAsString();
+     } else {
+-      final bytes = result?.files.first.bytes;
++      final bytes = result?.files.single.bytes;
+       if (bytes == null) {
+         return;
+       }
+       plainText = const Utf8Decoder().convert(bytes);
+     }
+
+-    var jsonString = '';
+     switch (fileType) {
+       case ExportFileType.markdown:
+-        jsonString = jsonEncode(markdownToDocument(plainText).toJson());
++        notes.add(
++          Note(
++            "Imported document \"called ${result?.files.single.name}\"",
++            EditorState(document: markdownToDocument(plainText)),
++          ),
++        );
++
+         break;
+       case ExportFileType.html:
+         throw UnimplementedError();
+     }
+
+     if (mounted) {
+-      _loadEditor(context, Future<String>.value(jsonString));
++      _loadEditor(context);
+     }
+   }
+ }
+diff --git a/example/lib/main.dart b/example/lib/main.dart
+index d85bbbc..f15df18 100644
+--- a/example/lib/main.dart
++++ b/example/lib/main.dart
+@@ -1,5 +1,5 @@
++import 'package:NoelNotes/home_page.dart';
+ import 'package:appflowy_editor/appflowy_editor.dart';
+-import 'package:example/home_page.dart';
+ import 'package:flutter/material.dart';
+ import 'package:flutter_localizations/flutter_localizations.dart';
+
+diff --git a/example/lib/pages/editor.dart b/example/lib/pages/editor.dart
+index 06b41bd..7b95fdc 100644
+--- a/example/lib/pages/editor.dart
++++ b/example/lib/pages/editor.dart
+@@ -6,115 +6,93 @@ import 'package:flutter/material.dart';
+ class Editor extends StatelessWidget {
+   const Editor({
+     super.key,
+-    required this.jsonString,
++    required this.editorState,
+     required this.onEditorStateChange,
+     this.editorStyle,
+   });
+
+-  final Future<String> jsonString;
++  final EditorState editorState;
+   final EditorStyle? editorStyle;
+   final void Function(EditorState editorState) onEditorStateChange;
+
+   @override
+   Widget build(BuildContext context) {
+-    return FutureBuilder<String>(
+-      future: jsonString,
+-      builder: (context, snapshot) {
+-        if (snapshot.hasData &&
+-            snapshot.connectionState == ConnectionState.done) {
+-          final editorState = EditorState(
+-            document: Document.fromJson(
+-              Map<String, Object>.from(
+-                json.decode(snapshot.data!),
+-              ),
++    editorState.logConfiguration
++      ..handler = debugPrint
++      ..level = LogLevel.off;
++    editorState.transactionStream.listen((event) {
++      if (event.$1 == TransactionTime.after) {
++        onEditorStateChange(editorState);
++      }
++    });
++    final scrollController = ScrollController();
++    if (PlatformExtension.isMobile) {
++      return Column(
++        children: [
++          Expanded(
++            child: _buildMobileEditor(
++              context,
++              editorState,
++              null,
++              //scrollController,
+             ),
+-          );
+-          editorState.logConfiguration
+-            ..handler = debugPrint
+-            ..level = LogLevel.off;
+-          editorState.transactionStream.listen((event) {
+-            if (event.$1 == TransactionTime.after) {
+-              onEditorStateChange(editorState);
+-            }
+-          });
+-          final editorScrollController = EditorScrollController(
++          ),
++          MobileToolbar(
+             editorState: editorState,
+-            shrinkWrap: false,
+-          );
+-          if (PlatformExtension.isDesktopOrWeb) {
+-            return FloatingToolbar(
+-              items: [
+-                paragraphItem,
+-                ...headingItems,
+-                ...markdownFormatItems,
+-                quoteItem,
+-                bulletedListItem,
+-                numberedListItem,
+-                linkItem,
+-                buildTextColorItem(),
+-                buildHighlightColorItem(),
+-                ...textDirectionItems,
+-                ...alignmentItems,
+-              ],
+-              editorState: editorState,
+-              editorScrollController: editorScrollController,
+-              child: _buildDesktopEditor(
+-                context,
+-                editorState,
+-                editorScrollController,
+-              ),
+-            );
+-          } else if (PlatformExtension.isMobile) {
+-            return Column(
+-              children: [
+-                Expanded(
+-                  child: _buildMobileEditor(
+-                    context,
+-                    editorState,
+-                    editorScrollController,
+-                  ),
+-                ),
+-                MobileToolbar(
+-                  editorState: editorState,
+-                  toolbarItems: [
+-                    textDecorationMobileToolbarItem,
+-                    buildTextAndBackgroundColorMobileToolbarItem(),
+-                    headingMobileToolbarItem,
+-                    todoListMobileToolbarItem,
+-                    listMobileToolbarItem,
+-                    linkMobileToolbarItem,
+-                    quoteMobileToolbarItem,
+-                    dividerMobileToolbarItem,
+-                    codeMobileToolbarItem,
+-                  ],
+-                ),
+-              ],
+-            );
+-          }
+-        }
+-        return const Center(
+-          child: CircularProgressIndicator(),
+-        );
+-      },
+-    );
++            toolbarItems: [
++              textDecorationMobileToolbarItem,
++              buildTextAndBackgroundColorMobileToolbarItem(),
++              headingMobileToolbarItem,
++              todoListMobileToolbarItem,
++              listMobileToolbarItem,
++              linkMobileToolbarItem,
++              quoteMobileToolbarItem,
++              dividerMobileToolbarItem,
++              codeMobileToolbarItem,
++            ],
++          ),
++        ],
++      );
++    } else {
++      return FloatingToolbar(
++        items: [
++          paragraphItem,
++          ...headingItems,
++          ...markdownFormatItems,
++          quoteItem,
++          bulletedListItem,
++          numberedListItem,
++          linkItem,
++          buildTextColorItem(),
++          buildHighlightColorItem(),
++          ...textDirectionItems,
++          ...alignmentItems,
++        ],
++        editorState: editorState,
++        scrollController: scrollController,
++        child: _buildDesktopEditor(context, editorState, null
++            //scrollController,
++            ),
++      );
++    }
+   }
+
+   Widget _buildMobileEditor(
+     BuildContext context,
+     EditorState editorState,
+-    EditorScrollController? editorScrollController,
++    ScrollController? scrollController,
+   ) {
+     return AppFlowyEditor(
+       editorStyle: const EditorStyle.mobile(),
+       editorState: editorState,
+-      editorScrollController: editorScrollController,
++      scrollController: scrollController,
+     );
+   }
+
+   Widget _buildDesktopEditor(
+     BuildContext context,
+     EditorState editorState,
+-    EditorScrollController? editorScrollController,
++    ScrollController? scrollController,
+   ) {
+     final customBlockComponentBuilders = {
+       ...standardBlockComponentBuilderMap,
+@@ -130,8 +108,8 @@ class Editor extends StatelessWidget {
+     };
+     return AppFlowyEditor(
+       editorState: editorState,
+-      shrinkWrap: true,
+-      editorScrollController: editorScrollController,
++      shrinkWrap: false,
++      //scrollController: scrollController,
+       blockComponentBuilders: customBlockComponentBuilders,
+       commandShortcutEvents: [
+         customToggleHighlightCommand(
+diff --git a/example/pubspec.yaml b/example/pubspec.yaml
+index 0fa3662..4c587d3 100644
+--- a/example/pubspec.yaml
++++ b/example/pubspec.yaml
+@@ -1,5 +1,5 @@
+-name: example
+-description: A new Flutter project.
++name: NoelNotes
++description: Cute Notes for cute Noel.
+
+ # The following line prevents the package from being accidentally published to
+ # pub.dev using `flutter pub publish`. This is preferred for private packages.
+@@ -30,8 +30,7 @@ dependencies:
+   flutter:
+     sdk: flutter
+
+-  appflowy_editor:
+-    path: ../
++  appflowy_editor: ">=1.3.0"
+   provider: ^6.0.3
+   url_launcher: ^6.1.5
+   path_provider: ^2.0.15
