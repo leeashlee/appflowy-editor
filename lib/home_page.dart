@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
       ),
 
       // saved notes
-      _buildSeparator(context, 'Your Saved Notes'),
+      _buildSeparator(context, 'Your Saved Notes 📝'),
     ];
     developer.log("Notes length: ${notes.length}");
     for (int i = 0; i < notes.length; i++) {
@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
 
     children.addAll([
       // Encoder Demo
-      _buildSeparator(context, 'Export Your Note'),
+      _buildSeparator(context, 'Export Your Note 📂'),
       _buildListTile(context, 'Export to Markdown', () {
         _exportFile(notes[currNote].getBody(), ExportFileType.markdown);
       }),
@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
       }),
 
       // Decoder Demo
-      _buildSeparator(context, 'Import a New Note'),
+      _buildSeparator(context, 'Import a New Note 📁'),
       _buildListTile(context, 'Import From Markdown', () {
         _importFile(ExportFileType.markdown);
       }),
