@@ -1,4 +1,7 @@
+import 'dart:js';
+
 import 'package:appflowy_editor/appflowy_editor.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class Editor extends StatelessWidget {
@@ -6,11 +9,9 @@ class Editor extends StatelessWidget {
     super.key,
     required this.editorState,
     required this.onEditorStateChange,
-    this.editorStyle,
   });
 
   final EditorState editorState;
-  final EditorStyle? editorStyle;
   final void Function(EditorState editorState) onEditorStateChange;
 
   @override
@@ -82,7 +83,7 @@ class Editor extends StatelessWidget {
     ScrollController? scrollController,
   ) {
     return AppFlowyEditor(
-      editorStyle: const EditorStyle.mobile(),
+      editorStyle: customizeEditorStyle(),
       editorState: editorState,
       scrollController: scrollController,
     );
@@ -135,6 +136,56 @@ class Editor extends StatelessWidget {
         ),
       ],
       characterShortcutEvents: standardCharacterShortcutEvents,
+      editorStyle: customizeEditorStyle(),
+    );
+  }
+
+  EditorStyle customizeEditorStyle() {
+    return EditorStyle(
+      padding: PlatformExtension.isDesktopOrWeb
+          ? const EdgeInsets.only(left: 100, right: 100, top: 20)
+          : const EdgeInsets.symmetric(horizontal: 20),
+      cursorColor: Theme.of(context as BuildContext).colorScheme.primary,
+      selectionColor: Theme.of(context as BuildContext).colorScheme.primaryContainer,
+      textStyleConfiguration: TextStyleConfiguration(
+        text: const TextStyle(
+          fontSize: 18.0,
+          color: Theme.of(context as BuildContext).colorScheme.onPrimary,
+        ),
+        bold: const TextStyle(
+          fontWeight: FontWeight.w900,
+        ),
+        href: TextStyle(
+          color: Theme.of(context as BuildContext).colorScheme.secondary,
+          decoration: TextDecoration.combine(
+            [
+              TextDecoration.overline,
+              TextDecoration.underline,
+            ],
+          ),
+        ),
+        code: const TextStyle(
+          fontSize: 14.0,
+          fontStyle: FontStyle.italic,
+          color: Theme.of(context as BuildContext).colorScheme.onSecondary,
+          backgroundColor: Theme.of(context as BuildContext).colorScheme.secondaryContainer,
+        ),
+      ),
+      textSpanDecorator: (context, node, index, text, textSpan) {
+        final attributes = text.attributes;
+        final href = attributes?[AppFlowyRichTextKeys.href];
+        if (href != null) {
+          return TextSpan(
+            text: text.text,
+            style: textSpan.style,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                debugPrint('onTap: $href');
+              },
+          );
+        }
+        return textSpan;
+      },
     );
   }
 }
