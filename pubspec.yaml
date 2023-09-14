@@ -34,13 +34,13 @@ dependencies:
   provider: ^6.0.3
   url_launcher: ^6.1.5
   path_provider: ^2.0.15
-  google_fonts: ^4.0.4
+  google_fonts: ^5.1.0
   flutter_localizations:
     sdk: flutter
   file_picker: ^5.0.1
   universal_html: ^2.0.8
   highlight: ^0.7.0
-  http: ^0.13.5
+  http: ^1.1.0
   show_fps: ^1.0.6
 
 dev_dependencies:
