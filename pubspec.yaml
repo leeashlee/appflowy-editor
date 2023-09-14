@@ -42,6 +42,7 @@ dependencies:
   highlight: ^0.7.0
   http: ^0.13.5
   show_fps: ^1.0.6
+  adaptive_theme: ^3.4.0
 
 dev_dependencies:
   flutter_test:
