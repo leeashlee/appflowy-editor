@@ -4,8 +4,7 @@ import 'dart:math';
 
 import 'dart:developer' as developer;
 import 'package:appflowy_editor/appflowy_editor.dart';
-import 'package:NoelNotes/pages/customize_theme_for_editor.dart';
-import 'package:NoelNotes/pages/editor.dart';
+import 'package:noel_notes/pages/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +122,7 @@ class _HomePageState extends State<HomePage> {
             child: const Icon(Icons.add),
           ),
           const SizedBox(height: 4),
-        ]
+        ],
       ),
     );
   }

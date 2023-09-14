@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
 
@@ -70,9 +68,10 @@ class Editor extends StatelessWidget {
         ],
         editorState: editorState,
         scrollController: scrollController,
-        child: _buildDesktopEditor(context, editorState, null
-            //scrollController,
-            ),
+        child: _buildDesktopEditor(
+          context, editorState, null,
+          //scrollController,
+        ),
       );
     }
   }
