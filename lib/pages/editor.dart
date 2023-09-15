@@ -63,7 +63,7 @@ class Editor extends StatelessWidget {
           //bulletedListItem,
           //numberedListItem,
           //linkItem,
-          //buildHighlightColorItem(),
+          buildHighlightColorItem(),
           ...textDirectionItems,
           ...alignmentItems,
           ToolbarItem(
@@ -295,7 +295,7 @@ class Editor extends StatelessWidget {
                     editorState,
                     selection,
                     currentColorHex: "#00ff00",
-                    isTextColor: true,
+                    isTextColor: false,
                     textColorOptions: [
                       ColorOption(
                         colorHex: Colors.grey.withOpacity(0.3).toHex(),
