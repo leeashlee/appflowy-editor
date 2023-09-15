@@ -97,31 +97,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(width: 4),
           FloatingActionButton(
-            onPressed: () {
-              setState(() {
-                notes.addEntry(
-                  NoteCollection(
-                    "My Notes",
-                    NoteFile(
-                      "Untitled",
-                      EditorState.blank(),
-                    ),
-                    true,
-                  ),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('You created a note collection.'),
-                    action: SnackBarAction(
-                      label: 'Undo',
-                      onPressed: () {
-                        // Some code to undo the change.
-                      },
-                    ),
-                  ),
-                );
-              });
-            },
+            onPressed: _createNoteCollection,
             tooltip: 'Create Note Collection',
             child: const Icon(Icons.book),
           ),
@@ -155,8 +131,11 @@ class _HomePageState extends State<HomePage> {
     children.addAll(buildNotes(context, notes));
 
     children.addAll([
-      
-      Divider(color: Theme.of(context).colorScheme.outline, indent: 16, endIndent: 16),
+      Divider(
+        color: Theme.of(context).colorScheme.outline,
+        indent: 16,
+        endIndent: 16,
+      ),
       // Encoder Demo
       _buildSeparator(context, 'Export Your Note 📂'),
       _buildListTile(context, 'Export to Markdown', () {
@@ -173,7 +152,10 @@ class _HomePageState extends State<HomePage> {
         );
       }),
 
-      Divider(color: Theme.of(context).colorScheme.outline, indent: 16, endIndent: 16),
+      Divider(
+          color: Theme.of(context).colorScheme.outline,
+          indent: 16,
+          endIndent: 16),
       // Decoder Demo
       _buildSeparator(context, 'Import a New Note 📁'),
       _buildListTile(context, 'Import From Markdown', () {
@@ -215,8 +197,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<Widget> buildNotes(BuildContext context, NoteCollection currNotes,
-      [String prependage = "",]) {
+  //buildNotes should be in it's own dart file too, I think.
+  List<Widget> buildNotes(
+    BuildContext context,
+    NoteCollection currNotes, [
+    String prependage = "",
+  ]) {
     List<Widget> retVal = [];
     for (int i = 0; i < currNotes.getLength(); i++) {
       developer.log("Building ListTile No. $i");
@@ -231,10 +217,12 @@ class _HomePageState extends State<HomePage> {
         );
       } else if (currNotes.getEntry(i) is NoteCollection) {
         retVal.add(_buildSeparator(context, currNotes.getEntry(i).getName()));
-        retVal.addAll(buildNotes(
-          context,
-          (currNotes.getEntry(i) as NoteCollection),
-        ));
+        retVal.addAll(
+          buildNotes(
+            context,
+            (currNotes.getEntry(i) as NoteCollection),
+          ),
+        );
       }
     }
     return retVal;
@@ -285,6 +273,33 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _createNoteCollection() {
+    setState(() {
+      notes.addEntry(
+        NoteCollection(
+          "My Notes",
+          NoteFile(
+            "Untitled",
+            EditorState.blank(),
+          ),
+          true,
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('You created a note collection.'),
+          action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              // Some code to undo the change.
+            },
+          ),
+        ),
+      );
+    });
+  }
+
+  //This should probably be in its own dart file
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
     var result = '';
 
