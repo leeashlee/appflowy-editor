@@ -109,6 +109,17 @@ class _HomePageState extends State<HomePage> {
                     true,
                   ),
                 );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('You created a note collection.'),
+                    action: SnackBarAction(
+                      label: 'Undo',
+                      onPressed: () {
+                        // Some code to undo the change.
+                      },
+                    ),
+                  ),
+                );
               });
             },
             tooltip: 'Create Note Collection',
@@ -144,6 +155,8 @@ class _HomePageState extends State<HomePage> {
     children.addAll(buildNotes(context, notes));
 
     children.addAll([
+      
+      Divider(color: Theme.of(context).colorScheme.outline, indent: 16, endIndent: 16),
       // Encoder Demo
       _buildSeparator(context, 'Export Your Note 📂'),
       _buildListTile(context, 'Export to Markdown', () {
@@ -160,6 +173,7 @@ class _HomePageState extends State<HomePage> {
         );
       }),
 
+      Divider(color: Theme.of(context).colorScheme.outline, indent: 16, endIndent: 16),
       // Decoder Demo
       _buildSeparator(context, 'Import a New Note 📁'),
       _buildListTile(context, 'Import From Markdown', () {
@@ -258,16 +272,17 @@ class _HomePageState extends State<HomePage> {
       notes.addEntry(NoteFile("New unnamed Note", EditorState.blank()));
       developer.log(jsonEncode(notes.toJson()));
     });
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text('You added a new note.'),
-      action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {
-                // Some code to undo the change.
-              },
-            ),
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('You added a new note.'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
       ),
-      );
+    );
   }
 
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
