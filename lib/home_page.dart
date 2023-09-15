@@ -6,6 +6,7 @@ import 'dart:developer' as developer;
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:noel_notes/Notes/NoteCollection.dart';
 import 'package:noel_notes/Notes/NoteEntry.dart';
+import 'package:noel_notes/main.dart';
 import 'package:noel_notes/pages/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -102,10 +103,10 @@ class _HomePageState extends State<HomePage> {
             child: const Icon(Icons.book),
           ),
           const SizedBox(width: 4),
-          const FloatingActionButton(
+          FloatingActionButton(
             onPressed: _changeTheme,
             tooltip: 'change theme',
-            child: Icon(Icons.brightness_6),
+            child: const Icon(Icons.brightness_6),
           ),
         ],
       ),
@@ -153,9 +154,10 @@ class _HomePageState extends State<HomePage> {
       }),
 
       Divider(
-          color: Theme.of(context).colorScheme.outline,
-          indent: 16,
-          endIndent: 16),
+        color: Theme.of(context).colorScheme.outline,
+        indent: 16,
+        endIndent: 16,
+      ),
       // Decoder Demo
       _buildSeparator(context, 'Import a New Note 📁'),
       _buildListTile(context, 'Import From Markdown', () {
@@ -298,12 +300,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _changeTheme(){
-    if (Theme.of(context).brightness == Brightness.dark){
-      //light theme
-    }
-    else{
-      //dark theme
+  void _changeTheme() {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      
+    } else {
+
     }
   }
 
