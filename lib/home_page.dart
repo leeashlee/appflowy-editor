@@ -197,7 +197,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  //buildNotes should be in it's own dart file too, I think.
   List<Widget> buildNotes(
     BuildContext context,
     NoteCollection currNotes, [
@@ -299,7 +298,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  //This should probably be in its own dart file
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
     var result = '';
 
