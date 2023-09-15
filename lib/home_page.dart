@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   List<Widget> buildNotes(BuildContext context, NoteCollection currNotes,
-      [String prependage = ""]) {
+      [String prependage = "",]) {
     List<Widget> retVal = [];
     for (int i = 0; i < currNotes.getLength(); i++) {
       developer.log("Building ListTile No. $i");
