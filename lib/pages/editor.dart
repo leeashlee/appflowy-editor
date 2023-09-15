@@ -1,19 +1,19 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:noel_notes/custom_alignment_toolbar_items.dart';
-import 'package:noel_notes/custom_bulleted_list_toolbar_item.dart';
-import 'package:noel_notes/custom_format_toolbar_items.dart';
-import 'package:noel_notes/custom_heading_toolbar_items.dart';
-import 'package:noel_notes/custom_highlight_color_toolbar_item.dart';
-import 'package:noel_notes/custom_link_toolbar_item.dart';
-import 'package:noel_notes/custom_numbered_list_toolbar_item.dart';
 import 'dart:developer' as developer;
 
-import 'package:noel_notes/custom_paragraph_toolbar_item.dart';
-import 'package:noel_notes/custom_quote_toolbar_item.dart';
-import 'package:noel_notes/custom_text_color_toolbar_item.dart';
-import 'package:noel_notes/custom_text_direction_toolbar_items.dart';
+import 'package:noel_notes/toolbar%20items/custom_alignment_toolbar_items.dart';
+import 'package:noel_notes/toolbar%20items/custom_bulleted_list_toolbar_item.dart';
+import 'package:noel_notes/toolbar%20items/custom_format_toolbar_items.dart';
+import 'package:noel_notes/toolbar%20items/custom_heading_toolbar_items.dart';
+import 'package:noel_notes/toolbar%20items/custom_highlight_color_toolbar_item.dart';
+import 'package:noel_notes/toolbar%20items/custom_link_toolbar_item.dart';
+import 'package:noel_notes/toolbar%20items/custom_numbered_list_toolbar_item.dart';
+import 'package:noel_notes/toolbar%20items/custom_paragraph_toolbar_item.dart';
+import 'package:noel_notes/toolbar%20items/custom_quote_toolbar_item.dart';
+import 'package:noel_notes/toolbar%20items/custom_text_color_toolbar_item.dart';
+import 'package:noel_notes/toolbar%20items/custom_text_direction_toolbar_items.dart';
 
 class Editor extends StatelessWidget {
   const Editor({
