@@ -1,7 +1,6 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
 
 import 'package:noel_notes/toolbar%20items/custom_alignment_toolbar_items.dart';
 import 'package:noel_notes/toolbar%20items/custom_bulleted_list_toolbar_item.dart';
