@@ -298,8 +298,19 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void changeTheme(ThemeMode themeMode) {
+    setState(() {
+      _themeMode = themeMode;
+    });
+  }
+
   void _changeTheme(){
-    
+    if (Theme.of(context).brightness == Brightness.dark){
+      //light theme
+    }
+    else{
+      //dark theme
+    }
   }
 
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
