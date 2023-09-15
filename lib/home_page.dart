@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(width: 4),
           const FloatingActionButton(
-            onPressed: null,
+            onPressed: _changeTheme,
             tooltip: 'change theme',
             child: Icon(Icons.brightness_6),
           ),
@@ -296,6 +296,10 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     });
+  }
+
+  void _changeTheme(){
+    
   }
 
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
