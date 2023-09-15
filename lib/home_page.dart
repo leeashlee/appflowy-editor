@@ -4,6 +4,8 @@ import 'dart:math';
 
 import 'dart:developer' as developer;
 import 'package:appflowy_editor/appflowy_editor.dart';
+import 'package:noel_notes/Notes/NoteCollection.dart';
+import 'package:noel_notes/Notes/NoteEntry.dart';
 import 'package:noel_notes/pages/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -23,124 +25,6 @@ extension on ExportFileType {
       case ExportFileType.html:
         return 'html';
     }
-  }
-}
-
-abstract class NoteEntry {
-  String getName();
-  NoteEntry? getCurr();
-  void looseFocus();
-  Map<String, Object> toJson();
-}
-
-class NoteFile implements NoteEntry {
-  String title;
-  EditorState body;
-
-  NoteFile(this.title, this.body);
-
-  @override
-  Map<String, Object> toJson() {
-    return {"title": title, "body": body.document.toJson()};
-  }
-
-  @override
-  String getName() {
-    return title;
-  }
-
-  String getTitle() {
-    return title;
-  }
-
-  void setTitle(String title) {
-    this.title = title;
-  }
-
-  EditorState getBody() {
-    return body;
-  }
-
-  void setBody(EditorState body) {
-    this.body = body;
-  }
-
-  @override
-  NoteEntry? getCurr() {
-    return this;
-  }
-
-  @override
-  void looseFocus() {
-    // currently does nothing but might be used to save or smthg
-  }
-}
-
-class NoteCollection implements NoteEntry {
-  String name;
-  List<NoteEntry> notes = [];
-  int curr = -1;
-  NoteCollection(this.name, [NoteEntry? initial, bool withFocus = false]) {
-    if (initial != null) {
-      developer
-          .log("starting NoteCollection with $initial and focus = $withFocus");
-      notes.add(initial);
-      curr = (withFocus ? 1 : 0) - 1;
-    }
-  }
-
-  NoteEntry getEntry(int index) {
-    return notes[index];
-  }
-
-  @override
-  String getName() {
-    return name;
-  }
-
-  void addEntry(NoteEntry neww) {
-    developer.log("New entry: ${neww.getName()}");
-    notes.add(neww);
-  }
-
-  void removeEntry(NoteEntry old) {
-    notes.remove(old);
-  }
-
-  Iterator<NoteEntry> getIter() {
-    return notes.iterator;
-  }
-
-  @override
-  NoteEntry? getCurr() {
-    developer.log("$name: getCurr: $curr");
-    return (curr != -1) ? getEntry(curr).getCurr() : null;
-  }
-
-  void setCurr(int newCurr) {
-    developer.log("$name: setCurr: from $curr to $newCurr");
-    getCurr()!.looseFocus();
-    curr = newCurr;
-  }
-
-  @override
-  void looseFocus() {
-    developer.log("$name: getCurr: $curr");
-    setCurr(-1);
-  }
-
-  num getLength() {
-    return notes.length;
-  }
-
-  @override
-  Map<String, Object> toJson() {
-    return {
-      "name": name,
-      "body": notes.map((x) {
-        return x.toJson();
-      }).toList(),
-    };
   }
 }
 
