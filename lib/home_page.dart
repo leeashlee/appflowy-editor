@@ -26,14 +26,27 @@ extension on ExportFileType {
   }
 }
 
-class Note {
+abstract class NoteEntry {
+  String getName();
+  NoteEntry? getCurr();
+  void looseFocus();
+  Map<String, Object> toJson();
+}
+
+class NoteFile implements NoteEntry {
   String title;
   EditorState body;
 
-  Note(this.title, this.body);
+  NoteFile(this.title, this.body);
 
-  Map toJson() {
+  @override
+  Map<String, Object> toJson() {
     return {"title": title, "body": body.document.toJson()};
+  }
+
+  @override
+  String getName() {
+    return title;
   }
 
   String getTitle() {
@@ -51,6 +64,84 @@ class Note {
   void setBody(EditorState body) {
     this.body = body;
   }
+
+  @override
+  NoteEntry? getCurr() {
+    return this;
+  }
+
+  @override
+  void looseFocus() {
+    // currently does nothing but might be used to save or smthg
+  }
+}
+
+class NoteCollection implements NoteEntry {
+  String name;
+  List<NoteEntry> notes = [];
+  int curr = -1;
+  NoteCollection(this.name, [NoteEntry? initial, bool withFocus = false]) {
+    if (initial != null) {
+      developer
+          .log("starting NoteCollection with $initial and focus = $withFocus");
+      notes.add(initial);
+      curr = (withFocus ? 1 : 0) - 1;
+    }
+  }
+
+  NoteEntry getEntry(int index) {
+    return notes[index];
+  }
+
+  @override
+  String getName() {
+    return name;
+  }
+
+  void addEntry(NoteEntry neww) {
+    developer.log("New entry: ${neww.getName()}");
+    notes.add(neww);
+  }
+
+  void removeEntry(NoteEntry old) {
+    notes.remove(old);
+  }
+
+  Iterator<NoteEntry> getIter() {
+    return notes.iterator;
+  }
+
+  @override
+  NoteEntry? getCurr() {
+    developer.log("$name: getCurr: $curr");
+    return (curr != -1) ? getEntry(curr).getCurr() : null;
+  }
+
+  void setCurr(int newCurr) {
+    developer.log("$name: setCurr: from $curr to $newCurr");
+    getCurr()!.looseFocus();
+    curr = newCurr;
+  }
+
+  @override
+  void looseFocus() {
+    developer.log("$name: getCurr: $curr");
+    setCurr(-1);
+  }
+
+  num getLength() {
+    return notes.length;
+  }
+
+  @override
+  Map<String, Object> toJson() {
+    return {
+      "name": name,
+      "body": notes.map((x) {
+        return x.toJson();
+      }).toList(),
+    };
+  }
 }
 
 class HomePage extends StatefulWidget {
@@ -62,15 +153,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  var notes = <Note>[
-    Note(
+  var notes = NoteCollection(
+    "My Notes",
+    NoteFile(
       "Untitled",
-      EditorState.blank(
-          // withInitialText: false,
-          ),
+      EditorState.blank(),
     ),
-  ];
-  var currNote = 0;
+    true,
+  );
   late WidgetBuilder _widgetBuilder;
 
   @override
@@ -78,9 +168,9 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     _widgetBuilder = (context) => Editor(
-          editorState: notes[currNote].body,
+          editorState: (notes.getCurr() as NoteFile).getBody(),
           onEditorStateChange: (editorState) {
-            notes[currNote].setBody(editorState);
+            (notes.getCurr() as NoteFile).setBody(editorState);
           },
         );
   }
@@ -90,9 +180,9 @@ class _HomePageState extends State<HomePage> {
     super.reassemble();
 
     _widgetBuilder = (context) => Editor(
-          editorState: notes[currNote].getBody(),
+          editorState: (notes.getCurr() as NoteFile).getBody(),
           onEditorStateChange: (editorState) {
-            notes[currNote].setBody(editorState);
+            (notes.getCurr() as NoteFile).setBody(editorState);
           },
         );
   }
@@ -112,20 +202,39 @@ class _HomePageState extends State<HomePage> {
         minimum: const EdgeInsets.symmetric(vertical: 70),
         child: _buildBody(context),
       ),
-      floatingActionButton: Column(
+      floatingActionButton: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           FloatingActionButton(
             onPressed: _addNote,
             tooltip: 'Add Notes',
-            child: const Icon(Icons.add),
+            child: const Icon(Icons.note_add),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(width: 4),
           FloatingActionButton(
+            onPressed: () {
+              setState(() {
+                notes.addEntry(
+                  NoteCollection(
+                    "My Notes",
+                    NoteFile(
+                      "Untitled",
+                      EditorState.blank(),
+                    ),
+                    true,
+                  ),
+                );
+              });
+            },
+            tooltip: 'Create Note Collection',
+            child: const Icon(Icons.book),
+          ),
+          const SizedBox(width: 4),
+          const FloatingActionButton(
             onPressed: null,
             tooltip: 'change theme',
-            child: const Icon(Icons.brightness_6),
+            child: Icon(Icons.brightness_6),
           ),
         ],
       ),
@@ -146,32 +255,25 @@ class _HomePageState extends State<HomePage> {
       // saved notes
       _buildSeparator(context, 'Your Saved Notes 📝'),
     ];
-    developer.log("Notes length: ${notes.length}");
-    for (int i = 0; i < notes.length; i++) {
-      developer.log("Building ListTile No. $i");
-      children.add(
-        _buildListTile(context, notes[i].getTitle(), () {
-          developer.log("switching from $currNote to $i");
-          developer.log("${notes[currNote].getBody()}");
-          _switchFile(
-            notes[currNote].getBody(),
-            ExportFileType.markdown,
-            currNote,
-            i,
-          );
-        }),
-      );
-    }
+    developer.log("Notes length: ${notes.getLength()}");
+
+    children.addAll(buildNotes(context, notes));
 
     children.addAll([
       // Encoder Demo
       _buildSeparator(context, 'Export Your Note 📂'),
       _buildListTile(context, 'Export to Markdown', () {
-        _exportFile(notes[currNote].getBody(), ExportFileType.markdown);
+        _exportFile(
+          (notes.getCurr() as NoteFile).getBody(),
+          ExportFileType.markdown,
+        );
       }),
 
       _buildListTile(context, 'Export to HTML', () {
-        _exportFile(notes[currNote].getBody(), ExportFileType.html);
+        _exportFile(
+          (notes.getCurr() as NoteFile).getBody(),
+          ExportFileType.html,
+        );
       }),
 
       // Decoder Demo
@@ -215,6 +317,31 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  List<Widget> buildNotes(BuildContext context, NoteCollection currNotes,
+      [String prependage = ""]) {
+    List<Widget> retVal = [];
+    for (int i = 0; i < currNotes.getLength(); i++) {
+      developer.log("Building ListTile No. $i");
+      if (currNotes.getEntry(i) is NoteFile) {
+        retVal.add(
+          _buildListTile(
+              context, prependage + (notes.getEntry(i) as NoteFile).getName(),
+              () {
+            developer.log("Button: switching to $i");
+            _switchFile(i);
+          }),
+        );
+      } else if (currNotes.getEntry(i) is NoteCollection) {
+        retVal.add(_buildSeparator(context, currNotes.getEntry(i).getName()));
+        retVal.addAll(buildNotes(
+          context,
+          (currNotes.getEntry(i) as NoteCollection),
+        ));
+      }
+    }
+    return retVal;
+  }
+
   Widget _buildSeparator(BuildContext context, String text) {
     return Padding(
       padding: const EdgeInsets.only(left: 16, top: 16, bottom: 4),
@@ -233,9 +360,9 @@ class _HomePageState extends State<HomePage> {
     setState(
       () {
         _widgetBuilder = (context) => Editor(
-              editorState: notes[currNote].getBody(),
+              editorState: (notes.getCurr() as NoteFile).getBody(),
               onEditorStateChange: (editorState) {
-                notes[currNote].setBody(editorState);
+                (notes.getCurr() as NoteFile).setBody(editorState);
               },
             );
       },
@@ -244,9 +371,19 @@ class _HomePageState extends State<HomePage> {
 
   void _addNote() {
     setState(() {
-      notes.add(Note("Note No. ${currNote++}", EditorState.blank()));
-      developer.log(jsonEncode(notes));
+      notes.addEntry(NoteFile("New unnamed Note", EditorState.blank()));
+      developer.log(jsonEncode(notes.toJson()));
     });
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text('You added a new note.'),
+      action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                // Some code to undo the change.
+              },
+            ),
+      ),
+      );
   }
 
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
@@ -285,19 +422,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _switchFile(
-    EditorState oldEditorState,
-    ExportFileType fileType,
-    int old,
     int neww,
   ) {
     setState(() {
       //save old body
-      notes[old].setBody(oldEditorState);
-      // switch to neww
-      currNote = neww;
-      developer
-          .log("Old State: ${jsonEncode(oldEditorState.document.toJson())}");
-      developer.log("Old: $old");
+      notes.setCurr(neww);
       developer.log("neww: $neww");
     });
   }
@@ -325,8 +454,8 @@ class _HomePageState extends State<HomePage> {
 
     switch (fileType) {
       case ExportFileType.markdown:
-        notes.add(
-          Note(
+        notes.addEntry(
+          NoteFile(
             "${result?.files.single.name}",
             EditorState(document: markdownToDocument(plainText)),
           ),
