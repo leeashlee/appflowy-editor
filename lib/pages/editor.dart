@@ -81,7 +81,7 @@ class Editor extends StatelessWidget {
         scrollController: scrollController,
         style: FloatingToolbarStyle(
             backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-            toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant),
+            toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant,),
         child: _buildDesktopEditor(
           context, editorState, null,
           //scrollController,
