@@ -4,8 +4,10 @@ import 'dart:math';
 
 import 'dart:developer' as developer;
 import 'package:appflowy_editor/appflowy_editor.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noel_notes/Notes/NoteCollection.dart';
 import 'package:noel_notes/Notes/NoteEntry.dart';
+import 'package:noel_notes/main.dart';
 import 'package:noel_notes/pages/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -80,50 +82,23 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         surfaceTintColor: Colors.transparent,
-        title: const Text('Note Taking App'),
+        title: Text(notes.getCurr()!.getName()),
       ),
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(vertical: 70),
         child: _buildBody(context),
       ),
-      floatingActionButton: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          FloatingActionButton.small(
-            onPressed: _addNote,
-            tooltip: 'Add Notes',
-            child: const Icon(Icons.note_add),
-          ),
-          const SizedBox(width: 4),
-          FloatingActionButton.small(
-            onPressed: _createNoteCollection,
-            tooltip: 'Create Note Collection',
-            child: const Icon(Icons.book),
-          ),
-          const SizedBox(width: 4),
-          FloatingActionButton.small(
-            onPressed: _changeTheme,
-            tooltip: 'change theme',
-            child: const Icon(Icons.brightness_6),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton.small(
+        onPressed: _addNote,
+        tooltip: 'Add Notes',
+        child: const Icon(Icons.note_add),
       ),
     );
   }
 
   Widget _buildDrawer(BuildContext context) {
     var children = [
-      DrawerHeader(
-        padding: EdgeInsets.zero,
-        margin: EdgeInsets.zero,
-        child: Image.asset(
-          'assets/images/icon.png',
-          fit: BoxFit.fill,
-        ),
-      ),
-
-      // saved notes
+      // Saved Notes
       _buildSeparator(context, 'Your Saved Notes 📝'),
     ];
     developer.log("Notes length: ${notes.getLength()}");
@@ -131,42 +106,126 @@ class _HomePageState extends State<HomePage> {
     children.addAll(buildNotes(context, notes));
 
     children.addAll([
-      Divider(
-        color: Theme.of(context).colorScheme.outline,
-        indent: 16,
-        endIndent: 16,
-      ),
-      // Encoder Demo
+      // Export Notes
       _buildSeparator(context, 'Export Your Note 📂'),
-      _buildListTile(context, 'Export to Markdown', () {
-        _exportFile(
-          (notes.getCurr() as NoteFile).getBody(),
-          ExportFileType.markdown,
-        );
-      }),
+      ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          alignment: Alignment.centerLeft,
+          elevation: 0.0,
+          shadowColor: Colors.transparent,
+        ),
+        onPressed: () {
+          _exportFile(
+            (notes.getCurr() as NoteFile).getBody(),
+            ExportFileType.markdown,
+          );
+        },
+        icon: const Icon(Icons.file_download),
+        label: const Text('Export to Markdown'),
+      ),
 
-      _buildListTile(context, 'Export to HTML', () {
-        _exportFile(
-          (notes.getCurr() as NoteFile).getBody(),
-          ExportFileType.html,
-        );
-      }),
+      const SizedBox(height: 4),
+
+      ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          alignment: Alignment.centerLeft,
+          elevation: 0.0,
+          shadowColor: Colors.transparent,
+        ),
+        onPressed: () {
+          _exportFile(
+            (notes.getCurr() as NoteFile).getBody(),
+            ExportFileType.html,
+          );
+        },
+        icon: const Icon(Icons.html),
+        label: const Text('Export to HTML'),
+      ),
 
       Divider(
         color: Theme.of(context).colorScheme.outline,
-        indent: 16,
-        endIndent: 16,
       ),
-      // Decoder Demo
+      // Import Notes
       _buildSeparator(context, 'Import a New Note 📁'),
-      _buildListTile(context, 'Import From Markdown', () {
-        _importFile(ExportFileType.markdown);
-      }),
+      ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          alignment: Alignment.centerLeft,
+          elevation: 0.0,
+          shadowColor: Colors.transparent,
+        ),
+        onPressed: () {
+          _importFile(ExportFileType.markdown);
+        },
+        icon: const Icon(Icons.file_upload),
+        label: const Text('Import From Markdown'),
+      ),
+
+      Divider(
+        color: Theme.of(context).colorScheme.outline,
+      ),
+
+      // Settings
+      _buildSeparator(context, 'Preferences ⚙️'),
+
+      //Theme
+      ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          alignment: Alignment.centerLeft,
+          elevation: 0.0,
+          shadowColor: Colors.transparent,
+        ),
+        onPressed: () => context.read<ThemeCubit>().toggleTheme(),
+        icon: const Icon(Icons.brightness_6),
+        label: const Text('Change Theme'),
+      ),
+
+      const SizedBox(height: 4),
+
+      //Create folder button
+      ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          alignment: Alignment.centerLeft,
+          elevation: 0.0,
+          shadowColor: Colors.transparent,
+        ),
+        onPressed: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Create a new note collection?'),
+            content: const TextField(
+              autofocus: true,
+              decoration: InputDecoration(
+                label: Text('Note Collection Name:'),
+                border: OutlineInputBorder(),
+                hintText: 'Untitled',
+                icon: Icon(Icons.book_outlined),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+              FilledButton(
+                onPressed: _createNoteCollection,
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        ),
+        icon: const Icon(Icons.book),
+        label: const Text('Create a new note collection'),
+      ),
     ]);
 
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.all(8.0),
         children: children,
       ),
     );
@@ -174,28 +233,6 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBody(BuildContext context) {
     return _widgetBuilder(context);
-  }
-
-  Widget _buildListTile(
-    BuildContext context,
-    String text,
-    VoidCallback? onTap,
-  ) {
-    return ListTile(
-      dense: true,
-      contentPadding: const EdgeInsets.only(left: 16),
-      title: Text(
-        text,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
-          fontSize: 14,
-        ),
-      ),
-      onTap: () {
-        Navigator.pop(context);
-        onTap?.call();
-      },
-    );
   }
 
   List<Widget> buildNotes(
@@ -208,12 +245,18 @@ class _HomePageState extends State<HomePage> {
       developer.log("Building ListTile No. $i");
       if (currNotes.getEntry(i) is NoteFile) {
         retVal.add(
-          _buildListTile(
-              context, prependage + (notes.getEntry(i) as NoteFile).getName(),
-              () {
-            developer.log("Button: switching to $i");
-            _switchFile(i);
-          }),
+          TextButton(
+            style: TextButton.styleFrom(
+              alignment: Alignment.centerLeft,
+            ),
+            onPressed: () {
+              developer.log("Button: switching to $i");
+              _switchFile(i);
+            },
+            child: Text(
+              prependage + (notes.getEntry(i) as NoteFile).getName(),
+            ),
+          ),
         );
       } else if (currNotes.getEntry(i) is NoteCollection) {
         retVal.add(_buildSeparator(context, currNotes.getEntry(i).getName()));
@@ -285,26 +328,8 @@ class _HomePageState extends State<HomePage> {
           true,
         ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('You created a note collection.'),
-          action: SnackBarAction(
-            label: 'Undo',
-            onPressed: () {
-              // Some code to undo the change.
-            },
-          ),
-        ),
-      );
+      Navigator.pop(context, 'OK');
     });
-  }
-
-  void _changeTheme() {
-    if (Theme.of(context).brightness == Brightness.dark) {
-      
-    } else {
-
-    }
   }
 
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
