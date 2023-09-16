@@ -368,7 +368,7 @@ class _HomePageState extends State<HomePage> {
       if(myCollectionController.text == ''){
         notes.addEntry(
         NoteCollection(
-          "Untitled Collection",
+          "My Notes",
           NoteFile(
             "Untitled",
             EditorState.blank(),
