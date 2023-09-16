@@ -287,35 +287,37 @@ class _HomePageState extends State<HomePage> {
               _switchFile(i);
             },
             onLongPress: () => showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('Rename the note?'),
-            content: TextField(
-              autofocus: true,
-              controller: myNoteController,
-              decoration: const InputDecoration(
-                label: Text('Note Name:'),
-                border: OutlineInputBorder(),
-                hintText: 'Untitled',
-                icon: Icon(Icons.book_outlined),
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text('Rename the note?'),
+                content: TextField(
+                  autofocus: true,
+                  controller: myNoteController,
+                  decoration: const InputDecoration(
+                    label: Text('Note Name:'),
+                    border: OutlineInputBorder(),
+                    hintText: 'Untitled',
+                    icon: Icon(Icons.book_outlined),
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: const Text('Cancel'),
+                  ),
+                  FilledButton(
+                    onPressed: () {
+                      setState(() {
+                        currI.setTitle(myNoteController.text);
+                        myNoteController.clear();
+                        Navigator.pop(context, 'OK');
+                      });
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
               ),
             ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
-              ),
-              FilledButton(
-                onPressed: () {
-                  currI.setTitle(myNoteController.text);
-                  myNoteController.clear();
-                  Navigator.pop(context, 'OK');
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        ),
             child: Text(
               currI.getName(),
             ),
@@ -324,19 +326,16 @@ class _HomePageState extends State<HomePage> {
       } else if (currI is NoteCollection) {
         retVal.add(
           ExpansionTile(
+            tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
+            childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
             initiallyExpanded: true,
             expandedAlignment: Alignment.centerLeft,
-            title: Column(
+            title: Row(
               children: [
                 Text(currI.getName()),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    alignment: Alignment.centerLeft,
-                    elevation: 0.0,
-                    shadowColor: Colors.transparent,
-                  ),
-                  //_addNote(currI);
+                const SizedBox(width: 4),
+                IconButton(
+                  iconSize: 20.0,
                   onPressed: () => showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
@@ -359,14 +358,13 @@ class _HomePageState extends State<HomePage> {
                         FilledButton(
                           onPressed: () {
                             _addNote(currI);
-                            },
+                          },
                           child: const Text('OK'),
                         ),
                       ],
                     ),
                   ),
                   icon: const Icon(Icons.note_add),
-                  label: const Text('Add a new note'),
                 ),
               ],
             ),
