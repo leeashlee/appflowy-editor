@@ -91,19 +91,19 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          FloatingActionButton(
+          FloatingActionButton.small(
             onPressed: _addNote,
             tooltip: 'Add Notes',
             child: const Icon(Icons.note_add),
           ),
           const SizedBox(width: 4),
-          FloatingActionButton(
+          FloatingActionButton.small(
             onPressed: _createNoteCollection,
             tooltip: 'Create Note Collection',
             child: const Icon(Icons.book),
           ),
           const SizedBox(width: 4),
-          FloatingActionButton(
+          FloatingActionButton.small(
             onPressed: _changeTheme,
             tooltip: 'change theme',
             child: const Icon(Icons.brightness_6),
