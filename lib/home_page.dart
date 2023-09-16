@@ -296,14 +296,26 @@ class _HomePageState extends State<HomePage> {
         );
       } else if (currNotes.getEntry(i) is NoteCollection) {
         retVal.add(
-          _buildSeparator(context, currNotes.getEntry(i).getName()),
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              alignment: Alignment.centerLeft,
+              elevation: 0.0,
+              shadowColor: Colors.transparent,
+            ),
+            onPressed: () {
+              null;
+            },
+            icon: const Icon(Icons.folder_open),
+            label: Text(currNotes.getEntry(i).getName()),
+          ),
         );
-        retVal.addAll(
+        /*retVal.addAll(
           buildNotes(
             context,
             (currNotes.getEntry(i) as NoteCollection),
           ),
-        );
+        );*/
       }
     }
     return retVal;
