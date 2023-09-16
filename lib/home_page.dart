@@ -271,15 +271,12 @@ class _HomePageState extends State<HomePage> {
     return _widgetBuilder(context);
   }
 
-  List<Widget> buildNotes(
-    BuildContext context,
-    NoteCollection currNotes, [
-    String prependage = "",
-  ]) {
+  List<Widget> buildNotes(BuildContext context, NoteCollection currNotes) {
     List<Widget> retVal = [];
     for (int i = 0; i < currNotes.getLength(); i++) {
+      NoteEntry currI = currNotes.getEntry(i);
       developer.log("Building ListTile No. $i");
-      if (currNotes.getEntry(i) is NoteFile) {
+      if (currI is NoteFile) {
         retVal.add(
           TextButton(
             style: TextButton.styleFrom(
@@ -289,19 +286,49 @@ class _HomePageState extends State<HomePage> {
               developer.log("Button: switching to $i");
               _switchFile(i);
             },
+            onLongPress: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Rename the note?'),
+            content: TextField(
+              autofocus: true,
+              controller: myNoteController,
+              decoration: const InputDecoration(
+                label: Text('Note Name:'),
+                border: OutlineInputBorder(),
+                hintText: 'Untitled',
+                icon: Icon(Icons.book_outlined),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+              FilledButton(
+                onPressed: () {
+                  currI.setTitle(myNoteController.text);
+                  myNoteController.clear();
+                  Navigator.pop(context, 'OK');
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        ),
             child: Text(
-              prependage + (notes.getEntry(i) as NoteFile).getName(),
+              currI.getName(),
             ),
           ),
         );
-      } else if (currNotes.getEntry(i) is NoteCollection) {
+      } else if (currI is NoteCollection) {
         retVal.add(
           ExpansionTile(
             initiallyExpanded: true,
             expandedAlignment: Alignment.centerLeft,
             title: Column(
               children: [
-                Text(currNotes.getEntry(i).getName()),
+                Text(currI.getName()),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
@@ -309,27 +336,43 @@ class _HomePageState extends State<HomePage> {
                     elevation: 0.0,
                     shadowColor: Colors.transparent,
                   ),
-                  onPressed: () {
-                    _addNote(currNotes.getEntry(i) as NoteCollection);
-                  },
+                  //_addNote(currI);
+                  onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Create a new note?'),
+                      content: TextField(
+                        autofocus: true,
+                        controller: myNoteController,
+                        decoration: const InputDecoration(
+                          label: Text('Note Name:'),
+                          border: OutlineInputBorder(),
+                          hintText: 'Untitled',
+                          icon: Icon(Icons.book_outlined),
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        FilledButton(
+                          onPressed: () {
+                            _addNote(currI);
+                            },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
                   icon: const Icon(Icons.note_add),
                   label: const Text('Add a new note'),
                 ),
               ],
             ),
-            children: buildNotes(
-              context,
-              (currNotes.getEntry(i) as NoteCollection),
-            ),
+            children: buildNotes(context, currI),
           ),
-          /*_buildSeparator(context, currNotes.getEntry(i).getName()),*/
         );
-        /*retVal.addAll(
-          buildNotes(
-            context,
-            (currNotes.getEntry(i) as NoteCollection),
-          ),
-        );*/
       }
     }
     return retVal;
@@ -365,20 +408,21 @@ class _HomePageState extends State<HomePage> {
   void _addNote([NoteCollection? into]) {
     // if into is null use the root
     into = (into != null) ? into : notes;
-    setState(() {
-      String title = myNoteController.text;
-      if(title == ''){
-        title = "Untitled";
-      }
-      into!.addEntry(NoteFile(title, EditorState.blank()));
-      developer.log(
-        jsonEncode(into.toJson()),
-      );
+    setState(
+      () {
+        String title = myNoteController.text;
+        if (title == '') {
+          title = "Untitled";
+        }
+        into!.addEntry(NoteFile(title, EditorState.blank()));
+        developer.log(
+          jsonEncode(into.toJson()),
+        );
       },
     );
-      myNoteController.clear();
-      Navigator.pop(context, 'OK');
-    }
+    myNoteController.clear();
+    Navigator.pop(context, 'OK');
+  }
 
   void _createNoteCollection() {
     setState(() {
@@ -390,8 +434,8 @@ class _HomePageState extends State<HomePage> {
       myCollectionController.clear();
       Navigator.pop(context, 'OK');
     });
-      myCollectionController.clear();
-      Navigator.pop(context, 'OK');
+    myCollectionController.clear();
+    Navigator.pop(context, 'OK');
   }
 
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
