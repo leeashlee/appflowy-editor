@@ -307,12 +307,6 @@ class _HomePageState extends State<HomePage> {
           ),
           /*_buildSeparator(context, currNotes.getEntry(i).getName()),*/
         );
-        /*retVal.addAll(
-          buildNotes(
-            context,
-            (currNotes.getEntry(i) as NoteCollection),
-          ),
-        );*/
       }
     }
     return retVal;
