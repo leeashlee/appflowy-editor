@@ -39,6 +39,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final myController = TextEditingController();
+
   var notes = NoteCollection(
     "My Notes",
     NoteFile(
@@ -48,6 +50,13 @@ class _HomePageState extends State<HomePage> {
     true,
   );
   late WidgetBuilder _widgetBuilder;
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -197,12 +206,13 @@ class _HomePageState extends State<HomePage> {
           context: context,
           builder: (BuildContext context) => AlertDialog(
             title: const Text('Create a new note collection?'),
-            content: const TextField(
+            content: TextField(
               autofocus: true,
-              decoration: InputDecoration(
+              controller: myController,
+              decoration: const InputDecoration(
                 label: Text('Note Collection Name:'),
                 border: OutlineInputBorder(),
-                hintText: 'Untitled',
+                hintText: 'My Notes',
                 icon: Icon(Icons.book_outlined),
               ),
             ),
@@ -320,7 +330,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       notes.addEntry(
         NoteCollection(
-          "My Notes",
+          myController.text,
           NoteFile(
             "Untitled",
             EditorState.blank(),
@@ -328,6 +338,7 @@ class _HomePageState extends State<HomePage> {
           true,
         ),
       );
+      myController.clear();
       Navigator.pop(context, 'OK');
     });
   }
