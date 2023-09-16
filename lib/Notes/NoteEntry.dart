@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:appflowy_editor/appflowy_editor.dart';
 
 abstract class NoteEntry {

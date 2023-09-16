@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:noel_notes/Notes/NoteEntry.dart';
 import 'dart:developer' as developer;
 

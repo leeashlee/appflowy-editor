@@ -6,7 +6,6 @@ import 'dart:developer' as developer;
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:noel_notes/Notes/NoteCollection.dart';
 import 'package:noel_notes/Notes/NoteEntry.dart';
-import 'package:noel_notes/main.dart';
 import 'package:noel_notes/pages/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
