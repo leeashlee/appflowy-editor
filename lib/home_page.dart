@@ -366,21 +366,19 @@ class _HomePageState extends State<HomePage> {
     // if into is null use the root
     into = (into != null) ? into : notes;
     setState(() {
-      if(myNoteController.text == ''){
-        into!.addEntry(NoteFile("Untitled", EditorState.blank()));
-      developer.log(
-        jsonEncode(into.toJson()),
-      );
-      } else {
-        into!.addEntry(NoteFile(myNoteController.text, EditorState.blank()));
-      developer.log(
-        jsonEncode(into.toJson()),
-      );
+      String title = myNoteController.text;
+      if(title == ''){
+        title = "Untitled";
       }
+      into!.addEntry(NoteFile(title, EditorState.blank()));
+      developer.log(
+        jsonEncode(into.toJson()),
+      );
+      },
+    );
       myNoteController.clear();
       Navigator.pop(context, 'OK');
-    });
-  }
+    }
 
   void _createNoteCollection() {
     setState(() {
