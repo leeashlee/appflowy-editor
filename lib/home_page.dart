@@ -39,7 +39,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final myController = TextEditingController();
+  final myCollectionController = TextEditingController();
+  final myNoteController = TextEditingController();
 
   var notes = NoteCollection(
     "My Notes",
@@ -54,7 +55,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    myController.dispose();
+    myCollectionController.dispose();
     super.dispose();
   }
 
@@ -98,7 +99,32 @@ class _HomePageState extends State<HomePage> {
         child: _buildBody(context),
       ),
       floatingActionButton: FloatingActionButton.small(
-        onPressed: _addNote,
+        onPressed: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Create a new note?'),
+            content: TextField(
+              autofocus: true,
+              controller: myNoteController,
+              decoration: const InputDecoration(
+                label: Text('Note Name:'),
+                border: OutlineInputBorder(),
+                hintText: 'Untitled',
+                icon: Icon(Icons.book_outlined),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+              FilledButton(
+                onPressed: _addNote,
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        ),
         tooltip: 'Add Notes',
         child: const Icon(Icons.note_add),
       ),
@@ -208,7 +234,7 @@ class _HomePageState extends State<HomePage> {
             title: const Text('Create a new note collection?'),
             content: TextField(
               autofocus: true,
-              controller: myController,
+              controller: myCollectionController,
               decoration: const InputDecoration(
                 label: Text('Note Collection Name:'),
                 border: OutlineInputBorder(),
@@ -269,13 +295,27 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       } else if (currNotes.getEntry(i) is NoteCollection) {
-        retVal.add(_buildSeparator(context, currNotes.getEntry(i).getName()));
-        retVal.addAll(
+        retVal.add(
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              alignment: Alignment.centerLeft,
+              elevation: 0.0,
+              shadowColor: Colors.transparent,
+            ),
+            onPressed: () {
+              null;
+            },
+            icon: const Icon(Icons.folder_open),
+            label: Text(currNotes.getEntry(i).getName()),
+          ),
+        );
+        /*retVal.addAll(
           buildNotes(
             context,
             (currNotes.getEntry(i) as NoteCollection),
           ),
-        );
+        );*/
       }
     }
     return retVal;
@@ -310,27 +350,20 @@ class _HomePageState extends State<HomePage> {
 
   void _addNote() {
     setState(() {
-      notes.addEntry(NoteFile("New unnamed Note", EditorState.blank()));
-      developer.log(jsonEncode(notes.toJson()));
+      notes.addEntry(NoteFile(myNoteController.text, EditorState.blank()));
+      developer.log(
+        jsonEncode(notes.toJson()),
+      );
+      myNoteController.clear();
+      Navigator.pop(context, 'OK');
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('You added a new note.'),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {
-            // Some code to undo the change.
-          },
-        ),
-      ),
-    );
   }
 
   void _createNoteCollection() {
     setState(() {
       notes.addEntry(
         NoteCollection(
-          myController.text,
+          myCollectionController.text,
           NoteFile(
             "Untitled",
             EditorState.blank(),
@@ -338,7 +371,7 @@ class _HomePageState extends State<HomePage> {
           true,
         ),
       );
-      myController.clear();
+      myCollectionController.clear();
       Navigator.pop(context, 'OK');
     });
   }
