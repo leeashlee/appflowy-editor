@@ -384,32 +384,16 @@ class _HomePageState extends State<HomePage> {
 
   void _createNoteCollection() {
     setState(() {
-      if (myCollectionController.text == '') {
-        notes.addEntry(
-          NoteCollection(
-            "My Notes",
-            NoteFile(
-              "Untitled",
-              EditorState.blank(),
-            ),
-            true,
-          ),
-        );
-      } else {
-        notes.addEntry(
-          NoteCollection(
-            myCollectionController.text,
-            NoteFile(
-              "Untitled",
-              EditorState.blank(),
-            ),
-            true,
-          ),
-        );
+      String title = myCollectionController.text;
+      if (title == "") {
+        title = "Untitled";
       }
+      notes.addEntry(NoteCollection(title));
       myCollectionController.clear();
       Navigator.pop(context, 'OK');
     });
+      myCollectionController.clear();
+      Navigator.pop(context, 'OK');
   }
 
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
