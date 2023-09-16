@@ -299,7 +299,24 @@ class _HomePageState extends State<HomePage> {
           ExpansionTile(
             initiallyExpanded: true,
             expandedAlignment: Alignment.centerLeft,
-            title: Text(currNotes.getEntry(i).getName()),
+            title: Column(
+              children: [
+                Text(currNotes.getEntry(i).getName()),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    alignment: Alignment.centerLeft,
+                    elevation: 0.0,
+                    shadowColor: Colors.transparent,
+                  ),
+                  onPressed: () {
+                    _addNote(currNotes.getEntry(i) as NoteCollection);
+                  },
+                  icon: const Icon(Icons.note_add),
+                  label: const Text('Add a new note'),
+                ),
+              ],
+            ),
             children: buildNotes(
               context,
               (currNotes.getEntry(i) as NoteCollection),
@@ -307,6 +324,12 @@ class _HomePageState extends State<HomePage> {
           ),
           /*_buildSeparator(context, currNotes.getEntry(i).getName()),*/
         );
+        /*retVal.addAll(
+          buildNotes(
+            context,
+            (currNotes.getEntry(i) as NoteCollection),
+          ),
+        );*/
       }
     }
     return retVal;
@@ -339,17 +362,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _addNote() {
+  void _addNote([NoteCollection? into]) {
+    // if into is null use the root
+    into = (into != null) ? into : notes;
     setState(() {
       if(myNoteController.text == ''){
-        notes.addEntry(NoteFile("Untitled", EditorState.blank()));
+        into!.addEntry(NoteFile("Untitled", EditorState.blank()));
       developer.log(
-        jsonEncode(notes.toJson()),
+        jsonEncode(into.toJson()),
       );
       } else {
-        notes.addEntry(NoteFile(myNoteController.text, EditorState.blank()));
+        into!.addEntry(NoteFile(myNoteController.text, EditorState.blank()));
       developer.log(
-        jsonEncode(notes.toJson()),
+        jsonEncode(into.toJson()),
       );
       }
       myNoteController.clear();
@@ -359,28 +384,28 @@ class _HomePageState extends State<HomePage> {
 
   void _createNoteCollection() {
     setState(() {
-      if(myCollectionController.text == ''){
+      if (myCollectionController.text == '') {
         notes.addEntry(
-        NoteCollection(
-          "My Notes",
-          NoteFile(
-            "Untitled",
-            EditorState.blank(),
+          NoteCollection(
+            "My Notes",
+            NoteFile(
+              "Untitled",
+              EditorState.blank(),
+            ),
+            true,
           ),
-          true,
-        ),
-      );
+        );
       } else {
         notes.addEntry(
-        NoteCollection(
-          myCollectionController.text,
-          NoteFile(
-            "Untitled",
-            EditorState.blank(),
+          NoteCollection(
+            myCollectionController.text,
+            NoteFile(
+              "Untitled",
+              EditorState.blank(),
+            ),
+            true,
           ),
-          true,
-        ),
-      );
+        );
       }
       myCollectionController.clear();
       Navigator.pop(context, 'OK');
