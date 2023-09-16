@@ -347,10 +347,17 @@ class _HomePageState extends State<HomePage> {
 
   void _addNote() {
     setState(() {
-      notes.addEntry(NoteFile(myNoteController.text, EditorState.blank()));
+      if(myNoteController.text == ''){
+        notes.addEntry(NoteFile("Untitled", EditorState.blank()));
       developer.log(
         jsonEncode(notes.toJson()),
       );
+      } else {
+        notes.addEntry(NoteFile(myNoteController.text, EditorState.blank()));
+      developer.log(
+        jsonEncode(notes.toJson()),
+      );
+      }
       myNoteController.clear();
       Navigator.pop(context, 'OK');
     });
@@ -358,7 +365,19 @@ class _HomePageState extends State<HomePage> {
 
   void _createNoteCollection() {
     setState(() {
-      notes.addEntry(
+      if(myCollectionController.text == ''){
+        notes.addEntry(
+        NoteCollection(
+          "Untitled Collection",
+          NoteFile(
+            "Untitled",
+            EditorState.blank(),
+          ),
+          true,
+        ),
+      );
+      } else {
+        notes.addEntry(
         NoteCollection(
           myCollectionController.text,
           NoteFile(
@@ -368,6 +387,7 @@ class _HomePageState extends State<HomePage> {
           true,
         ),
       );
+      }
       myCollectionController.clear();
       Navigator.pop(context, 'OK');
     });
