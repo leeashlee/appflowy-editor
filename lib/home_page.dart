@@ -303,7 +303,9 @@ class _HomePageState extends State<HomePage> {
       developer.log("Building ListTile No. $i");
       if (currI is NoteFile) {
         retVal.add(
-          TextButton(
+          SizedBox(
+            width: 320,
+            child: TextButton(
             style: TextButton.styleFrom(
               alignment: Alignment.centerLeft,
             ),
@@ -346,6 +348,7 @@ class _HomePageState extends State<HomePage> {
             child: Text(
               currI.getName(),
             ),
+          ),
           ),
         );
       } else if (currI is NoteCollection) {
