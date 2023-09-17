@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         surfaceTintColor: Colors.transparent,
-        title: Text(notes.getCurr()!.getName()),
+        title: Text("${notes.getName()} / ${notes.getCurr()!.getName()}"),
       ),
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(vertical: 70),
@@ -140,14 +140,31 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildDrawer(BuildContext context) {
     var children = [
-      // Saved Notes
       _buildSeparator(context, 'Your Saved Notes 📝'),
     ];
     developer.log("Notes length: ${notes.getLength()}");
 
-    children.addAll(buildNotes(context, notes));
+    //children.addAll(buildNotes(context, notes));
 
     children.addAll([
+      ExpansionTile(
+        tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
+        childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+        initiallyExpanded: true,
+        expandedAlignment: Alignment.centerLeft,
+        title: Row(
+        children: [
+          IconButton(
+            iconSize: 20.0,
+            onPressed: sorting,
+            icon: const Icon(Icons.sort),
+          ),
+          const SizedBox(width: 4),
+          Text(notes.getName()),
+        ],
+      ),
+        children: (buildNotes(context, notes)),
+      ),
       // Export Notes
       _buildSeparator(context, 'Export Your Note 📂'),
       ElevatedButton.icon(
@@ -265,22 +282,6 @@ class _HomePageState extends State<HomePage> {
         label: const Text('Create a new note collection'),
       ),
       const SizedBox(height: 4),
-
-      ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          alignment: Alignment.centerLeft,
-          elevation: 0.0,
-          padding: const EdgeInsets.all(8.0),
-          shadowColor: Colors.transparent,
-        ),
-        onHover: (bool input) {
-          developer.log("hover $input");
-        },
-        onPressed: sorting,
-        icon: const Icon(Icons.sort),
-        label: const Text('Apply Sorting'),
-      ),
     ]);
 
     return Drawer(
@@ -352,7 +353,7 @@ class _HomePageState extends State<HomePage> {
           ExpansionTile(
             tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
             childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-            initiallyExpanded: true,
+            initiallyExpanded: false,
             expandedAlignment: Alignment.centerLeft,
             title: Row(
               children: [
@@ -360,7 +361,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 4),
                 IconButton(
                   iconSize: 20.0,
-                  onPressed: () => addNote(currI),/*showDialog<String>(
+                  onPressed: () => showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
                       title: const Text('Create a new note?'),
@@ -387,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                  ),*/
+                  ),
                   icon: const Icon(Icons.note_add),
                 ),
               ],
@@ -427,21 +428,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void sorting () {
-          developer.log("sorter pressed");
-          applySorting((a, b) {
-            int res =
-                boolToInt(a is NoteCollection) - boolToInt(b is NoteCollection);
-            developer.log("Sorter: ${a.toString()} vs ${b.toString()} == $res");
-            return res;
-          });
-        }
+  void sorting() {
+    developer.log("sorter pressed");
+    applySorting((a, b) {
+      int res = boolToInt(a is NoteCollection) - boolToInt(b is NoteCollection);
+      developer.log("Sorter: ${a.toString()} vs ${b.toString()} == $res");
+      return res;
+    });
+  }
 
   void _createNoteCollection() {
     setState(() {
       String title = myCollectionController.text;
       if (title == "") {
-        title = "Untitled";
+        title = "My Notes";
       }
       notes.addEntry(NoteCollection(title));
       myCollectionController.clear();
