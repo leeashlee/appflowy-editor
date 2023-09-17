@@ -154,16 +154,16 @@ class _HomePageState extends State<HomePage> {
         initiallyExpanded: true,
         expandedAlignment: Alignment.centerLeft,
         title: Row(
-        children: [
-          IconButton(
-            iconSize: 20.0,
-            onPressed: sorting,
-            icon: const Icon(Icons.sort),
-          ),
-          const SizedBox(width: 4),
-          Text(notes.getName()),
-        ],
-      ),
+          children: [
+            IconButton(
+              iconSize: 20.0,
+              onPressed: sorting,
+              icon: const Icon(Icons.sort),
+            ),
+            const SizedBox(width: 4),
+            Text(notes.getName()),
+          ],
+        ),
         children: (buildNotes(context, notes)),
       ),
       const SizedBox(height: 4),
@@ -305,49 +305,49 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             width: 320,
             child: TextButton(
-            style: TextButton.styleFrom(
-              alignment: Alignment.centerLeft,
-            ),
-            onPressed: () {
-              developer.log("Button: switching to $i");
-              switchNote(i);
-            },
-            onLongPress: () => showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: const Text('Rename the note?'),
-                content: TextField(
-                  autofocus: true,
-                  controller: myNoteController,
-                  decoration: const InputDecoration(
-                    label: Text('Note Name:'),
-                    border: OutlineInputBorder(),
-                    hintText: 'Untitled',
-                    icon: Icon(Icons.book_outlined),
+              style: TextButton.styleFrom(
+                alignment: Alignment.centerLeft,
+              ),
+              onPressed: () {
+                developer.log("Button: switching to $i");
+                switchNote(i);
+              },
+              onLongPress: () => showDialog<String>(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: const Text('Rename the note?'),
+                  content: TextField(
+                    autofocus: true,
+                    controller: myNoteController,
+                    decoration: const InputDecoration(
+                      label: Text('Note Name:'),
+                      border: OutlineInputBorder(),
+                      hintText: 'Untitled',
+                      icon: Icon(Icons.book_outlined),
+                    ),
                   ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
+                    ),
+                    FilledButton(
+                      onPressed: () {
+                        setState(() {
+                          currI.setTitle(myNoteController.text);
+                          myNoteController.clear();
+                          Navigator.pop(context, 'OK');
+                        });
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
                 ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'Cancel'),
-                    child: const Text('Cancel'),
-                  ),
-                  FilledButton(
-                    onPressed: () {
-                      setState(() {
-                        currI.setTitle(myNoteController.text);
-                        myNoteController.clear();
-                        Navigator.pop(context, 'OK');
-                      });
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
+              ),
+              child: Text(
+                currI.getName(),
               ),
             ),
-            child: Text(
-              currI.getName(),
-            ),
-          ),
           ),
         );
       } else if (currI is NoteCollection) {
