@@ -148,6 +148,7 @@ class _HomePageState extends State<HomePage> {
 
     children.addAll([
       ExpansionTile(
+        textColor: Theme.of(context).colorScheme.primary,
         tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
         childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
         initiallyExpanded: true,
@@ -352,6 +353,7 @@ class _HomePageState extends State<HomePage> {
       } else if (currI is NoteCollection) {
         retVal.add(
           ExpansionTile(
+            textColor: Theme.of(context).colorScheme.primary,
             tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
             childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
             initiallyExpanded: false,
