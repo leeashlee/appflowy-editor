@@ -220,12 +220,11 @@ class _HomePageState extends State<HomePage> {
           elevation: 0.0,
           shadowColor: Colors.transparent,
         ),
-        onPressed: () => () {
-          context.read<ThemeCubit>().toggleTheme();
-        },
+        onPressed: () => context.read<ThemeCubit>().toggleTheme(),
         icon: const Icon(Icons.brightness_6),
         label: const Text('Change Theme'),
       ),
+
       const SizedBox(height: 4),
 
       //Create folder button
@@ -278,15 +277,7 @@ class _HomePageState extends State<HomePage> {
         onHover: (bool input) {
           developer.log("hover $input");
         },
-        onPressed: () {
-          developer.log("sorter pressed");
-          applySorting((a, b) {
-            int res =
-                boolToInt(a is NoteCollection) - boolToInt(b is NoteCollection);
-            developer.log("Sorter: ${a.toString()} vs ${b.toString()} == $res");
-            return res;
-          });
-        },
+        onPressed: sorting,
         icon: const Icon(Icons.sort),
         label: const Text('Apply Sorting'),
       ),
@@ -369,7 +360,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 4),
                 IconButton(
                   iconSize: 20.0,
-                  onPressed: () => showDialog<String>(
+                  onPressed: () => addNote(currI),/*showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
                       title: const Text('Create a new note?'),
@@ -396,7 +387,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                  ),
+                  ),*/
                   icon: const Icon(Icons.note_add),
                 ),
               ],
@@ -435,6 +426,16 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
+  void sorting () {
+          developer.log("sorter pressed");
+          applySorting((a, b) {
+            int res =
+                boolToInt(a is NoteCollection) - boolToInt(b is NoteCollection);
+            developer.log("Sorter: ${a.toString()} vs ${b.toString()} == $res");
+            return res;
+          });
+        }
 
   void _createNoteCollection() {
     setState(() {
@@ -497,6 +498,8 @@ class _HomePageState extends State<HomePage> {
       notes.setCurr(neww);
       developer.log("neww: $neww");
     });
+    myCollectionController.clear();
+    Navigator.pop(context, 'OK');
   }
 
 // file stuff
