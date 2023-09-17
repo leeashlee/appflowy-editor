@@ -7,6 +7,8 @@ class NoteCollection implements NoteEntry {
   String name;
   List<NoteEntry> notes = [];
   int curr = -1;
+  Comparator? comparator;
+
   NoteCollection(this.name, [NoteEntry? initial, bool withFocus = false]) {
     if (initial != null) {
       developer
@@ -28,10 +30,12 @@ class NoteCollection implements NoteEntry {
   void addEntry(NoteEntry neww) {
     developer.log("New entry: ${neww.getName()}");
     notes.add(neww);
+    onChange();
   }
 
   void removeEntry(NoteEntry old) {
     notes.remove(old);
+    onChange();
   }
 
   Iterator<NoteEntry> getIter() {
@@ -58,6 +62,21 @@ class NoteCollection implements NoteEntry {
 
   num getLength() {
     return notes.length;
+  }
+
+  void sort(Comparator comparator) {
+    notes.sort(comparator);
+  }
+
+  void keepSorted(Comparator comparator) {
+    this.comparator = comparator;
+    sort(comparator);
+  }
+
+  void onChange() {
+    if (comparator != null) {
+      sort(comparator!);
+    }
   }
 
   @override

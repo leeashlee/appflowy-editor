@@ -65,20 +65,20 @@ class ThemeCubit extends Cubit<ThemeData> {
   ThemeCubit() : super(_lightTheme);
 
   static final _lightTheme = ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 255, 164, 194),
-              brightness: Brightness.light,
-            ),
-            useMaterial3: true,
-          );
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: const Color.fromARGB(255, 255, 164, 194),
+      brightness: Brightness.light,
+    ),
+    useMaterial3: true,
+  );
 
   static final _darkTheme = ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 255, 164, 194),
-              brightness: Brightness.dark,
-            ),
-            useMaterial3: true,
-          );
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: const Color.fromARGB(255, 255, 164, 194),
+      brightness: Brightness.dark,
+    ),
+    useMaterial3: true,
+  );
 
   /// Toggles the current brightness between light and dark.
   void toggleTheme() {

@@ -12,6 +12,7 @@ import 'package:noel_notes/pages/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
 enum ExportFileType {
@@ -41,6 +42,11 @@ class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final myCollectionController = TextEditingController();
   final myNoteController = TextEditingController();
+  final SharedPreferences? prefs =
+      SharedPreferences.getInstance().onError((error, stackTrace) {
+    developer.log("$error, $stackTrace");
+    return Future.error(error!);
+  }).unwrapOrNull<SharedPreferences>();
 
   var notes = NoteCollection(
     "My Notes",
@@ -61,8 +67,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
+    developer.log("initState");
 
+    super.initState();
     _widgetBuilder = (context) => Editor(
           editorState: (notes.getCurr() as NoteFile).getBody(),
           onEditorStateChange: (editorState) {
@@ -119,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                 child: const Text('Cancel'),
               ),
               FilledButton(
-                onPressed: _addNote,
+                onPressed: addNote,
                 child: const Text('OK'),
               ),
             ],
@@ -213,11 +220,12 @@ class _HomePageState extends State<HomePage> {
           elevation: 0.0,
           shadowColor: Colors.transparent,
         ),
-        onPressed: () => context.read<ThemeCubit>().toggleTheme(),
+        onPressed: () => () {
+          context.read<ThemeCubit>().toggleTheme();
+        },
         icon: const Icon(Icons.brightness_6),
         label: const Text('Change Theme'),
       ),
-
       const SizedBox(height: 4),
 
       //Create folder button
@@ -257,6 +265,31 @@ class _HomePageState extends State<HomePage> {
         icon: const Icon(Icons.book),
         label: const Text('Create a new note collection'),
       ),
+      const SizedBox(height: 4),
+
+      ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          alignment: Alignment.centerLeft,
+          elevation: 0.0,
+          padding: const EdgeInsets.all(8.0),
+          shadowColor: Colors.transparent,
+        ),
+        onHover: (bool input) {
+          developer.log("hover $input");
+        },
+        onPressed: () {
+          developer.log("sorter pressed");
+          applySorting((a, b) {
+            int res =
+                boolToInt(a is NoteCollection) - boolToInt(b is NoteCollection);
+            developer.log("Sorter: ${a.toString()} vs ${b.toString()} == $res");
+            return res;
+          });
+        },
+        icon: const Icon(Icons.sort),
+        label: const Text('Apply Sorting'),
+      ),
     ]);
 
     return Drawer(
@@ -274,7 +307,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> buildNotes(BuildContext context, NoteCollection currNotes) {
     List<Widget> retVal = [];
     for (int i = 0; i < currNotes.getLength(); i++) {
-      NoteEntry currI = currNotes.getEntry(i);
+      NoteEntry currI = notes.getEntry(i);
       developer.log("Building ListTile No. $i");
       if (currI is NoteFile) {
         retVal.add(
@@ -284,7 +317,7 @@ class _HomePageState extends State<HomePage> {
             ),
             onPressed: () {
               developer.log("Button: switching to $i");
-              _switchFile(i);
+              switchNote(i);
             },
             onLongPress: () => showDialog<String>(
               context: context,
@@ -357,7 +390,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         FilledButton(
                           onPressed: () {
-                            _addNote(currI);
+                            addNote(currI);
                           },
                           child: const Text('OK'),
                         ),
@@ -403,7 +436,41 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _addNote([NoteCollection? into]) {
+  void _createNoteCollection() {
+    setState(() {
+      String title = myCollectionController.text;
+      if (title == "") {
+        title = "Untitled";
+      }
+      notes.addEntry(NoteCollection(title));
+      myCollectionController.clear();
+      Navigator.pop(context, 'OK');
+    });
+    myCollectionController.clear();
+    Navigator.pop(context, 'OK');
+  }
+
+  void applySorting(Comparator comparator) {
+    String testingStuff = "None yet";
+    if (prefs != null) {
+      if (prefs!.containsKey("text")) {
+        testingStuff = prefs!.getString("text").toString();
+      }
+      developer.log("Test $testingStuff");
+
+      prefs!.setString("text", "UwwwwU");
+
+      setState(() {
+        developer.log("applySorting");
+        notes.keepSorted(comparator);
+      });
+    } else {
+      developer.log("message");
+    }
+  }
+
+  // note stuff
+  void addNote([NoteCollection? into]) {
     // if into is null use the root
     into = (into != null) ? into : notes;
     setState(
@@ -422,20 +489,17 @@ class _HomePageState extends State<HomePage> {
     Navigator.pop(context, 'OK');
   }
 
-  void _createNoteCollection() {
+  void switchNote(
+    int neww,
+  ) {
     setState(() {
-      String title = myCollectionController.text;
-      if (title == "") {
-        title = "Untitled";
-      }
-      notes.addEntry(NoteCollection(title));
-      myCollectionController.clear();
-      Navigator.pop(context, 'OK');
+      //save old body
+      notes.setCurr(neww);
+      developer.log("neww: $neww");
     });
-    myCollectionController.clear();
-    Navigator.pop(context, 'OK');
   }
 
+// file stuff
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
     var result = '';
 
@@ -469,16 +533,6 @@ class _HomePageState extends State<HomePage> {
         ..setAttribute('download', 'document.${fileType.extension}')
         ..click();
     }
-  }
-
-  void _switchFile(
-    int neww,
-  ) {
-    setState(() {
-      //save old body
-      notes.setCurr(neww);
-      developer.log("neww: $neww");
-    });
   }
 
   void _importFile(ExportFileType fileType) async {
@@ -527,4 +581,8 @@ String generateRandomString(int len) {
   return String.fromCharCodes(
     List.generate(len, (index) => r.nextInt(33) + 89),
   );
+}
+
+int boolToInt(bool input) {
+  return input ? 1 : 0;
 }
