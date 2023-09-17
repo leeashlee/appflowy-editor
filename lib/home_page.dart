@@ -277,7 +277,10 @@ class _HomePageState extends State<HomePage> {
           elevation: 0.0,
           shadowColor: Colors.transparent,
         ),
-        onPressed: () => context.read<ThemeCubit>().toggleTheme(),
+        onPressed: () => {
+          context.read<ThemeCubit>().toggleTheme(),
+          Navigator.pop(context, 'OK'),
+          },
         icon: const Icon(Icons.brightness_6),
         label: const Text('Change Theme'),
       ),
