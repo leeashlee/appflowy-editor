@@ -165,6 +165,45 @@ class _HomePageState extends State<HomePage> {
       ),
         children: (buildNotes(context, notes)),
       ),
+      const SizedBox(height: 4),
+      //Create folder button
+      ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          alignment: Alignment.centerLeft,
+          elevation: 0.0,
+          shadowColor: Colors.transparent,
+        ),
+        onPressed: () => showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Create a new note collection?'),
+            content: TextField(
+              autofocus: true,
+              controller: myCollectionController,
+              decoration: const InputDecoration(
+                label: Text('Note Collection Name:'),
+                border: OutlineInputBorder(),
+                hintText: 'My Notes',
+                icon: Icon(Icons.book_outlined),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+              FilledButton(
+                onPressed: _createNoteCollection,
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        ),
+        icon: const Icon(Icons.book),
+        label: const Text('Create a new note collection'),
+      ),
+
       // Export Notes
       _buildSeparator(context, 'Export Your Note 📂'),
       ElevatedButton.icon(
@@ -241,47 +280,6 @@ class _HomePageState extends State<HomePage> {
         icon: const Icon(Icons.brightness_6),
         label: const Text('Change Theme'),
       ),
-
-      const SizedBox(height: 4),
-
-      //Create folder button
-      ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          alignment: Alignment.centerLeft,
-          elevation: 0.0,
-          shadowColor: Colors.transparent,
-        ),
-        onPressed: () => showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('Create a new note collection?'),
-            content: TextField(
-              autofocus: true,
-              controller: myCollectionController,
-              decoration: const InputDecoration(
-                label: Text('Note Collection Name:'),
-                border: OutlineInputBorder(),
-                hintText: 'My Notes',
-                icon: Icon(Icons.book_outlined),
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
-              ),
-              FilledButton(
-                onPressed: _createNoteCollection,
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        ),
-        icon: const Icon(Icons.book),
-        label: const Text('Create a new note collection'),
-      ),
-      const SizedBox(height: 4),
     ]);
 
     return Drawer(
