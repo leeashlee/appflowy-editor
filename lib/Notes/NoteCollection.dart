@@ -34,6 +34,14 @@ class NoteCollection implements NoteEntry {
   }
 
   void removeEntry(NoteEntry old) {
+    int i = notes.indexOf(old);
+    if (i == -1) {
+      return;
+    } else if (i < getCurrIndex()) {
+      setCurr(getCurrIndex() - 1);
+    } else if (i == getCurrIndex()) {
+      throw Exception("cant remove the Entry that your currently editing");
+    }
     notes.remove(old);
     onChange();
   }
@@ -45,6 +53,10 @@ class NoteCollection implements NoteEntry {
   @override
   NoteEntry? getCurr() {
     return (curr != -1) ? getEntry(curr).getCurr() : null;
+  }
+
+  int getCurrIndex() {
+    return curr;
   }
 
   void setCurr(int newCurr) {
