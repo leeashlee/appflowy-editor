@@ -164,7 +164,7 @@ class Editor extends StatelessWidget {
           Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
       textStyleConfiguration: TextStyleConfiguration(
         text: TextStyle(
-          fontFamily: GoogleFonts.notoSans().fontFamily,
+          fontFamily: GoogleFonts.miriamLibre().fontFamily,
           fontSize: 18.0,
           color: Theme.of(context).colorScheme.onPrimaryContainer,
         ),
@@ -172,7 +172,7 @@ class Editor extends StatelessWidget {
           fontWeight: FontWeight.w900,
         ),
         href: TextStyle(
-          fontFamily: GoogleFonts.notoSans().fontFamily,
+          fontFamily: GoogleFonts.miriamLibre().fontFamily,
           color: Theme.of(context).colorScheme.secondary,
           decoration: TextDecoration.combine(
             [
@@ -182,7 +182,7 @@ class Editor extends StatelessWidget {
           ),
         ),
         code: TextStyle(
-          fontFamily: GoogleFonts.notoSans().fontFamily,
+          fontFamily: GoogleFonts.miriamLibre().fontFamily,
           fontSize: 14.0,
           fontStyle: FontStyle.italic,
           color: Theme.of(context).colorScheme.secondary,
