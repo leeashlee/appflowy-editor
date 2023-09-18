@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 
-AlertDialog CustomAlertDialog(BuildContext context, void Function() onOk) {
+AlertDialog customAlertDialog(BuildContext context, void Function() onOk) {
   return AlertDialog(
     title: const Text('Create a new note?'),
-    content: TextField(
+    content: const TextField(
       autofocus: true,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         label: Text('Note Name:'),
         border: OutlineInputBorder(),
         hintText: 'Untitled',

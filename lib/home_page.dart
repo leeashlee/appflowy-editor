@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton.small(
         onPressed: () => showDialog<String>(
           context: context,
-          builder: (BuildContext context) => CustomAlertDialog(context, () {
+          builder: (BuildContext context) => customAlertDialog(context, () {
             addNote();
           }),
         ),
