@@ -348,38 +348,6 @@ class _HomePageState extends State<HomePage> {
                   "buildNote: onSwitchNote: switched to $i -> ${notes.getCurr()}",
                 );
               },
-              onLongPress: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Rename the note?'),
-                  content: TextField(
-                    autofocus: true,
-                    controller: myNoteController,
-                    decoration: const InputDecoration(
-                      label: Text('Note Name:'),
-                      border: OutlineInputBorder(),
-                      hintText: 'Untitled',
-                      icon: Icon(Unicon.edit),
-                    ),
-                  ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      child: const Text('Cancel'),
-                    ),
-                    FilledButton(
-                      onPressed: () {
-                        setState(() {
-                          currI.setTitle(myNoteController.text);
-                          myNoteController.clear();
-                          Navigator.pop(context, 'OK');
-                        });
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
-              ),
               child: Text(
                 currI.getName(),
               ),
