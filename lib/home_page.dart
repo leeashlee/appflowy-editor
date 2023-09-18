@@ -339,9 +339,10 @@ class _HomePageState extends State<HomePage> {
           Slidable(
             endActionPane: ActionPane(
               extentRatio: 1 / 2,
-              motion: const ScrollMotion(),
+              motion: const StretchMotion(),
               children: [
                 SlidableAction(
+                  borderRadius: BorderRadius.circular(4),
                   backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Unicon.edit,
@@ -378,7 +379,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                const SizedBox(width: 2,),
                 SlidableAction(
+                  borderRadius: BorderRadius.circular(4),
                   icon: Unicon.trash,
                   backgroundColor: Theme.of(context).colorScheme.error,
                   foregroundColor: Theme.of(context).colorScheme.onError,
@@ -409,9 +412,10 @@ class _HomePageState extends State<HomePage> {
             ),
             startActionPane: ActionPane(
               extentRatio: 1 / 2,
-              motion: const ScrollMotion(),
+              motion: const StretchMotion(),
               children: [
                 SlidableAction(
+                  borderRadius: BorderRadius.circular(4),
                   backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Unicon.edit,
@@ -448,7 +452,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                const SizedBox(width: 2,),
                 SlidableAction(
+                  borderRadius: BorderRadius.circular(4),
                   icon: Unicon.trash,
                   backgroundColor: Theme.of(context).colorScheme.error,
                   foregroundColor: Theme.of(context).colorScheme.onError,
