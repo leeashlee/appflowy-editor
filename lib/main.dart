@@ -3,6 +3,7 @@ import 'package:noel_notes/home_page.dart';
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   Bloc.observer = AppBlocObserver();
@@ -65,6 +66,7 @@ class ThemeCubit extends Cubit<ThemeData> {
   ThemeCubit() : super(_lightTheme);
 
   static final _lightTheme = ThemeData(
+    fontFamily: GoogleFonts.quicksand().fontFamily,
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color.fromARGB(255, 255, 164, 194),
       brightness: Brightness.light,
@@ -73,6 +75,7 @@ class ThemeCubit extends Cubit<ThemeData> {
   );
 
   static final _darkTheme = ThemeData(
+    fontFamily: GoogleFonts.notoSans().fontFamily,
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color.fromARGB(255, 255, 164, 194),
       brightness: Brightness.dark,

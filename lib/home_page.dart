@@ -101,6 +101,9 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         surfaceTintColor: Colors.transparent,
         title: Text("${notes.getName()} / ${notes.getCurr()!.getName()}"),
+        actions: const [
+          IconButton(onPressed: null, icon: Icon(Unicon.user)),
+        ],
       ),
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(vertical: 70),
@@ -118,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                 label: Text('Note Name:'),
                 border: OutlineInputBorder(),
                 hintText: 'Untitled',
-                icon: Icon(Unicon.file_blank),
+                icon: Icon(Unicon.edit),
               ),
             ),
             actions: <Widget>[
@@ -339,7 +342,7 @@ class _HomePageState extends State<HomePage> {
                       label: Text('Note Name:'),
                       border: OutlineInputBorder(),
                       hintText: 'Untitled',
-                      icon: Icon(Unicon.file_blank),
+                      icon: Icon(Unicon.edit),
                     ),
                   ),
                   actions: <Widget>[
@@ -391,7 +394,7 @@ class _HomePageState extends State<HomePage> {
                           label: Text('Note Name:'),
                           border: OutlineInputBorder(),
                           hintText: 'Untitled',
-                          icon: Icon(Unicon.file_blank),
+                          icon: Icon(Unicon.edit),
                         ),
                       ),
                       actions: <Widget>[

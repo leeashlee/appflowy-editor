@@ -1,6 +1,7 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:noel_notes/toolbar%20items/custom_alignment_toolbar_items.dart';
 import 'package:noel_notes/toolbar%20items/custom_bulleted_list_toolbar_item.dart';
@@ -163,6 +164,7 @@ class Editor extends StatelessWidget {
           Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
       textStyleConfiguration: TextStyleConfiguration(
         text: TextStyle(
+          fontFamily: GoogleFonts.notoSans().fontFamily,
           fontSize: 18.0,
           color: Theme.of(context).colorScheme.onPrimaryContainer,
         ),
@@ -170,6 +172,7 @@ class Editor extends StatelessWidget {
           fontWeight: FontWeight.w900,
         ),
         href: TextStyle(
+          fontFamily: GoogleFonts.notoSans().fontFamily,
           color: Theme.of(context).colorScheme.secondary,
           decoration: TextDecoration.combine(
             [
@@ -179,6 +182,7 @@ class Editor extends StatelessWidget {
           ),
         ),
         code: TextStyle(
+          fontFamily: GoogleFonts.notoSans().fontFamily,
           fontSize: 14.0,
           fontStyle: FontStyle.italic,
           color: Theme.of(context).colorScheme.secondary,
