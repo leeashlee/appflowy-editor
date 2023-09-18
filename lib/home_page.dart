@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                 label: Text('Note Name:'),
                 border: OutlineInputBorder(),
                 hintText: 'Untitled',
-                icon: Icon(Icons.book_outlined),
+                icon: Icon(Icons.note_add_outlined),
               ),
             ),
             actions: <Widget>[
@@ -336,7 +336,7 @@ class _HomePageState extends State<HomePage> {
                       label: Text('Note Name:'),
                       border: OutlineInputBorder(),
                       hintText: 'Untitled',
-                      icon: Icon(Icons.book_outlined),
+                      icon: Icon(Icons.note_add_outlined),
                     ),
                   ),
                   actions: <Widget>[
@@ -388,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                           label: Text('Note Name:'),
                           border: OutlineInputBorder(),
                           hintText: 'Untitled',
-                          icon: Icon(Icons.book_outlined),
+                          icon: Icon(Icons.note_add_outlined),
                         ),
                       ),
                       actions: <Widget>[
