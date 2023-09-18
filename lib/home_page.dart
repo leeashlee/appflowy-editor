@@ -136,6 +136,7 @@ class _HomePageState extends State<HomePage> {
             'Create a new note?',
             'Note Name:',
             'Untitled',
+            const Icon(Unicon.edit),
             () {
               addNote();
             },
