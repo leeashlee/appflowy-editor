@@ -349,8 +349,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                         FilledButton(
                           onPressed: () {
+                            String title = myNoteController.text;
+                            if (title == '') {
+                              title = "Untitled";
+                            }
                             setState(() {
-                              currI.setTitle(myNoteController.text);
+                              currI.setTitle(title);
                               myNoteController.clear();
                               Navigator.pop(context, 'OK');
                             });
