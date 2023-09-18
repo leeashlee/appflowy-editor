@@ -5,6 +5,7 @@ import 'dart:math';
 import 'dart:developer' as developer;
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:noel_notes/Notes/NoteCollection.dart';
 import 'package:noel_notes/Notes/NoteEntry.dart';
 import 'package:noel_notes/main.dart';
@@ -109,10 +110,10 @@ class _HomePageState extends State<HomePage> {
             suffix: IconButton(
               onPressed: () {
                 setState(() {
-                (notes.getCurr() as NoteFile).setTitle(myNoteController.text);
-              });
-              FocusScope.of(context).unfocus();
-              myNoteController.clear();
+                  (notes.getCurr() as NoteFile).setTitle(myNoteController.text);
+                });
+                FocusScope.of(context).unfocus();
+                myNoteController.clear();
               },
               icon: const Icon(Unicon.enter),
             ),
@@ -335,21 +336,163 @@ class _HomePageState extends State<HomePage> {
       developer.log("buildNotes: Building ListTile No. $i");
       if (currI is NoteFile) {
         retVal.add(
-          SizedBox(
-            width: 320,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                alignment: Alignment.centerLeft,
-              ),
-              onPressed: () {
-                developer.log("buildNotes: onSwitchNote: switching to $i");
-                switchNote(parents!, currI);
-                developer.log(
-                  "buildNote: onSwitchNote: switched to $i -> ${notes.getCurr()}",
-                );
-              },
-              child: Text(
-                currI.getName(),
+          Slidable(
+            endActionPane: ActionPane(
+              extentRatio: 1 / 2,
+              motion: const ScrollMotion(),
+              children: [
+                SlidableAction(
+                  backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  icon: Unicon.edit,
+                  onPressed: (context) => showDialog<String>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Rename the note?'),
+                      content: TextField(
+                        autofocus: true,
+                        controller: myNoteController,
+                        decoration: const InputDecoration(
+                          label: Text('Note Name:'),
+                          border: OutlineInputBorder(),
+                          hintText: 'Untitled',
+                          icon: Icon(Unicon.edit),
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        FilledButton(
+                          onPressed: () {
+                            setState(() {
+                              currI.setTitle(myNoteController.text);
+                              myNoteController.clear();
+                              Navigator.pop(context, 'OK');
+                            });
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SlidableAction(
+                  icon: Unicon.trash,
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  foregroundColor: Theme.of(context).colorScheme.onError,
+                  onPressed: (context) => showDialog<String>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Do you wanna delete the note?'),
+                      content: const Text("It won't be undone."),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        FilledButton(
+                          onPressed: () {
+                            setState(() {
+                              notes.removeEntry(currI);
+                              Navigator.pop(context, 'OK');
+                            });
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            startActionPane: ActionPane(
+              extentRatio: 1 / 2,
+              motion: const ScrollMotion(),
+              children: [
+                SlidableAction(
+                  backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  icon: Unicon.edit,
+                  onPressed: (context) => showDialog<String>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Rename the note?'),
+                      content: TextField(
+                        autofocus: true,
+                        controller: myNoteController,
+                        decoration: const InputDecoration(
+                          label: Text('Note Name:'),
+                          border: OutlineInputBorder(),
+                          hintText: 'Untitled',
+                          icon: Icon(Unicon.edit),
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        FilledButton(
+                          onPressed: () {
+                            setState(() {
+                              currI.setTitle(myNoteController.text);
+                              myNoteController.clear();
+                              Navigator.pop(context, 'OK');
+                            });
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SlidableAction(
+                  icon: Unicon.trash,
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  foregroundColor: Theme.of(context).colorScheme.onError,
+                  onPressed: (context) => showDialog<String>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Do you wanna delete the note?'),
+                      content: const Text("It won't be undone."),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        FilledButton(
+                          onPressed: () {
+                            setState(() {
+                              notes.removeEntry(currI);
+                              Navigator.pop(context, 'OK');
+                            });
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            child: SizedBox(
+              width: 320,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  alignment: Alignment.centerLeft,
+                ),
+                onPressed: () {
+                  developer.log("buildNotes: onSwitchNote: switching to $i");
+                  switchNote(parents!, currI);
+                  developer.log(
+                    "buildNote: onSwitchNote: switched to $i -> ${notes.getCurr()}",
+                  );
+                },
+                child: Text(
+                  currI.getName(),
+                ),
               ),
             ),
           ),
