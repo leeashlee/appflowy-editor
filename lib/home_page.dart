@@ -187,28 +187,15 @@ class _HomePageState extends State<HomePage> {
         ),
         onPressed: () => showDialog<String>(
           context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('Create a new note collection?'),
-            content: TextField(
-              autofocus: true,
-              controller: myCollectionController,
-              decoration: const InputDecoration(
-                label: Text('Note Collection Name:'),
-                border: OutlineInputBorder(),
-                hintText: 'My Notes',
-                icon: Icon(Unicon.book_open),
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
-              ),
-              FilledButton(
-                onPressed: _createNoteCollection,
-                child: const Text('OK'),
-              ),
-            ],
+          builder: (BuildContext context) => customAlertDialog(
+            context,
+            'Create a new note collection?',
+            'Note Collection Name:',
+            'My Notes',
+            const Icon(Unicon.book_open),
+            () {
+              _createNoteCollection();
+            },
           ),
         ),
         icon: const Icon(Unicon.books),
@@ -335,44 +322,15 @@ class _HomePageState extends State<HomePage> {
                       Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Unicon.edit,
-                  onPressed: (context) => showDialog<String>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Rename the note?'),
-                      content: TextField(
-                        autofocus: true,
-                        controller: myNoteController,
-                        decoration: const InputDecoration(
-                          label: Text('Note Name:'),
-                          border: OutlineInputBorder(),
-                          hintText: 'Untitled',
-                          icon: Icon(Unicon.edit),
-                        ),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => {
-                            Navigator.pop(context, 'Cancel'),
-                            myNoteController.clear(),
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        FilledButton(
-                          onPressed: () {
-                            String title = myNoteController.text;
-                            if (title == '') {
-                              title = "Untitled";
-                            }
-                            setState(() {
-                              currI.setTitle(title);
-                              myNoteController.clear();
-                              Navigator.pop(context, 'OK');
-                            });
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
+                  onPressed: (context) => customAlertDialog(
+                    context,
+                    'Rename the note?',
+                    'Note Name:',
+                    'Untitled',
+                    const Icon(Unicon.edit),
+                    () {
+                      _createNoteCollection();
+                    },
                   ),
                 ),
                 const SizedBox(
@@ -421,41 +379,15 @@ class _HomePageState extends State<HomePage> {
                       Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Unicon.edit,
-                  onPressed: (context) => showDialog<String>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Rename the note?'),
-                      content: TextField(
-                        autofocus: true,
-                        controller: myNoteController,
-                        decoration: const InputDecoration(
-                          label: Text('Note Name:'),
-                          border: OutlineInputBorder(),
-                          hintText: 'Untitled',
-                          icon: Icon(Unicon.edit),
-                        ),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
-                        ),
-                        FilledButton(
-                          onPressed: () {
-                            String title = myNoteController.text;
-                            if (title == '') {
-                              title = "Untitled";
-                            }
-                            setState(() {
-                              currI.setTitle(title);
-                              myNoteController.clear();
-                              Navigator.pop(context, 'OK');
-                            });
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
+                  onPressed: (context) => customAlertDialog(
+                    context,
+                    'Rename the note?',
+                    'Note Name:',
+                    'Untitled',
+                    const Icon(Unicon.edit),
+                    () {
+                      _createNoteCollection();
+                    },
                   ),
                 ),
                 const SizedBox(
@@ -533,30 +465,15 @@ class _HomePageState extends State<HomePage> {
                   iconSize: 20.0,
                   onPressed: () => showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Create a new note?'),
-                      content: TextField(
-                        autofocus: true,
-                        controller: myNoteController,
-                        decoration: const InputDecoration(
-                          label: Text('Note Name:'),
-                          border: OutlineInputBorder(),
-                          hintText: 'Untitled',
-                          icon: Icon(Unicon.edit),
-                        ),
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
-                        ),
-                        FilledButton(
-                          onPressed: () {
-                            addNote(currI);
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
+                    builder: (BuildContext context) => customAlertDialog(
+                      context,
+                      'Create a new note?',
+                      'Note Name:',
+                      'Untitled',
+                      const Icon(Unicon.edit),
+                      () {
+                        addNote();
+                      },
                     ),
                   ),
                   icon: const Icon(Unicon.file_medical),
