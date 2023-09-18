@@ -137,6 +137,7 @@ class _HomePageState extends State<HomePage> {
             'Note Name:',
             'Untitled',
             const Icon(Unicon.edit),
+            myNoteController,
             () {
               addNote();
             },
@@ -193,6 +194,7 @@ class _HomePageState extends State<HomePage> {
             'Note Collection Name:',
             'My Notes',
             const Icon(Unicon.book_open),
+            myCollectionController,
             () {
               _createNoteCollection();
             },
@@ -328,8 +330,9 @@ class _HomePageState extends State<HomePage> {
                     'Note Name:',
                     'Untitled',
                     const Icon(Unicon.edit),
+                    myNoteController,
                     () {
-                      _createNoteCollection();
+                      renameNote();
                     },
                   ),
                 ),
@@ -385,8 +388,9 @@ class _HomePageState extends State<HomePage> {
                     'Note Name:',
                     'Untitled',
                     const Icon(Unicon.edit),
+                    myNoteController,
                     () {
-                      _createNoteCollection();
+                      renameNote();
                     },
                   ),
                 ),
@@ -471,6 +475,7 @@ class _HomePageState extends State<HomePage> {
                       'Note Name:',
                       'Untitled',
                       const Icon(Unicon.edit),
+                      myNoteController,
                       () {
                         addNote();
                       },
@@ -569,6 +574,20 @@ class _HomePageState extends State<HomePage> {
         developer.log(
           "addNote: ${jsonEncode(into.toJson())}",
         );
+      },
+    );
+    myNoteController.clear();
+    Navigator.pop(context, 'OK');
+  }
+
+  void renameNote(){
+    setState(
+      () {
+        String title = myNoteController.text;
+        if (title == '') {
+          title = "Untitled";
+        }
+        (notes.getCurr() as NoteFile).setTitle(title);
       },
     );
     myNoteController.clear();
