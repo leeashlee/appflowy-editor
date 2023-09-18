@@ -131,9 +131,15 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton.small(
         onPressed: () => showDialog<String>(
           context: context,
-          builder: (BuildContext context) => customAlertDialog(context, () {
-            addNote();
-          }),
+          builder: (BuildContext context) => customAlertDialog(
+            context,
+            'Create a new note?',
+            'Note Name:',
+            'Untitled',
+            () {
+              addNote();
+            },
+          ),
         ),
         tooltip: 'Add Notes',
         child: const Icon(Unicon.file_medical),
@@ -344,9 +350,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, 'Cancel');
-                            myNoteController.clear();
+                          onPressed: () => {
+                            Navigator.pop(context, 'Cancel'),
+                            myNoteController.clear(),
                           },
                           child: const Text('Cancel'),
                         ),
@@ -383,7 +389,10 @@ class _HomePageState extends State<HomePage> {
                       content: const Text("It won't be undone."),
                       actions: <Widget>[
                         TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          onPressed: () => {
+                            Navigator.pop(context, 'Cancel'),
+                            myNoteController.clear(),
+                          },
                           child: const Text('Cancel'),
                         ),
                         FilledButton(
@@ -427,10 +436,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, 'Cancel');
-                            myNoteController.clear();
-                          },
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
                           child: const Text('Cancel'),
                         ),
                         FilledButton(
@@ -540,10 +546,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          onPressed: () => {
-                            Navigator.pop(context, 'Cancel'),
-                            myNoteController.clear(),
-                          },
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
                           child: const Text('Cancel'),
                         ),
                         FilledButton(
