@@ -469,6 +469,10 @@ class _HomePageState extends State<HomePage> {
                           child: const Text('Cancel'),
                         ),
                         FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor: Theme.of(context).colorScheme.error,
+                            foregroundColor: Theme.of(context).colorScheme.onError,
+                          ),
                           onPressed: () {
                             setState(() {
                               notes.removeEntry(currI);
