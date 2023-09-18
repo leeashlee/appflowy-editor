@@ -30,7 +30,7 @@ AlertDialog customAlertDialog(
       ),
       FilledButton(
         onPressed: () {
-          onOk();
+          onOk;
             Navigator.pop(context, 'OK');
           },
         child: const Text('OK'),
