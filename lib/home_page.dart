@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: PlatformExtension.isDesktopOrWeb,
       drawer: _buildDrawer(context),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Colors.transparent,
         title: Text("${notes.getName()} / ${notes.getCurr()!.getName()}"),
         actions: const [
