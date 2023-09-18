@@ -44,19 +44,24 @@ class NoteCollection implements NoteEntry {
 
   @override
   NoteEntry? getCurr() {
-    developer.log("$name: getCurr: $curr");
     return (curr != -1) ? getEntry(curr).getCurr() : null;
   }
 
   void setCurr(int newCurr) {
     developer.log("$name: setCurr: from $curr to $newCurr");
-    getCurr()!.looseFocus();
+    if (getCurr() is NoteCollection) {
+      getCurr()!.looseFocus();
+    }
     curr = newCurr;
+  }
+
+  void switchFocus(NoteEntry noteEntry) {
+    setCurr(notes.indexOf(noteEntry));
   }
 
   @override
   void looseFocus() {
-    developer.log("$name: getCurr: $curr");
+    developer.log("$name: looseFocus: $curr");
     setCurr(-1);
   }
 

@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
     var children = [
       _buildSeparator(context, 'Your Saved Notes 📝'),
     ];
-    developer.log("Notes length: ${notes.getLength()}");
+    developer.log("_buildDrawer: Notes length: ${notes.getLength()}");
 
     //children.addAll(buildNotes(context, notes));
 
@@ -280,7 +280,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () => {
           context.read<ThemeCubit>().toggleTheme(),
           Navigator.pop(context, 'OK'),
-          },
+        },
         icon: const Icon(Icons.brightness_6),
         label: const Text('Change Theme'),
       ),
@@ -298,11 +298,19 @@ class _HomePageState extends State<HomePage> {
     return _widgetBuilder(context);
   }
 
-  List<Widget> buildNotes(BuildContext context, NoteCollection currNotes) {
+  List<Widget> buildNotes(
+    BuildContext context,
+    NoteCollection currNotes, [
+    List<NoteCollection>? parents,
+  ]) {
+    parents = (parents != null) ? List.from(parents) : [];
+    parents.add(currNotes);
     List<Widget> retVal = [];
+    developer.log(
+        "buildNotes: ${jsonEncode(parents.map((e) => e.getName()).toList())}, $currNotes");
     for (int i = 0; i < currNotes.getLength(); i++) {
-      NoteEntry currI = notes.getEntry(i);
-      developer.log("Building ListTile No. $i");
+      NoteEntry currI = currNotes.getEntry(i);
+      developer.log("buildNotes: Building ListTile No. $i");
       if (currI is NoteFile) {
         retVal.add(
           SizedBox(
@@ -312,8 +320,10 @@ class _HomePageState extends State<HomePage> {
                 alignment: Alignment.centerLeft,
               ),
               onPressed: () {
-                developer.log("Button: switching to $i");
-                switchNote(i);
+                developer.log("buildNotes: onSwitchNote: switching to $i");
+                switchNote(parents!, currI);
+                developer.log(
+                    "buildNote: onSwitchNote: switched to $i -> ${notes.getCurr()}");
               },
               onLongPress: () => showDialog<String>(
                 context: context,
@@ -399,7 +409,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            children: buildNotes(context, currI),
+            children: buildNotes(context, currI, parents),
           ),
         );
       }
@@ -435,7 +445,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void sorting() {
-    developer.log("sorter pressed");
+    developer.log("sorting: sorter pressed");
     applySorting((a, b) {
       int res = boolToInt(a is NoteCollection) - boolToInt(b is NoteCollection);
       developer.log("Sorter: ${a.toString()} vs ${b.toString()} == $res");
@@ -450,8 +460,6 @@ class _HomePageState extends State<HomePage> {
         title = "My Notes";
       }
       notes.addEntry(NoteCollection(title));
-      myCollectionController.clear();
-      Navigator.pop(context, 'OK');
     });
     myCollectionController.clear();
     Navigator.pop(context, 'OK');
@@ -463,7 +471,7 @@ class _HomePageState extends State<HomePage> {
       if (prefs!.containsKey("text")) {
         testingStuff = prefs!.getString("text").toString();
       }
-      developer.log("Test $testingStuff");
+      developer.log("applySorting: $testingStuff");
 
       prefs!.setString("text", "UwwwwU");
 
@@ -488,7 +496,7 @@ class _HomePageState extends State<HomePage> {
         }
         into!.addEntry(NoteFile(title, EditorState.blank()));
         developer.log(
-          jsonEncode(into.toJson()),
+          "addNote: ${jsonEncode(into.toJson())}",
         );
       },
     );
@@ -496,13 +504,18 @@ class _HomePageState extends State<HomePage> {
     Navigator.pop(context, 'OK');
   }
 
-  void switchNote(
-    int neww,
-  ) {
+  void switchNote(List<NoteCollection> parents, NoteFile file) {
     setState(() {
-      //save old body
-      notes.setCurr(neww);
-      developer.log("neww: $neww");
+      developer.log(
+          "switchNote: parents: ${jsonEncode(parents.map((e) => e.getName()).toList())}");
+      developer.log("switchNote: new: ${file.getName()}");
+      // switch the focus recursively for all parents (propagate)
+      for (var i = 0; i < parents.length - 1; i++) {
+        parents[i].switchFocus(parents[i + 1]);
+      }
+
+      // the last parent is the parent of the file
+      parents[parents.length - 1].switchFocus(file);
     });
     myCollectionController.clear();
     Navigator.pop(context, 'OK');
