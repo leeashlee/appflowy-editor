@@ -3,17 +3,17 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:noel_notes/toolbar%20items/custom_alignment_toolbar_items.dart';
-import 'package:noel_notes/toolbar%20items/custom_bulleted_list_toolbar_item.dart';
-import 'package:noel_notes/toolbar%20items/custom_format_toolbar_items.dart';
-import 'package:noel_notes/toolbar%20items/custom_heading_toolbar_items.dart';
-import 'package:noel_notes/toolbar%20items/custom_highlight_color_toolbar_item.dart';
-import 'package:noel_notes/toolbar%20items/custom_link_toolbar_item.dart';
-import 'package:noel_notes/toolbar%20items/custom_numbered_list_toolbar_item.dart';
-import 'package:noel_notes/toolbar%20items/custom_paragraph_toolbar_item.dart';
-import 'package:noel_notes/toolbar%20items/custom_quote_toolbar_item.dart';
-import 'package:noel_notes/toolbar%20items/custom_text_color_toolbar_item.dart';
-import 'package:noel_notes/toolbar%20items/custom_text_direction_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_alignment_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_bulleted_list_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_format_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_heading_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_highlight_color_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_link_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_numbered_list_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_paragraph_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_quote_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_text_color_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_text_direction_toolbar_items.dart';
 
 class Editor extends StatelessWidget {
   const Editor({
@@ -77,12 +77,13 @@ class Editor extends StatelessWidget {
           customBuildHighlightColorItem(),
           ...customTextDirectionItems,
           ...customAlignmentItems,
-          ],
+        ],
         editorState: editorState,
         scrollController: scrollController,
         style: FloatingToolbarStyle(
-            backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
-            toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant,),
+          backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+          toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
         child: _buildDesktopEditor(
           context, editorState, null,
           //scrollController,

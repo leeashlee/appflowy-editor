@@ -8,8 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:noel_notes/Notes/NoteCollection.dart';
 import 'package:noel_notes/Notes/NoteEntry.dart';
+import 'package:noel_notes/component/custom_alert_dialog.dart';
 import 'package:noel_notes/main.dart';
-import 'package:noel_notes/pages/editor.dart';
+import 'package:noel_notes/component/editor/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -130,29 +131,9 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton.small(
         onPressed: () => showDialog<String>(
           context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: const Text('Create a new note?'),
-            content: TextField(
-              autofocus: true,
-              controller: myNoteController,
-              decoration: const InputDecoration(
-                label: Text('Note Name:'),
-                border: OutlineInputBorder(),
-                hintText: 'Untitled',
-                icon: Icon(Unicon.edit),
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
-              ),
-              FilledButton(
-                onPressed: addNote,
-                child: const Text('OK'),
-              ),
-            ],
-          ),
+          builder: (BuildContext context) => CustomAlertDialog(context, () {
+            addNote();
+          }),
         ),
         tooltip: 'Add Notes',
         child: const Icon(Unicon.file_medical),
@@ -343,7 +324,8 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
-                  backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Unicon.edit,
                   onPressed: (context) => showDialog<String>(
@@ -379,7 +361,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 2,),
+                const SizedBox(
+                  width: 2,
+                ),
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
                   icon: Unicon.trash,
@@ -416,7 +400,8 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
-                  backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Unicon.edit,
                   onPressed: (context) => showDialog<String>(
@@ -452,7 +437,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 2,),
+                const SizedBox(
+                  width: 2,
+                ),
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
                   icon: Unicon.trash,
@@ -470,8 +457,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                         FilledButton(
                           style: FilledButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.error,
-                            foregroundColor: Theme.of(context).colorScheme.onError,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.error,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onError,
                           ),
                           onPressed: () {
                             setState(() {
