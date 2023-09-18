@@ -1,36 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:noel_notes/component/custom_text_field.dart';
 
 AlertDialog customAlertDialog(
   BuildContext context,
   String title,
   String label,
   String hint,
-  Widget? icon,
-  TextEditingController controller,
-  void Function() onOk,
+  Widget icon,
+  void Function(String input) onOk,
 ) {
+  CustomTextField textField = CustomTextField(title, label, hint, icon);
   return AlertDialog(
     title: Text(title),
-    content: TextField(
-      autofocus: true,
-      decoration: InputDecoration(
-        label: Text(label),
-        border: const OutlineInputBorder(),
-        hintText: hint,
-        icon: icon,
-      ),
-    ),
+    content: textField,
     actions: <Widget>[
       TextButton(
         onPressed: () => {
           Navigator.pop(context, 'Cancel'),
-          controller.clear(),
         },
         child: const Text('Cancel'),
       ),
       FilledButton(
         onPressed: () {
-          onOk();
+          onOk(textField.getText());
           Navigator.pop(context, 'OK');
         },
         child: const Text('OK'),

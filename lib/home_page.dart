@@ -43,13 +43,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final myCollectionController = TextEditingController();
-  final myNoteController = TextEditingController();
   final SharedPreferences? prefs =
       SharedPreferences.getInstance().onError((error, stackTrace) {
     developer.log("$error, $stackTrace");
     return Future.error(error!);
   }).unwrapOrNull<SharedPreferences>();
+
+  final myNoteController = TextEditingController();
 
   var notes = NoteCollection(
     "My Notes",
@@ -63,8 +63,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
-    myCollectionController.dispose();
     super.dispose();
   }
 
@@ -128,6 +126,7 @@ class _HomePageState extends State<HomePage> {
         minimum: const EdgeInsets.symmetric(vertical: 70),
         child: _buildBody(context),
       ),
+      //endlessly load
       floatingActionButton: FloatingActionButton.small(
         //This endlessly loads
         onPressed: () => showDialog<String>(
@@ -138,9 +137,8 @@ class _HomePageState extends State<HomePage> {
             'Note Name:',
             'Untitled',
             const Icon(Unicon.edit),
-            myNoteController,
-            () {
-              addNote();
+            (String input) {
+              addNote(input);
             },
           ),
         ),
@@ -196,9 +194,11 @@ class _HomePageState extends State<HomePage> {
             'Note Collection Name:',
             'My Notes',
             const Icon(Unicon.book_open),
-            myCollectionController,
-            () {
-              _createNoteCollection();
+            (String input) {
+              setState(() {
+                notes.addEntry(NoteCollection(input));
+              });
+              Navigator.pop(context, 'OK');
             },
           ),
         ),
@@ -335,15 +335,13 @@ class _HomePageState extends State<HomePage> {
                       'Note Name:',
                       'Untitled',
                       const Icon(Unicon.edit),
-                      myNoteController,
-                      () {
+                      (input) {
                         setState(
                           () {
-                            String title = myNoteController.text;
-                            if (title == '') {
-                              title = "Untitled";
+                            if (input == '') {
+                              input = "Untitled";
                             }
-                            currI.setTitle(title);
+                            currI.setTitle(input);
                           },
                         );
                         myNoteController.clear();
@@ -407,18 +405,12 @@ class _HomePageState extends State<HomePage> {
                       'Note Name:',
                       'Untitled',
                       const Icon(Unicon.edit),
-                      myNoteController,
-                      () {
+                      (input) {
                         setState(
                           () {
-                            String title = myNoteController.text;
-                            if (title == '') {
-                              title = "Untitled";
-                            }
-                            currI.setTitle(title);
+                            currI.setTitle(input);
                           },
                         );
-                        myNoteController.clear();
                         Navigator.pop(context, 'OK');
                       },
                     ),
@@ -506,9 +498,8 @@ class _HomePageState extends State<HomePage> {
                       'Note Name:',
                       'Untitled',
                       const Icon(Unicon.edit),
-                      myNoteController,
-                      () {
-                        addNote();
+                      (input) {
+                        addNote(input);
                       },
                     ),
                   ),
@@ -560,18 +551,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _createNoteCollection() {
-    setState(() {
-      String title = myCollectionController.text;
-      if (title == "") {
-        title = "My Notes";
-      }
-      notes.addEntry(NoteCollection(title));
-    });
-    myCollectionController.clear();
-    Navigator.pop(context, 'OK');
-  }
-
   void applySorting(Comparator comparator) {
     String testingStuff = "None yet";
     if (prefs != null) {
@@ -592,22 +571,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   // note stuff
-  void addNote([NoteCollection? into]) {
+  void addNote(String input, [NoteCollection? into]) {
     // if into is null use the root
     into = (into != null) ? into : notes;
     setState(
       () {
-        String title = myNoteController.text;
-        if (title == '') {
-          title = "Untitled";
-        }
-        into!.addEntry(NoteFile(title, EditorState.blank()));
+        into!.addEntry(NoteFile(input, EditorState.blank()));
         developer.log(
           "addNote: ${jsonEncode(into.toJson())}",
         );
       },
     );
-    myNoteController.clear();
     Navigator.pop(context, 'OK');
   }
 
@@ -625,7 +599,6 @@ class _HomePageState extends State<HomePage> {
       // the last parent is the parent of the file
       parents[parents.length - 1].switchFocus(file);
     });
-    myCollectionController.clear();
     Navigator.pop(context, 'OK');
   }
 
