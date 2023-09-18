@@ -12,6 +12,7 @@ import 'package:noel_notes/pages/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -117,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                 label: Text('Note Name:'),
                 border: OutlineInputBorder(),
                 hintText: 'Untitled',
-                icon: Icon(Icons.note_add_outlined),
+                icon: Icon(Unicon.file_blank),
               ),
             ),
             actions: <Widget>[
@@ -133,7 +134,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         tooltip: 'Add Notes',
-        child: const Icon(Icons.note_add),
+        child: const Icon(Unicon.file_medical),
       ),
     );
   }
@@ -158,7 +159,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               iconSize: 20.0,
               onPressed: sorting,
-              icon: const Icon(Icons.sort),
+              icon: const Icon(Unicon.sort_amount_down),
             ),
             const SizedBox(width: 4),
             Text(notes.getName()),
@@ -186,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                 label: Text('Note Collection Name:'),
                 border: OutlineInputBorder(),
                 hintText: 'My Notes',
-                icon: Icon(Icons.book_outlined),
+                icon: Icon(Unicon.book_open),
               ),
             ),
             actions: <Widget>[
@@ -201,7 +202,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        icon: const Icon(Icons.book),
+        icon: const Icon(Unicon.books),
         label: const Text('Create a new note collection'),
       ),
 
@@ -220,7 +221,7 @@ class _HomePageState extends State<HomePage> {
             ExportFileType.markdown,
           );
         },
-        icon: const Icon(Icons.file_download),
+        icon: const Icon(Unicon.export_icon),
         label: const Text('Export to Markdown'),
       ),
 
@@ -239,7 +240,7 @@ class _HomePageState extends State<HomePage> {
             ExportFileType.html,
           );
         },
-        icon: const Icon(Icons.html),
+        icon: const Icon(Unicon.export_icon),
         label: const Text('Export to HTML'),
       ),
 
@@ -258,7 +259,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           _importFile(ExportFileType.markdown);
         },
-        icon: const Icon(Icons.file_upload),
+        icon: const Icon(Unicon.import_icon),
         label: const Text('Import From Markdown'),
       ),
 
@@ -281,7 +282,7 @@ class _HomePageState extends State<HomePage> {
           context.read<ThemeCubit>().toggleTheme(),
           Navigator.pop(context, 'OK'),
         },
-        icon: const Icon(Icons.brightness_6),
+        icon: const Icon(Unicon.brightness_half),
         label: const Text('Change Theme'),
       ),
     ]);
@@ -307,7 +308,8 @@ class _HomePageState extends State<HomePage> {
     parents.add(currNotes);
     List<Widget> retVal = [];
     developer.log(
-        "buildNotes: ${jsonEncode(parents.map((e) => e.getName()).toList())}, $currNotes");
+      "buildNotes: ${jsonEncode(parents.map((e) => e.getName()).toList())}, $currNotes,",
+    );
     for (int i = 0; i < currNotes.getLength(); i++) {
       NoteEntry currI = currNotes.getEntry(i);
       developer.log("buildNotes: Building ListTile No. $i");
@@ -323,7 +325,8 @@ class _HomePageState extends State<HomePage> {
                 developer.log("buildNotes: onSwitchNote: switching to $i");
                 switchNote(parents!, currI);
                 developer.log(
-                    "buildNote: onSwitchNote: switched to $i -> ${notes.getCurr()}");
+                  "buildNote: onSwitchNote: switched to $i -> ${notes.getCurr()}",
+                );
               },
               onLongPress: () => showDialog<String>(
                 context: context,
@@ -336,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                       label: Text('Note Name:'),
                       border: OutlineInputBorder(),
                       hintText: 'Untitled',
-                      icon: Icon(Icons.note_add_outlined),
+                      icon: Icon(Unicon.file_blank),
                     ),
                   ),
                   actions: <Widget>[
@@ -388,7 +391,7 @@ class _HomePageState extends State<HomePage> {
                           label: Text('Note Name:'),
                           border: OutlineInputBorder(),
                           hintText: 'Untitled',
-                          icon: Icon(Icons.note_add_outlined),
+                          icon: Icon(Unicon.file_blank),
                         ),
                       ),
                       actions: <Widget>[
@@ -405,7 +408,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  icon: const Icon(Icons.note_add),
+                  icon: const Icon(Unicon.file_medical),
                 ),
               ],
             ),
@@ -507,7 +510,8 @@ class _HomePageState extends State<HomePage> {
   void switchNote(List<NoteCollection> parents, NoteFile file) {
     setState(() {
       developer.log(
-          "switchNote: parents: ${jsonEncode(parents.map((e) => e.getName()).toList())}");
+        "switchNote: parents: ${jsonEncode(parents.map((e) => e.getName()).toList())}",
+      );
       developer.log("switchNote: new: ${file.getName()}");
       // switch the focus recursively for all parents (propagate)
       for (var i = 0; i < parents.length - 1; i++) {
