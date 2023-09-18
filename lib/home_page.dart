@@ -475,8 +475,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                           onPressed: () {
                             setState(() {
-                              notes.removeEntry(currI);
                               Navigator.pop(context, 'OK');
+                              notes.removeEntry(currI);
                             });
                           },
                           child: const Text('OK'),
