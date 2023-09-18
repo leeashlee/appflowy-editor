@@ -129,6 +129,7 @@ class _HomePageState extends State<HomePage> {
         child: _buildBody(context),
       ),
       floatingActionButton: FloatingActionButton.small(
+        //This endlessly loads
         onPressed: () => showDialog<String>(
           context: context,
           builder: (BuildContext context) => customAlertDialog(
@@ -186,6 +187,7 @@ class _HomePageState extends State<HomePage> {
           elevation: 0.0,
           shadowColor: Colors.transparent,
         ),
+        //This doesn't change the name
         onPressed: () => showDialog<String>(
           context: context,
           builder: (BuildContext context) => customAlertDialog(
@@ -324,16 +326,30 @@ class _HomePageState extends State<HomePage> {
                       Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Unicon.edit,
-                  onPressed: (context) => customAlertDialog(
-                    context,
-                    'Rename the note?',
-                    'Note Name:',
-                    'Untitled',
-                    const Icon(Unicon.edit),
-                    myNoteController,
-                    () {
-                      renameNote();
-                    },
+                  //Rename issues
+                  onPressed: (context) => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => customAlertDialog(
+                      context,
+                      'Rename the note?',
+                      'Note Name:',
+                      'Untitled',
+                      const Icon(Unicon.edit),
+                      myNoteController,
+                      () {
+                        setState(
+                          () {
+                            String title = myNoteController.text;
+                            if (title == '') {
+                              title = "Untitled";
+                            }
+                            currI.setTitle(title);
+                          },
+                        );
+                        myNoteController.clear();
+                        Navigator.pop(context, 'OK');
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -382,16 +398,30 @@ class _HomePageState extends State<HomePage> {
                       Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Unicon.edit,
-                  onPressed: (context) => customAlertDialog(
-                    context,
-                    'Rename the note?',
-                    'Note Name:',
-                    'Untitled',
-                    const Icon(Unicon.edit),
-                    myNoteController,
-                    () {
-                      renameNote();
-                    },
+                  //Rename issues
+                  onPressed: (context) => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => customAlertDialog(
+                      context,
+                      'Rename the note?',
+                      'Note Name:',
+                      'Untitled',
+                      const Icon(Unicon.edit),
+                      myNoteController,
+                      () {
+                        setState(
+                          () {
+                            String title = myNoteController.text;
+                            if (title == '') {
+                              title = "Untitled";
+                            }
+                            currI.setTitle(title);
+                          },
+                        );
+                        myNoteController.clear();
+                        Navigator.pop(context, 'OK');
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -467,6 +497,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(width: 4),
                 IconButton(
                   iconSize: 20.0,
+                  //rename issues ):
                   onPressed: () => showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => customAlertDialog(
@@ -574,20 +605,6 @@ class _HomePageState extends State<HomePage> {
         developer.log(
           "addNote: ${jsonEncode(into.toJson())}",
         );
-      },
-    );
-    myNoteController.clear();
-    Navigator.pop(context, 'OK');
-  }
-
-  void renameNote(){
-    setState(
-      () {
-        String title = myNoteController.text;
-        if (title == '') {
-          title = "Untitled";
-        }
-        (notes.getCurr() as NoteFile).setTitle(title);
       },
     );
     myNoteController.clear();
