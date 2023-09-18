@@ -344,7 +344,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          onPressed: () {
+                            Navigator.pop(context, 'Cancel');
+                            myNoteController.clear();
+                          },
                           child: const Text('Cancel'),
                         ),
                         FilledButton(
@@ -424,7 +427,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          onPressed: () {
+                            Navigator.pop(context, 'Cancel');
+                            myNoteController.clear();
+                          },
                           child: const Text('Cancel'),
                         ),
                         FilledButton(
@@ -534,7 +540,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          onPressed: () => {
+                            Navigator.pop(context, 'Cancel'),
+                            myNoteController.clear(),
+                          },
                           child: const Text('Cancel'),
                         ),
                         FilledButton(
