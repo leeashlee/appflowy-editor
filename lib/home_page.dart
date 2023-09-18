@@ -100,7 +100,24 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Colors.transparent,
-        title: Text("${notes.getName()} / ${notes.getCurr()!.getName()}"),
+        //Text("${notes.getName()} / ${notes.getCurr()!.getName()}")
+        title: TextField(
+          controller: myNoteController,
+          decoration: InputDecoration(
+            label: Text(notes.getCurr()!.getName()),
+            icon: Text(notes.getName()),
+            suffix: IconButton(
+              onPressed: () {
+                setState(() {
+                (notes.getCurr() as NoteFile).setTitle(myNoteController.text);
+              });
+              FocusScope.of(context).unfocus();
+              myNoteController.clear();
+              },
+              icon: const Icon(Unicon.enter),
+            ),
+          ),
+        ),
         actions: const [
           IconButton(onPressed: null, icon: Icon(Unicon.user)),
         ],
