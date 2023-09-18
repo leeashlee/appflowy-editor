@@ -128,7 +128,6 @@ class _HomePageState extends State<HomePage> {
       ),
       //endlessly load
       floatingActionButton: FloatingActionButton.small(
-        //This endlessly loads
         onPressed: () => showDialog<String>(
           context: context,
           builder: (BuildContext context) => customAlertDialog(
