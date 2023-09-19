@@ -1,27 +1,28 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:noel_notes/component/editor/custom_icon_item_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 
 final List<ToolbarItem> customAlignmentItems = [
   _AlignmentToolbarItem(
     id: 'align_left',
     name: 'left',
     tooltip: 'left',
-    icon: Icons.format_align_left,
+    icon: Unicon.align_left,
     align: 'left',
   ),
   _AlignmentToolbarItem(
     id: 'align_center',
     name: 'center',
     tooltip: 'center',
-    icon: Icons.format_align_center,
+    icon: Unicon.align_center,
     align: 'center',
   ),
   _AlignmentToolbarItem(
     id: 'align_right',
     name: 'right',
     tooltip: 'right',
-    icon: Icons.format_align_right,
+    icon: Unicon.align_right,
     align: 'right',
   ),
 ];

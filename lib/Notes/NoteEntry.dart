@@ -5,7 +5,7 @@ import 'package:appflowy_editor/appflowy_editor.dart';
 abstract class NoteEntry {
   String getName();
   void setName(String name);
-  NoteEntry? getCurr();
+  NoteFile getCurrNotefile();
   void looseFocus();
   Map<String, Object> toJson();
 }
@@ -40,7 +40,7 @@ class NoteFile implements NoteEntry {
   }
 
   @override
-  NoteEntry? getCurr() {
+  NoteFile getCurrNotefile() {
     return this;
   }
 

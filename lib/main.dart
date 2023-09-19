@@ -57,7 +57,7 @@ class AppView extends StatelessWidget {
           ],
           supportedLocales: const [Locale('en', 'US')],
           debugShowCheckedModeBanner: false,
-          home: const HomePage(),
+          home: HomePage(),
         );
       },
     );

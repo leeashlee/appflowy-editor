@@ -1,13 +1,15 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'dart:developer' as developer;
+import 'dart:developer' as dev;
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:noel_notes/Notes/NoteCollection.dart';
 import 'package:noel_notes/Notes/NoteEntry.dart';
 import 'package:noel_notes/component/custom_alert_dialog.dart';
@@ -40,7 +42,15 @@ extension on ExportFileType {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final Future<SharedPreferences> prefs =
+      SharedPreferences.getInstance().onError((error, stackTrace) {
+    print("$error, $stackTrace");
+    dev.log("$error, $stackTrace");
+    return Future.error(error!);
+  }).timeout(const Duration(seconds: 10));
+  final LocalStorage storage = LocalStorage("storage");
+
+  HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -48,12 +58,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final SharedPreferences? prefs =
-      SharedPreferences.getInstance().onError((error, stackTrace) {
-    developer.log("$error, $stackTrace");
-    return Future.error(error!);
-  }).unwrapOrNull<SharedPreferences>();
-
+  Timer? syncTimer;
   final myNoteController = TextEditingController();
 
   var notes = NoteCollection(
@@ -68,18 +73,27 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    syncTimer?.cancel();
+    doSync();
     super.dispose();
   }
 
   @override
   void initState() {
-    developer.log("initState");
-
+    dev.log("initState");
     super.initState();
+
+    syncTimer = Timer.periodic(
+      const Duration(seconds: 5),
+      (timer) {
+        doSync();
+      },
+    );
+
     _widgetBuilder = (context) => Editor(
-          editorState: (notes.getCurr() as NoteFile).getBody(),
+          editorState: notes.getCurrNotefile().getBody(),
           onEditorStateChange: (editorState) {
-            (notes.getCurr() as NoteFile).setBody(editorState);
+            notes.getCurrNotefile().setBody(editorState);
           },
         );
   }
@@ -89,9 +103,9 @@ class _HomePageState extends State<HomePage> {
     super.reassemble();
 
     _widgetBuilder = (context) => Editor(
-          editorState: (notes.getCurr() as NoteFile).getBody(),
+          editorState: notes.getCurrNotefile().getBody(),
           onEditorStateChange: (editorState) {
-            (notes.getCurr() as NoteFile).setBody(editorState);
+            notes.getCurrNotefile().setBody(editorState);
           },
         );
   }
@@ -103,11 +117,11 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: PlatformExtension.isDesktopOrWeb,
       drawer: _buildDrawer(context),
       appBar: CustomAppBar(
-        notes.getCurr()!.getName(),
+        notes.getCurrNotefile().getName(),
         notes.getName(),
         (input) {
           setState(() {
-            notes.getCurr()!.setName(input);
+            notes.getCurrNotefile().setName(input);
           });
         },
       ),
@@ -141,7 +155,7 @@ class _HomePageState extends State<HomePage> {
     var children = [
       _buildSeparator(context, 'Your Saved Notes 📝'),
     ];
-    developer.log("_buildDrawer: Notes length: ${notes.getLength()}");
+    dev.log("_buildDrawer: Notes length: ${notes.getLength()}");
 
     //children.addAll(buildNotes(context, notes));
 
@@ -195,7 +209,7 @@ class _HomePageState extends State<HomePage> {
         ),
         onPressed: () {
           _exportFile(
-            (notes.getCurr() as NoteFile).getBody(),
+            notes.getCurrNotefile().getBody(),
             ExportFileType.markdown,
           );
         },
@@ -214,7 +228,7 @@ class _HomePageState extends State<HomePage> {
         ),
         onPressed: () {
           _exportFile(
-            (notes.getCurr() as NoteFile).getBody(),
+            notes.getCurrNotefile().getBody(),
             ExportFileType.html,
           );
         },
@@ -287,12 +301,12 @@ class _HomePageState extends State<HomePage> {
     parents = (parents != null) ? List.from(parents) : [];
     parents.add(currNotes);
     List<Widget> retVal = [];
-    developer.log(
+    dev.log(
       "buildNotes: ${jsonEncode(parents.map((e) => e.getName()).toList())}, $currNotes,",
     );
     for (int i = 0; i < currNotes.getLength(); i++) {
       NoteEntry currI = currNotes.getEntry(i);
-      developer.log("buildNotes: Building ListTile No. $i");
+      dev.log("buildNotes: Building ListTile No. $i");
       if (currI is NoteFile) {
         retVal.add(
           Slidable(
@@ -441,10 +455,10 @@ class _HomePageState extends State<HomePage> {
                   alignment: Alignment.centerLeft,
                 ),
                 onPressed: () {
-                  developer.log("buildNotes: onSwitchNote: switching to $i");
+                  dev.log("buildNotes: onSwitchNote: switching to $i");
                   switchNote(parents!, currI);
-                  developer.log(
-                    "buildNote: onSwitchNote: switched to $i -> ${notes.getCurr()}",
+                  dev.log(
+                    "buildNote: onSwitchNote: switched to $i -> ${notes.getCurrNotefile()}",
                   );
                 },
                 child: Text(
@@ -460,7 +474,7 @@ class _HomePageState extends State<HomePage> {
             textColor: Theme.of(context).colorScheme.primary,
             tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
             childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-            initiallyExpanded: false,
+            initiallyExpanded: currI.isInFocus(),
             expandedAlignment: Alignment.centerLeft,
             title: Row(
               children: [
@@ -511,9 +525,9 @@ class _HomePageState extends State<HomePage> {
     setState(
       () {
         _widgetBuilder = (context) => Editor(
-              editorState: (notes.getCurr() as NoteFile).getBody(),
+              editorState: notes.getCurrNotefile().getBody(),
               onEditorStateChange: (editorState) {
-                (notes.getCurr() as NoteFile).setBody(editorState);
+                notes.getCurrNotefile().setBody(editorState);
               },
             );
       },
@@ -521,7 +535,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void sorting() {
-    developer.log("sorting: sorter pressed");
+    dev.log("sorting: sorter pressed");
     notes.keepSorted((a, b) {
       int res = boolToInt(b is NoteCollection) - boolToInt(a is NoteCollection);
       print("Sorter: ${a.toString()} vs ${b.toString()} == $res");
@@ -536,7 +550,7 @@ class _HomePageState extends State<HomePage> {
     setState(
       () {
         into!.addEntry(NoteFile(input, EditorState.blank()));
-        developer.log(
+        dev.log(
           "addNote: ${jsonEncode(into.toJson())}",
         );
       },
@@ -545,10 +559,10 @@ class _HomePageState extends State<HomePage> {
 
   void switchNote(List<NoteCollection> parents, NoteFile file) {
     setState(() {
-      developer.log(
+      dev.log(
         "switchNote: parents: ${jsonEncode(parents.map((e) => e.getName()).toList())}",
       );
-      developer.log("switchNote: new: ${file.getName()}");
+      dev.log("switchNote: new: ${file.getName()}");
       // switch the focus recursively for all parents (propagate)
       for (var i = 0; i < parents.length - 1; i++) {
         parents[i].switchFocus(parents[i + 1]);
@@ -634,6 +648,12 @@ class _HomePageState extends State<HomePage> {
     if (mounted) {
       _loadEditor(context);
     }
+  }
+
+  void doSync() {
+    dev.log("doSync: starting...");
+    widget.storage.setItem("notes", notes);
+    dev.log("doSync: ${widget.storage.getItem("notes")}");
   }
 }
 

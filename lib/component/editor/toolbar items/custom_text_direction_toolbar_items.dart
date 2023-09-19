@@ -1,6 +1,7 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:noel_notes/component/editor/custom_icon_item_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 
 final List<ToolbarItem> customTextDirectionItems = [
   _TextDirectionToolbarItem(
@@ -13,13 +14,13 @@ final List<ToolbarItem> customTextDirectionItems = [
     id: 'text_direction_ltr',
     name: blockComponentTextDirectionLTR,
     tooltip: AppFlowyEditorLocalizations.current.ltr,
-    icon: Icons.format_textdirection_l_to_r,
+    icon: Unicon.left_to_right_text_direction,
   ),
   _TextDirectionToolbarItem(
     id: 'text_direction_rtl',
     name: blockComponentTextDirectionRTL,
     tooltip: AppFlowyEditorLocalizations.current.rtl,
-    icon: Icons.format_textdirection_r_to_l,
+    icon: Unicon.right_to_left_text_direction,
   ),
 ];
 
