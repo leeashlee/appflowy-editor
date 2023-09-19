@@ -11,6 +11,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:noel_notes/Notes/NoteCollection.dart';
 import 'package:noel_notes/Notes/NoteEntry.dart';
 import 'package:noel_notes/component/custom_alert_dialog.dart';
+import 'package:noel_notes/component/custom_app_bar.dart';
 import 'package:noel_notes/main.dart';
 import 'package:noel_notes/component/editor/editor.dart';
 import 'package:file_picker/file_picker.dart';
@@ -102,30 +103,12 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: PlatformExtension.isDesktopOrWeb,
       drawer: _buildDrawer(context),
       //TODO Custom app bar like Scorchy promised
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        surfaceTintColor: Colors.transparent,
-        //Text("${notes.getName()} / ${notes.getCurr()!.getName()}")
-        title: TextField(
-          controller: myNoteController,
-          decoration: InputDecoration(
-            label: Text(notes.getCurr()!.getName()),
-            icon: Text(notes.getName()),
-            suffix: IconButton(
-              onPressed: () {
-                setState(() {
-                  (notes.getCurr() as NoteFile).setName(myNoteController.text);
-                });
-                FocusScope.of(context).unfocus();
-                myNoteController.clear();
-              },
-              icon: const Icon(Unicon.enter),
-            ),
-          ),
-        ),
-        actions: const [
-          IconButton(onPressed: null, icon: Icon(Unicon.user)),
-        ],
+      appBar: CustomAppBar(
+        notes.getCurr()!.getName(),
+        notes.getName(),
+        (input) {
+          notes.getCurr()!.setName(input);
+        },
       ),
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(vertical: 70),
