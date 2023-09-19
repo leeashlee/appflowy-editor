@@ -7,7 +7,6 @@ class CustomAppDrawer extends Drawer {
 
   CustomAppDrawer(this.label, this.icon, this.onEnter, {super.key});
 
-  @override
   State<CustomAppDrawer> createState() => _CustomAppDrawerState();
 }
 

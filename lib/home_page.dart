@@ -277,7 +277,6 @@ class _HomePageState extends State<HomePage> {
     return _widgetBuilder(context);
   }
 
-  //TODO Putting buildNotes in it's own file
   //TODO Learning how to make it a Reorderable List View
   List<Widget> buildNotes(
     BuildContext context,
@@ -525,20 +524,19 @@ class _HomePageState extends State<HomePage> {
   //FIXME: put sorting and applySorting together
   void sorting() {
     developer.log("sorting: sorter pressed");
-    applySorting((a, b) {
+    notes.keepSorted((a, b) {
       int res = boolToInt(b is NoteCollection) - boolToInt(a is NoteCollection);
       print("Sorter: ${a.toString()} vs ${b.toString()} == $res");
       return res;
     });
   }
 
-  //FIXME: not needed
-  void applySorting(Comparator comparator) {
+  /*void applySorting(Comparator comparator) {
     setState(() {
       developer.log("applySorting");
       notes.keepSorted(comparator);
     });
-  }
+  }*/
 
   // note stuff
   void addNote(String input, [NoteCollection? into]) {
