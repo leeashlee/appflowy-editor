@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noel_notes/home_page.dart';
 import 'package:appflowy_editor/appflowy_editor.dart';

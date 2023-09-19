@@ -20,6 +20,8 @@ import 'package:noel_notes/unicon_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
+//TODO Adding an account with username and password that keeps your files on the server
+//TODO Encryption
 enum ExportFileType {
   markdown,
   html,
@@ -99,6 +101,7 @@ class _HomePageState extends State<HomePage> {
       key: _scaffoldKey,
       extendBodyBehindAppBar: PlatformExtension.isDesktopOrWeb,
       drawer: _buildDrawer(context),
+      //TODO Custom app bar like Scorchy promised
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         surfaceTintColor: Colors.transparent,
@@ -149,6 +152,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  //TODO Putting _buildDrawer in it's own file
   Widget _buildDrawer(BuildContext context) {
     var children = [
       _buildSeparator(context, 'Your Saved Notes 📝'),
@@ -289,6 +293,8 @@ class _HomePageState extends State<HomePage> {
     return _widgetBuilder(context);
   }
 
+  //TODO Putting buildNotes in it's own file
+  //TODO Learning how to make it a Reorderable List View
   List<Widget> buildNotes(
     BuildContext context,
     NoteCollection currNotes, [
@@ -445,6 +451,7 @@ class _HomePageState extends State<HomePage> {
             ),
             child: SizedBox(
               width: 320,
+              //TODO Highlighting a note you're currently editing
               child: TextButton(
                 style: TextButton.styleFrom(
                   alignment: Alignment.centerLeft,

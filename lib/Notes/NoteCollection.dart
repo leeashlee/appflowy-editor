@@ -37,6 +37,7 @@ class NoteCollection implements NoteEntry {
     int i = notes.indexOf(old);
     if (i == -1) {
       return;
+    //TODO Fixing the logic here so you could remove the entry you're currently on.
     } else if (i == _getCurrIndex()) {
       throw Exception("cant remove the Entry that your currently editing");
     }
