@@ -284,20 +284,6 @@ class _HomePageState extends State<HomePage> {
         icon: const Icon(Unicon.brightness_half),
         label: const Text('Change Theme'),
       ),
-
-      ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          alignment: Alignment.centerLeft,
-          elevation: 0.0,
-          shadowColor: Colors.transparent,
-        ),
-        onPressed: () {
-          sorting();
-        },
-        icon: const Icon(Unicon.sort_amount_down),
-        label: const Text('Sorting'),
-      ),
     ]);
 
     return Drawer(
