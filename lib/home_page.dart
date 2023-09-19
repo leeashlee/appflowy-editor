@@ -164,17 +164,7 @@ class _HomePageState extends State<HomePage> {
         childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
         initiallyExpanded: true,
         expandedAlignment: Alignment.centerLeft,
-        title: Row(
-          children: [
-            IconButton(
-              iconSize: 20.0,
-              onPressed: sorting,
-              icon: const Icon(Unicon.sort_amount_down),
-            ),
-            const SizedBox(width: 4),
-            Text(notes.getName()),
-          ],
-        ),
+        title: Text(notes.getName()),
         children: (buildNotes(context, notes)),
       ),
       const SizedBox(height: 4),
@@ -367,9 +357,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                         FilledButton(
                           style: FilledButton.styleFrom(
-                            foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
-                            backgroundColor: Theme.of(context).colorScheme.onError
-                          ),
+                              foregroundColor: Theme.of(context)
+                                  .colorScheme
+                                  .onErrorContainer,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.onError),
                           onPressed: () {
                             setState(() {
                               notes.removeEntry(currI);
