@@ -106,7 +106,9 @@ class _HomePageState extends State<HomePage> {
         notes.getCurr()!.getName(),
         notes.getName(),
         (input) {
-          notes.getCurr()!.setName(input);
+          setState(() {
+            notes.getCurr()!.setName(input);
+          });
         },
       ),
       body: SafeArea(
