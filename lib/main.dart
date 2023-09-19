@@ -47,6 +47,7 @@ class AppView extends StatelessWidget {
     return BlocBuilder<ThemeCubit, ThemeData>(
       builder: (_, theme) {
         return MaterialApp(
+          title: "My text editor",
           theme: theme,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
