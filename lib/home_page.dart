@@ -102,7 +102,6 @@ class _HomePageState extends State<HomePage> {
       key: _scaffoldKey,
       extendBodyBehindAppBar: PlatformExtension.isDesktopOrWeb,
       drawer: _buildDrawer(context),
-      //TODO Custom app bar like Scorchy promised
       appBar: CustomAppBar(
         notes.getCurr()!.getName(),
         notes.getName(),
