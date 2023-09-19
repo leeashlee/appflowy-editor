@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  //TODO Putting _buildDrawer in it's own file
+  //FIXME: can be put in another file
   Widget _buildDrawer(BuildContext context) {
     var children = [
       _buildSeparator(context, 'Your Saved Notes 📝'),
@@ -493,6 +493,7 @@ class _HomePageState extends State<HomePage> {
     return retVal;
   }
 
+  //FIXME: can be put in another file
   Widget _buildSeparator(BuildContext context, String text) {
     return Padding(
       padding: const EdgeInsets.only(left: 16, top: 16, bottom: 4),
@@ -510,6 +511,7 @@ class _HomePageState extends State<HomePage> {
   void _loadEditor(BuildContext context) {
     setState(
       () {
+        // FIXME: make a function for the Editor
         _widgetBuilder = (context) => Editor(
               editorState: (notes.getCurr() as NoteFile).getBody(),
               onEditorStateChange: (editorState) {
@@ -520,6 +522,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  //FIXME: put sorting and applySorting together
   void sorting() {
     developer.log("sorting: sorter pressed");
     applySorting((a, b) {
@@ -529,6 +532,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  //FIXME: not needed
   void applySorting(Comparator comparator) {
     setState(() {
       developer.log("applySorting");
@@ -550,6 +554,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  //FIXME: can be put in another file
   void switchNote(List<NoteCollection> parents, NoteFile file) {
     setState(() {
       developer.log(
@@ -568,6 +573,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 // file stuff
+  //FIXME: can be put in another file
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
     var result = '';
 
@@ -603,6 +609,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  //FIXME: can be put in another file
   void _importFile(ExportFileType fileType) async {
     final result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
@@ -644,6 +651,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+//FIXME: can be put in another file
 String generateRandomString(int len) {
   var r = Random();
   return String.fromCharCodes(
@@ -651,6 +659,7 @@ String generateRandomString(int len) {
   );
 }
 
+//FIXME: can be put in another file
 int boolToInt(bool input) {
   return input ? 1 : 0;
 }
