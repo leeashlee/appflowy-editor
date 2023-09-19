@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
             'Create a new note?',
             'Note Name:',
             'Untitled',
-            const Icon(Unicon.edit),
+            const Icon(Unicon.edit_alt),
             (String input) {
               addNote(input);
             },
@@ -197,6 +197,7 @@ class _HomePageState extends State<HomePage> {
             (String input) {
               setState(() {
                 notes.addEntry(NoteCollection(input));
+                sorting();
               });
             },
           ),
@@ -324,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor:
                       Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
-                  icon: Unicon.edit,
+                  icon: Unicon.edit_alt,
                   onPressed: (context) => showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => customAlertDialog(
@@ -332,7 +333,7 @@ class _HomePageState extends State<HomePage> {
                       'Rename the note?',
                       'Note Name:',
                       'Untitled',
-                      const Icon(Unicon.edit),
+                      const Icon(Unicon.edit_alt),
                       (input) {
                         setState(
                           () {
@@ -355,7 +356,7 @@ class _HomePageState extends State<HomePage> {
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text('Do you wanna delete the note?'),
-                      content: const Text("It won't be undone."),
+                      content: const Text("The note can't be restored later."),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () => {
@@ -365,6 +366,10 @@ class _HomePageState extends State<HomePage> {
                           child: const Text('Cancel'),
                         ),
                         FilledButton(
+                          style: FilledButton.styleFrom(
+                            foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
+                            backgroundColor: Theme.of(context).colorScheme.onError
+                          ),
                           onPressed: () {
                             setState(() {
                               notes.removeEntry(currI);
@@ -388,7 +393,7 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor:
                       Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
-                  icon: Unicon.edit,
+                  icon: Unicon.edit_alt,
                   onPressed: (context) => showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => customAlertDialog(
@@ -396,7 +401,7 @@ class _HomePageState extends State<HomePage> {
                       'Rename the note?',
                       'Note Name:',
                       'Untitled',
-                      const Icon(Unicon.edit),
+                      const Icon(Unicon.edit_alt),
                       (input) {
                         setState(
                           () {
@@ -487,7 +492,7 @@ class _HomePageState extends State<HomePage> {
                       'Create a new note?',
                       'Note Name:',
                       'Untitled',
-                      const Icon(Unicon.edit),
+                      const Icon(Unicon.edit_alt),
                       (input) {
                         addNote(input, currI);
                       },
