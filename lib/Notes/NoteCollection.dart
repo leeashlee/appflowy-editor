@@ -6,7 +6,7 @@ import 'dart:developer' as developer;
 class NoteCollection implements NoteEntry {
   String name;
   List<NoteEntry> notes = [];
-  int curr = -1;
+  NoteEntry? curr;
   Comparator? comparator;
 
   NoteCollection(this.name, [NoteEntry? initial, bool withFocus = false]) {
@@ -14,7 +14,7 @@ class NoteCollection implements NoteEntry {
       developer
           .log("starting NoteCollection with $initial and focus = $withFocus");
       notes.add(initial);
-      curr = (withFocus ? 1 : 0) - 1;
+      curr = (withFocus ? initial : null);
     }
   }
 
@@ -30,69 +30,73 @@ class NoteCollection implements NoteEntry {
   void addEntry(NoteEntry neww) {
     developer.log("New entry: ${neww.getName()}");
     notes.add(neww);
-    onChange();
+    _onWrite();
   }
 
   void removeEntry(NoteEntry old) {
     int i = notes.indexOf(old);
     if (i == -1) {
       return;
-    } else if (i < getCurrIndex()) {
-      setCurr(getCurrIndex() - 1);
-    } else if (i == getCurrIndex()) {
+    } else if (i == _getCurrIndex()) {
       throw Exception("cant remove the Entry that your currently editing");
     }
     notes.remove(old);
-    onChange();
-  }
-
-  Iterator<NoteEntry> getIter() {
-    return notes.iterator;
+    _onWrite();
   }
 
   @override
   NoteEntry? getCurr() {
-    return (curr != -1) ? getEntry(curr).getCurr() : null;
+    return (curr != null) ? curr!.getCurr() : null; // be recursive
   }
 
-  int getCurrIndex() {
-    return curr;
+  @override
+  void setName(String name) {
+    this.name = name;
   }
 
-  void setCurr(int newCurr) {
+  int _getCurrIndex() {
+    if (curr == null) {
+      return -1;
+    } else {
+      return notes.indexOf(curr!);
+    }
+  }
+
+  void setCurr(NoteEntry? newCurr) {
     developer.log("$name: setCurr: from $curr to $newCurr");
     if (getCurr() is NoteCollection) {
       getCurr()!.looseFocus();
     }
     curr = newCurr;
+    _onWrite();
   }
 
   void switchFocus(NoteEntry noteEntry) {
-    setCurr(notes.indexOf(noteEntry));
+    setCurr(noteEntry);
   }
 
   @override
   void looseFocus() {
     developer.log("$name: looseFocus: $curr");
-    setCurr(-1);
+    setCurr(null);
   }
 
-  num getLength() {
+  int getLength() {
     return notes.length;
   }
 
-  void sort(Comparator comparator) {
+  void sortOnce(Comparator comparator) {
     notes.sort(comparator);
   }
 
   void keepSorted(Comparator comparator) {
     this.comparator = comparator;
-    sort(comparator);
+    sortOnce(comparator);
   }
 
-  void onChange() {
+  void _onWrite() {
     if (comparator != null) {
-      sort(comparator!);
+      sortOnce(comparator!);
     }
   }
 

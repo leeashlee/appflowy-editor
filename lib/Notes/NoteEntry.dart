@@ -4,33 +4,31 @@ import 'package:appflowy_editor/appflowy_editor.dart';
 
 abstract class NoteEntry {
   String getName();
+  void setName(String name);
   NoteEntry? getCurr();
   void looseFocus();
   Map<String, Object> toJson();
 }
 
 class NoteFile implements NoteEntry {
-  String title;
+  String name;
   EditorState body;
 
-  NoteFile(this.title, this.body);
+  NoteFile(this.name, this.body);
 
   @override
   Map<String, Object> toJson() {
-    return {"title": title, "body": body.document.toJson()};
+    return {"title": name, "body": body.document.toJson()};
   }
 
   @override
   String getName() {
-    return title;
+    return name;
   }
 
-  String getTitle() {
-    return title;
-  }
-
-  void setTitle(String title) {
-    this.title = title;
+  @override
+  void setName(String name) {
+    this.name = name;
   }
 
   EditorState getBody() {

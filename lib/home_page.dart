@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
             suffix: IconButton(
               onPressed: () {
                 setState(() {
-                  (notes.getCurr() as NoteFile).setTitle(myNoteController.text);
+                  (notes.getCurr() as NoteFile).setName(myNoteController.text);
                 });
                 FocusScope.of(context).unfocus();
                 myNoteController.clear();
@@ -196,7 +196,6 @@ class _HomePageState extends State<HomePage> {
               setState(() {
                 notes.addEntry(NoteCollection(input));
               });
-              Navigator.pop(context, 'OK');
             },
           ),
         ),
@@ -283,6 +282,20 @@ class _HomePageState extends State<HomePage> {
         icon: const Icon(Unicon.brightness_half),
         label: const Text('Change Theme'),
       ),
+
+      ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          alignment: Alignment.centerLeft,
+          elevation: 0.0,
+          shadowColor: Colors.transparent,
+        ),
+        onPressed: () {
+          sorting();
+        },
+        icon: const Icon(Unicon.sort_amount_down),
+        label: const Text('Sorting'),
+      ),
     ]);
 
     return Drawer(
@@ -335,14 +348,9 @@ class _HomePageState extends State<HomePage> {
                       (input) {
                         setState(
                           () {
-                            if (input == '') {
-                              input = "Untitled";
-                            }
-                            currI.setTitle(input);
+                            currI.setName(input);
                           },
                         );
-                        myNoteController.clear();
-                        Navigator.pop(context, 'OK');
                       },
                     ),
                   ),
@@ -404,10 +412,9 @@ class _HomePageState extends State<HomePage> {
                       (input) {
                         setState(
                           () {
-                            currI.setTitle(input);
+                            currI.setName(input);
                           },
                         );
-                        Navigator.pop(context, 'OK');
                       },
                     ),
                   ),
@@ -494,7 +501,7 @@ class _HomePageState extends State<HomePage> {
                       'Untitled',
                       const Icon(Unicon.edit),
                       (input) {
-                        addNote(input);
+                        addNote(input, currI);
                       },
                     ),
                   ),
@@ -540,29 +547,17 @@ class _HomePageState extends State<HomePage> {
   void sorting() {
     developer.log("sorting: sorter pressed");
     applySorting((a, b) {
-      int res = boolToInt(a is NoteCollection) - boolToInt(b is NoteCollection);
-      developer.log("Sorter: ${a.toString()} vs ${b.toString()} == $res");
+      int res = boolToInt(b is NoteCollection) - boolToInt(a is NoteCollection);
+      print("Sorter: ${a.toString()} vs ${b.toString()} == $res");
       return res;
     });
   }
 
   void applySorting(Comparator comparator) {
-    String testingStuff = "None yet";
-    if (prefs != null) {
-      if (prefs!.containsKey("text")) {
-        testingStuff = prefs!.getString("text").toString();
-      }
-      developer.log("applySorting: $testingStuff");
-
-      prefs!.setString("text", "UwwwwU");
-
-      setState(() {
-        developer.log("applySorting");
-        notes.keepSorted(comparator);
-      });
-    } else {
-      developer.log("message");
-    }
+    setState(() {
+      developer.log("applySorting");
+      notes.keepSorted(comparator);
+    });
   }
 
   // note stuff
