@@ -363,9 +363,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                         FilledButton(
                           style: FilledButton.styleFrom(
-                            foregroundColor:
-                                Theme.of(context).colorScheme.onErrorContainer,
                             backgroundColor:
+                                Theme.of(context).colorScheme.error,
+                            foregroundColor:
                                 Theme.of(context).colorScheme.onError,
                           ),
                           onPressed: () {
