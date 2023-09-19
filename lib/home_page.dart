@@ -522,17 +522,10 @@ class _HomePageState extends State<HomePage> {
 
   void sorting() {
     developer.log("sorting: sorter pressed");
-    applySorting((a, b) {
+    notes.keepSorted((a, b) {
       int res = boolToInt(b is NoteCollection) - boolToInt(a is NoteCollection);
       print("Sorter: ${a.toString()} vs ${b.toString()} == $res");
       return res;
-    });
-  }
-
-  void applySorting(Comparator comparator) {
-    setState(() {
-      developer.log("applySorting");
-      notes.keepSorted(comparator);
     });
   }
 
