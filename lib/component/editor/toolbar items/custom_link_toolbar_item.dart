@@ -3,6 +3,7 @@ import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:appflowy_editor/src/editor/toolbar/desktop/items/link/link_menu.dart';
 import 'package:noel_notes/component/editor/custom_icon_item_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 
 final customLinkItem = ToolbarItem(
   id: 'editor.link',
@@ -18,6 +19,13 @@ final customLinkItem = ToolbarItem(
     });
 
     return CustomSVGIconItemWidget(
+      iconBuilder: (_) => Icon(
+                Unicon.link,
+                size: 16,
+                color: isHref
+                    ? highlightColor
+                    : Theme.of(context).colorScheme.primary,
+              ),
       iconName: 'toolbar/link',
       isHighlight: isHref,
       highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
