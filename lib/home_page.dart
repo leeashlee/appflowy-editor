@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 //TODO Adding an account with username and password that keeps your files on the server
 //TODO Encryption
-
+//test
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
