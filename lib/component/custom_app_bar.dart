@@ -28,13 +28,14 @@ class _CustomAppBarState extends State<CustomAppBar> {
           icon: Text(widget.icon),
           suffix: IconButton(
             onPressed: () {
-              //TODO fix this bug
-              FocusScope.of(context).unfocus();
-              String input = widget.controller.text;
-              if (input != "") {
-                widget.onEnter(input);
-              }
-              widget.controller.clear();
+              setState(() {
+                FocusScope.of(context).unfocus();
+                String input = widget.controller.text;
+                if (input != "") {
+                  widget.onEnter(input);
+                }
+                widget.controller.clear();
+              });
             },
             icon: const Icon(Unicon.enter),
           ),
