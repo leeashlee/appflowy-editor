@@ -577,7 +577,6 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
-    Navigator.pop(context, 'OK');
   }
 
   void switchNote(List<NoteCollection> parents, NoteFile file) {
