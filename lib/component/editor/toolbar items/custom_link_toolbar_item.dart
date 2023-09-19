@@ -1,7 +1,7 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 // ignore: implementation_imports
 import 'package:appflowy_editor/src/editor/toolbar/desktop/items/link/link_menu.dart';
-import 'package:noel_notes/custom_icon_item_widget.dart';
+import 'package:noel_notes/component/editor/custom_icon_item_widget.dart';
 import 'package:flutter/material.dart';
 
 final customLinkItem = ToolbarItem(

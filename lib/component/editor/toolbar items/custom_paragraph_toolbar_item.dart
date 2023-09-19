@@ -1,5 +1,5 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
-import 'package:noel_notes/custom_icon_item_widget.dart';
+import 'package:noel_notes/component/editor/custom_icon_item_widget.dart';
 import 'package:flutter/material.dart';
 
 final ToolbarItem customParagraphItem = ToolbarItem(
