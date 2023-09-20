@@ -458,7 +458,7 @@ class _HomePageState extends State<HomePage> {
                   dev.log("buildNotes: onSwitchNote: switching to $i");
                   switchNote(parents!, currI);
                   dev.log(
-                    "buildNote: onSwitchNote: switched to $i -> ${notes.getCurrNotefile()}",
+                    "buildNote: onSwitchNote: switched to $i -> ${notes.getCurr()}",
                   );
                 },
                 child: Text(
