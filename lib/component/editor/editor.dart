@@ -64,6 +64,7 @@ class Editor extends StatelessWidget {
         ],
       );
     } else {
+      //FIXME material colors to sync and for the toolbar to work on all note files.
       return FloatingToolbar(
         items: [
           customParagraphItem,
