@@ -153,6 +153,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildDrawer(BuildContext context) {
     var children = [
+      SizedBox(height: 4,),
       _buildSeparator(context, 'Your Saved Notes 📝'),
     ];
     dev.log("_buildDrawer: Notes length: ${notes.getLength()}");
