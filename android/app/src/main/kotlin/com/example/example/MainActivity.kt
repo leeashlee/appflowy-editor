@@ -1,4 +1,4 @@
-package com.example.example
+package com.noel.noteeditor
 
 import io.flutter.embedding.android.FlutterActivity
 
