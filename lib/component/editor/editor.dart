@@ -35,7 +35,7 @@ class Editor extends StatelessWidget {
         onEditorStateChange(editorState);
       }
     });
-    final scrollController = EditorScrollController(editorState: editorState);
+    final scrollController = ScrollController();
     if (PlatformExtension.isMobile) {
       return Column(
         children: [
@@ -64,7 +64,7 @@ class Editor extends StatelessWidget {
         ],
       );
     } else {
-      //FIXME material colors to sync and for the toolbar to work on all note files.
+      //FIXME material colors to sync and for the toolbar to work on all note
       return FloatingToolbar(
         items: [
           customParagraphItem,
@@ -80,7 +80,7 @@ class Editor extends StatelessWidget {
           ...customAlignmentItems,
         ],
         editorState: editorState,
-        editorScrollController: scrollController,
+        scrollController: scrollController,
         style: FloatingToolbarStyle(
           backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
           toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -96,12 +96,12 @@ class Editor extends StatelessWidget {
   Widget _buildMobileEditor(
     BuildContext context,
     EditorState editorState,
-    EditorScrollController? scrollController,
+    ScrollController? scrollController,
   ) {
     return AppFlowyEditor(
       editorStyle: customizeEditorStyle(context),
       editorState: editorState,
-      editorScrollController: scrollController,
+      scrollController: scrollController,
     );
   }
 
