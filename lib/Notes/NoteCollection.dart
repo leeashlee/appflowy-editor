@@ -37,7 +37,7 @@ class NoteCollection implements NoteEntry {
     int i = notes.indexOf(old);
     if (i == -1) {
       return;
-      //TODO Fixing the logic here so you could remove the entry you're currently on.
+    //TODO Fixing the logic here so you could remove the entry you're currently on.
     } else if (i == _getCurrIndex()) {
       throw Exception("cant remove the Entry that your currently editing");
     }
@@ -46,11 +46,8 @@ class NoteCollection implements NoteEntry {
   }
 
   @override
-  NoteFile getCurrNotefile() {
-    if (curr == null) {
-      throw NotInFocusException();
-    }
-    return curr!.getCurrNotefile(); // be recursive
+  NoteEntry? getCurr() {
+    return (curr != null) ? curr!.getCurr() : null; // be recursive
   }
 
   @override
@@ -68,15 +65,11 @@ class NoteCollection implements NoteEntry {
 
   void setCurr(NoteEntry? newCurr) {
     developer.log("$name: setCurr: from $curr to $newCurr");
-    if (getCurrNotefile() is NoteCollection) {
-      getCurrNotefile().looseFocus();
+    if (getCurr() is NoteCollection) {
+      getCurr()!.looseFocus();
     }
     curr = newCurr;
     _onWrite();
-  }
-
-  bool isInFocus() {
-    return curr != null;
   }
 
   void switchFocus(NoteEntry noteEntry) {
@@ -118,5 +111,3 @@ class NoteCollection implements NoteEntry {
     };
   }
 }
-
-class NotInFocusException implements Exception {}

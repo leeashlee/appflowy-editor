@@ -91,9 +91,9 @@ class _HomePageState extends State<HomePage> {
     );
 
     _widgetBuilder = (context) => Editor(
-          editorState: notes.getCurrNotefile().getBody(),
+          editorState: (notes.getCurr() as NoteFile).getBody(),
           onEditorStateChange: (editorState) {
-            notes.getCurrNotefile().setBody(editorState);
+            (notes.getCurr() as NoteFile).setBody(editorState);
           },
         );
   }
@@ -103,9 +103,9 @@ class _HomePageState extends State<HomePage> {
     super.reassemble();
 
     _widgetBuilder = (context) => Editor(
-          editorState: notes.getCurrNotefile().getBody(),
+          editorState: (notes.getCurr() as NoteFile).getBody(),
           onEditorStateChange: (editorState) {
-            notes.getCurrNotefile().setBody(editorState);
+            (notes.getCurr() as NoteFile).setBody(editorState);
           },
         );
   }
@@ -117,11 +117,11 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: PlatformExtension.isDesktopOrWeb,
       drawer: _buildDrawer(context),
       appBar: CustomAppBar(
-        notes.getCurrNotefile().getName(),
+        notes.getCurr()!.getName(),
         notes.getName(),
         (input) {
           setState(() {
-            notes.getCurrNotefile().setName(input);
+            notes.getCurr()!.setName(input);
           });
         },
       ),
@@ -209,7 +209,7 @@ class _HomePageState extends State<HomePage> {
         ),
         onPressed: () {
           _exportFile(
-            notes.getCurrNotefile().getBody(),
+            (notes.getCurr() as NoteFile).getBody(),
             ExportFileType.markdown,
           );
         },
@@ -228,7 +228,7 @@ class _HomePageState extends State<HomePage> {
         ),
         onPressed: () {
           _exportFile(
-            notes.getCurrNotefile().getBody(),
+            (notes.getCurr() as NoteFile).getBody(),
             ExportFileType.html,
           );
         },
@@ -474,7 +474,7 @@ class _HomePageState extends State<HomePage> {
             textColor: Theme.of(context).colorScheme.primary,
             tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
             childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-            initiallyExpanded: currI.isInFocus(),
+            initiallyExpanded: false,
             expandedAlignment: Alignment.centerLeft,
             title: Row(
               children: [
@@ -525,9 +525,9 @@ class _HomePageState extends State<HomePage> {
     setState(
       () {
         _widgetBuilder = (context) => Editor(
-              editorState: notes.getCurrNotefile().getBody(),
+              editorState: (notes.getCurr() as NoteFile).getBody(),
               onEditorStateChange: (editorState) {
-                notes.getCurrNotefile().setBody(editorState);
+                (notes.getCurr() as NoteFile).setBody(editorState);
               },
             );
       },
