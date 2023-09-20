@@ -74,7 +74,6 @@ class Editor extends StatelessWidget {
         ],
       );
     } else {
-      //FIXME material colors to sync and for the toolbar to work on all note
       return FloatingToolbar(
         items: [
           customParagraphItem,
@@ -91,6 +90,7 @@ class Editor extends StatelessWidget {
         ],
         editorState: editorState,
         scrollController: scrollController,
+        //FIXME material colors to sync
         style: FloatingToolbarStyle(
           backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
           toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant,
