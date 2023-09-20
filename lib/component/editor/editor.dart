@@ -59,6 +59,7 @@ class Editor extends StatelessWidget {
             primaryColor: Theme.of(context).colorScheme.primary,
             onPrimaryColor: Theme.of(context).colorScheme.onPrimary,
             editorState: editorState,
+            //FIXME Changing those colours to Material You
             toolbarItems: [
               textDecorationMobileToolbarItem,
               buildTextAndBackgroundColorMobileToolbarItem(),
