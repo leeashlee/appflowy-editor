@@ -42,6 +42,7 @@ class Editor extends StatelessWidget {
           Expanded(
             child: _buildMobileEditor(
               context,
+              customizeEditorStyle(context),
               editorState,
               null,
               //scrollController,
@@ -95,6 +96,7 @@ class Editor extends StatelessWidget {
 
   Widget _buildMobileEditor(
     BuildContext context,
+    EditorStyle editorStyle,
     EditorState editorState,
     ScrollController? scrollController,
   ) {
