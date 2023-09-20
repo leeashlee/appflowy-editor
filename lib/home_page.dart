@@ -151,7 +151,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  //TODO Putting _buildDrawer in it's own file
   Widget _buildDrawer(BuildContext context) {
     var children = [
       _buildSeparator(context, 'Your Saved Notes 📝'),
@@ -292,7 +291,6 @@ class _HomePageState extends State<HomePage> {
     return _widgetBuilder(context);
   }
 
-  //TODO Putting buildNotes in it's own file
   //TODO Learning how to make it a Reorderable List View
   List<Widget> buildNotes(
     BuildContext context,
