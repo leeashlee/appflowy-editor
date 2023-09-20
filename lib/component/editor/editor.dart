@@ -49,6 +49,16 @@ class Editor extends StatelessWidget {
             ),
           ),
           MobileToolbar(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            foregroundColor: Theme.of(context).colorScheme.onBackground,
+            clearDiagonalLineColor: Theme.of(context).colorScheme.tertiary,
+            tabbarSelectedBackgroundColor: Theme.of(context).colorScheme.surface,
+            tabbarSelectedForegroundColor: Theme.of(context).colorScheme.onSurface,
+            itemOutlineColor: Theme.of(context).colorScheme.outline,
+            itemHighlightColor: Theme.of(context).colorScheme.primary,
+            outlineColor: Theme.of(context).colorScheme.outline,
+            primaryColor: Theme.of(context).colorScheme.primary,
+            onPrimaryColor: Theme.of(context).colorScheme.onPrimary,
             editorState: editorState,
             toolbarItems: [
               textDecorationMobileToolbarItem,
