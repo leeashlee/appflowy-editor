@@ -35,7 +35,7 @@ class Editor extends StatelessWidget {
         onEditorStateChange(editorState);
       }
     });
-    final scrollController = ScrollController();
+    final scrollController = EditorScrollController(editorState: editorState);
     if (PlatformExtension.isMobile) {
       return Column(
         children: [
@@ -80,7 +80,7 @@ class Editor extends StatelessWidget {
           ...customAlignmentItems,
         ],
         editorState: editorState,
-        scrollController: scrollController,
+        editorScrollController: scrollController,
         style: FloatingToolbarStyle(
           backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
           toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -96,12 +96,12 @@ class Editor extends StatelessWidget {
   Widget _buildMobileEditor(
     BuildContext context,
     EditorState editorState,
-    ScrollController? scrollController,
+    EditorScrollController? scrollController,
   ) {
     return AppFlowyEditor(
       editorStyle: customizeEditorStyle(context),
       editorState: editorState,
-      scrollController: scrollController,
+      editorScrollController: scrollController,
     );
   }
 
