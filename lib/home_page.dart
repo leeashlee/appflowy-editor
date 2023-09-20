@@ -545,14 +545,16 @@ class _HomePageState extends State<HomePage> {
 
   // note stuff
   void addNote(String input, [NoteCollection? into]) {
+    NoteFile newNote = NoteFile(input, EditorState.blank());
     // if into is null use the root
     into = (into != null) ? into : notes;
     setState(
       () {
-        into!.addEntry(NoteFile(input, EditorState.blank()));
+        into!.addEntry(newNote);
         dev.log(
           "addNote: ${jsonEncode(into.toJson())}",
         );
+        //switchNote(into as List<NoteCollection>, newNote);
       },
     );
   }
