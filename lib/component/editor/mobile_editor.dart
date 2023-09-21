@@ -1,4 +1,5 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -95,16 +96,52 @@ class _MobileEditorState extends State<MobileEditor> {
   // showcase 1: customize the editor style.
   EditorStyle _buildMobileEditorStyle() {
     return EditorStyle.mobile(
-      cursorColor: Colors.blue,
-      selectionColor: Colors.blue.shade200,
+      cursorColor: Theme.of(context).colorScheme.primary,
+      selectionColor:
+          Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
       textStyleConfiguration: TextStyleConfiguration(
-        text: GoogleFonts.poppins(
-          fontSize: 14,
-          color: Colors.black,
+        text: TextStyle(
+          fontFamily: GoogleFonts.miriamLibre().fontFamily,
+          fontSize: 18.0,
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
         ),
-        code: GoogleFonts.badScript(),
+        bold: const TextStyle(
+          fontWeight: FontWeight.w900,
+        ),
+        href: TextStyle(
+          fontFamily: GoogleFonts.miriamLibre().fontFamily,
+          color: Theme.of(context).colorScheme.secondary,
+          decoration: TextDecoration.combine(
+            [
+              TextDecoration.overline,
+              TextDecoration.underline,
+            ],
+          ),
+        ),
+        code: TextStyle(
+          fontFamily: GoogleFonts.miriamLibre().fontFamily,
+          fontSize: 14.0,
+          fontStyle: FontStyle.italic,
+          color: Theme.of(context).colorScheme.secondary,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+        ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      textSpanDecorator: (context, node, index, text, textSpan) {
+        final attributes = text.attributes;
+        final href = attributes?[AppFlowyRichTextKeys.href];
+        if (href != null) {
+          return TextSpan(
+            text: text.text,
+            style: textSpan.style,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                debugPrint('onTap: $href');
+              },
+          );
+        }
+        return textSpan;
+      },
+      padding: const EdgeInsets.symmetric(horizontal: 200.0),
     );
   }
 

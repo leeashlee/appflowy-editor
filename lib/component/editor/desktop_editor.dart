@@ -1,6 +1,18 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_alignment_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_bulleted_list_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_format_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_heading_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_highlight_color_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_link_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_numbered_list_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_paragraph_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_quote_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_text_color_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/custom_text_direction_toolbar_items.dart';
 
 class DesktopEditor extends StatefulWidget {
   const DesktopEditor({
@@ -53,20 +65,24 @@ class _DesktopEditorState extends State<DesktopEditor> {
     assert(PlatformExtension.isDesktopOrWeb);
     return FloatingToolbar(
       items: [
-        paragraphItem,
-        ...headingItems,
-        ...markdownFormatItems,
-        quoteItem,
-        bulletedListItem,
-        numberedListItem,
-        linkItem,
-        buildTextColorItem(),
-        buildHighlightColorItem(),
-        ...textDirectionItems,
-        ...alignmentItems,
+        customParagraphItem,
+        ...customheadingItems,
+        ...customMarkdownFormatItems,
+        customQuoteItem,
+        customBulletedListItem,
+        customNumberedListItem,
+        customLinkItem,
+        customBuildTextColorItem(),
+        customBuildHighlightColorItem(),
+        ...customTextDirectionItems,
+        ...customAlignmentItems,
       ],
       editorState: editorState,
       editorScrollController: editorScrollController,
+      style: FloatingToolbarStyle(
+        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+        toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant,
+      ),
       child: Directionality(
         textDirection: widget.textDirection,
         child: AppFlowyEditor(
@@ -94,18 +110,51 @@ class _DesktopEditorState extends State<DesktopEditor> {
   // showcase 1: customize the editor style.
   EditorStyle _buildDesktopEditorStyle() {
     return EditorStyle.desktop(
-      cursorColor: Colors.blue,
-      selectionColor: Colors.grey.shade300,
+      cursorColor: Theme.of(context).colorScheme.primary,
+      selectionColor:
+          Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
       textStyleConfiguration: TextStyleConfiguration(
-        text: GoogleFonts.poppins(
-          fontSize: 16,
-          color: Colors.black,
+        text: TextStyle(
+          fontFamily: GoogleFonts.miriamLibre().fontFamily,
+          fontSize: 18.0,
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
         ),
-        code: GoogleFonts.architectsDaughter(),
-        bold: GoogleFonts.poppins(
-          fontWeight: FontWeight.w500,
+        bold: const TextStyle(
+          fontWeight: FontWeight.w900,
+        ),
+        href: TextStyle(
+          fontFamily: GoogleFonts.miriamLibre().fontFamily,
+          color: Theme.of(context).colorScheme.secondary,
+          decoration: TextDecoration.combine(
+            [
+              TextDecoration.overline,
+              TextDecoration.underline,
+            ],
+          ),
+        ),
+        code: TextStyle(
+          fontFamily: GoogleFonts.miriamLibre().fontFamily,
+          fontSize: 14.0,
+          fontStyle: FontStyle.italic,
+          color: Theme.of(context).colorScheme.secondary,
+          backgroundColor: Theme.of(context).colorScheme.surface,
         ),
       ),
+      textSpanDecorator: (context, node, index, text, textSpan) {
+        final attributes = text.attributes;
+        final href = attributes?[AppFlowyRichTextKeys.href];
+        if (href != null) {
+          return TextSpan(
+            text: text.text,
+            style: textSpan.style,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                debugPrint('onTap: $href');
+              },
+          );
+        }
+        return textSpan;
+      },
       padding: const EdgeInsets.symmetric(horizontal: 200.0),
     );
   }
