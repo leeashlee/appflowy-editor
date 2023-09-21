@@ -673,7 +673,7 @@ class _HomePageState extends State<HomePage> {
           NoteFile(
             "Untitled",
             EditorState.blank(),
-          )
+          ),
         ],
       );
     } else {

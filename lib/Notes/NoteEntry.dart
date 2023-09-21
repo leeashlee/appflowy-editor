@@ -37,11 +37,13 @@ class NoteFile implements NoteEntry {
   static NoteFile fromJson(Map input) {
     print("got input: $input");
     return NoteFile(
-        input["name"] as String,
-        EditorState(
-            document: Document.fromJson(
+      input["name"] as String,
+      EditorState(
+        document: Document.fromJson(
           input["body"]!,
-        )));
+        ),
+      ),
+    );
   }
 
   @override
