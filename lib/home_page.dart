@@ -41,6 +41,7 @@ extension on ExportFileType {
   }
 }
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   final Future<SharedPreferences> prefs =
       SharedPreferences.getInstance().onError((error, stackTrace) {
@@ -48,9 +49,10 @@ class HomePage extends StatefulWidget {
     dev.log("$error, $stackTrace");
     return Future.error(error!);
   }).timeout(const Duration(seconds: 10));
-  final LocalStorage storage = LocalStorage("storage");
 
-  HomePage({Key? key}) : super(key: key);
+  LocalStorage storage;
+
+  HomePage(this.storage, {Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -60,15 +62,9 @@ class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   Timer? syncTimer;
   final myNoteController = TextEditingController();
+  LocalStorage storage = new LocalStorage("storage");
 
-  var notes = NoteCollection(
-    "My Notes",
-    NoteFile(
-      "Untitled",
-      EditorState.blank(),
-    ),
-    true,
-  );
+  late NoteCollection notes;
   late WidgetBuilder _widgetBuilder;
 
   @override
@@ -82,6 +78,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     dev.log("initState");
     super.initState();
+
+    notes = initNotes();
 
     syncTimer = Timer.periodic(
       const Duration(seconds: 5),
@@ -153,7 +151,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildDrawer(BuildContext context) {
     var children = [
-      SizedBox(height: 4,),
+      SizedBox(
+        height: 4,
+      ),
       _buildSeparator(context, 'Your Saved Notes 📝'),
     ];
     dev.log("_buildDrawer: Notes length: ${notes.getLength()}");
@@ -654,8 +654,29 @@ class _HomePageState extends State<HomePage> {
 
   void doSync() {
     dev.log("doSync: starting...");
-    widget.storage.setItem("notes", notes);
-    dev.log("doSync: ${widget.storage.getItem("notes")}");
+    dev.log("doSync: before: ${storage.getItem("notes")}");
+    storage.setItem("notes", notes);
+    dev.log("doSync: after: ${storage.getItem("notes")}");
+  }
+
+  NoteCollection initNotes() {
+    dev.log("initNotes: ${LocalStorage('storage').getItem('notes')}");
+    dev.log("initNotes: widget.storage ${storage.getItem("notes")}");
+    NoteCollection? lclNotes = storage.getItem("notes");
+    dev.log("initNotes: lclNotes $lclNotes");
+
+    if (lclNotes == null) {
+      return NoteCollection(
+        "My Notes",
+        NoteFile(
+          "Untitled",
+          EditorState.blank(),
+        ),
+        true,
+      );
+    } else {
+      return lclNotes;
+    }
   }
 }
 

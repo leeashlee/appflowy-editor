@@ -7,7 +7,7 @@ abstract class NoteEntry {
   void setName(String name);
   NoteEntry? getCurr();
   void looseFocus();
-  Map<String, Object> toJson();
+  Map<String, Object?> toJson();
 }
 
 class NoteFile implements NoteEntry {

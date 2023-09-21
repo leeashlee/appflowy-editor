@@ -9,7 +9,12 @@ class NoteCollection implements NoteEntry {
   NoteEntry? curr;
   Comparator? comparator;
 
-  NoteCollection(this.name, [NoteEntry? initial, bool withFocus = false]) {
+  NoteCollection(
+    this.name, [
+    NoteEntry? initial,
+    bool withFocus = false,
+    Map? reconstructFrom,
+  ]) {
     if (initial != null) {
       developer
           .log("starting NoteCollection with $initial and focus = $withFocus");
@@ -37,7 +42,7 @@ class NoteCollection implements NoteEntry {
     int i = notes.indexOf(old);
     if (i == -1) {
       return;
-    //FIXME Fixing the logic here so you could remove the entry you're currently on.
+      //FIXME Fixing the logic here so you could remove the entry you're currently on.
     } else if (i == _getCurrIndex()) {
       throw Exception("cant remove the Entry that your currently editing");
     }
@@ -101,8 +106,13 @@ class NoteCollection implements NoteEntry {
     }
   }
 
+  void _fromJson(Map input) {
+    name = input.name;
+  }
+
   @override
-  Map<String, Object> toJson() {
+  Map<String, Object?> toJson() {
+    super.toJson();
     return {
       "name": name,
       "body": notes.map((x) {
@@ -110,4 +120,5 @@ class NoteCollection implements NoteEntry {
       }).toList(),
     };
   }
+  
 }
