@@ -141,7 +141,7 @@ class _MobileEditorState extends State<MobileEditor> {
         }
         return textSpan;
       },
-      padding: const EdgeInsets.symmetric(horizontal: 200.0),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
     );
   }
 
