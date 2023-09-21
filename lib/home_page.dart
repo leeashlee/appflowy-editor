@@ -662,20 +662,22 @@ class _HomePageState extends State<HomePage> {
   NoteCollection initNotes() {
     dev.log("initNotes: ${LocalStorage('storage').getItem('notes')}");
     dev.log("initNotes: widget.storage ${storage.getItem("notes")}");
-    NoteCollection? lclNotes = storage.getItem("notes");
+    Map? lclNotes = storage.getItem("notes");
     dev.log("initNotes: lclNotes $lclNotes");
 
     if (lclNotes == null) {
       return NoteCollection(
         "My Notes",
-        NoteFile(
-          "Untitled",
-          EditorState.blank(),
-        ),
         true,
+        [
+          NoteFile(
+            "Untitled",
+            EditorState.blank(),
+          )
+        ],
       );
     } else {
-      return lclNotes;
+      return NoteCollection.fromJson(lclNotes, true) as NoteCollection;
     }
   }
 }

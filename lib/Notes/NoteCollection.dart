@@ -11,16 +11,17 @@ class NoteCollection implements NoteEntry {
 
   NoteCollection(
     this.name, [
-    NoteEntry? initial,
     bool withFocus = false,
-    Map? reconstructFrom,
+    List<NoteEntry> initial = const [],
   ]) {
-    if (initial != null) {
+    if (initial.length != 0) {
       developer
           .log("starting NoteCollection with $initial and focus = $withFocus");
-      notes.add(initial);
-      curr = (withFocus ? initial : null);
     }
+    notes.addAll(initial);
+    // set the first notefile
+    curr =
+        (withFocus) ? notes.firstWhere((element) => element is NoteFile) : null;
   }
 
   NoteEntry getEntry(int index) {
@@ -106,19 +107,22 @@ class NoteCollection implements NoteEntry {
     }
   }
 
-  void _fromJson(Map input) {
-    name = input.toString();
+  static NoteEntry fromJson(Map input, bool withFocus) {
+    List<NoteEntry> body = [];
+    for (var inp in input["body"]!) {
+      body.add(NoteEntry.fromJson(inp, false));
+    }
+    return NoteCollection(input["name"] as String, withFocus, body);
   }
 
   @override
   Map<String, Object?> toJson() {
-    toJson();
     return {
       "name": name,
+      "type": "NoteCollection",
       "body": notes.map((x) {
         return x.toJson();
       }).toList(),
     };
   }
-  
 }

@@ -2,12 +2,25 @@
 
 import 'package:appflowy_editor/appflowy_editor.dart';
 
+import 'NoteCollection.dart';
+
 abstract class NoteEntry {
   String getName();
   void setName(String name);
   NoteEntry? getCurr();
   void looseFocus();
   Map<String, Object?> toJson();
+  static NoteEntry fromJson(Map<String, Object?> input, bool withFocus) {
+    print("NoteEntry fromJson $input");
+    switch (input["type"]) {
+      case "NoteCollection":
+        return NoteCollection.fromJson(input, withFocus);
+      case "NoteFile":
+        return NoteFile.fromJson(input);
+      default:
+        throw UnimplementedError("NoteEntry: Unknown type: ${input['type']}");
+    }
+  }
 }
 
 class NoteFile implements NoteEntry {
@@ -18,7 +31,17 @@ class NoteFile implements NoteEntry {
 
   @override
   Map<String, Object> toJson() {
-    return {"title": name, "body": body.document.toJson()};
+    return {"name": name, "type": "NoteFile", "body": body.document.toJson()};
+  }
+
+  static NoteFile fromJson(Map input) {
+    print("got input: $input");
+    return NoteFile(
+        input["name"] as String,
+        EditorState(
+            document: Document.fromJson(
+          input["body"]!,
+        )));
   }
 
   @override
