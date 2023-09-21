@@ -107,12 +107,12 @@ class NoteCollection implements NoteEntry {
   }
 
   void _fromJson(Map input) {
-    name = input.name;
+    name = input.toString();
   }
 
   @override
   Map<String, Object?> toJson() {
-    super.toJson();
+    toJson();
     return {
       "name": name,
       "body": notes.map((x) {
