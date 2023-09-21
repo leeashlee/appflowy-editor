@@ -184,7 +184,7 @@ class _DesktopEditorState extends State<DesktopEditor> {
       14.0,
     ];
     map[HeadingBlockKeys.type] = HeadingBlockComponentBuilder(
-      textStyleBuilder: (level) => GoogleFonts.poppins(
+      textStyleBuilder: (level) => GoogleFonts.miriamLibre(
         fontSize: levelToFontSize.elementAtOrNull(level - 1) ?? 14.0,
         fontWeight: FontWeight.w600,
       ),
@@ -204,7 +204,7 @@ class _DesktopEditorState extends State<DesktopEditor> {
       // customize the highlight color
       customToggleHighlightCommand(
         style: ToggleColorsStyle(
-          highlightColor: Colors.orange.shade700,
+          highlightColor: Theme.of(context).colorScheme.secondaryContainer,
         ),
       ),
       ...[
