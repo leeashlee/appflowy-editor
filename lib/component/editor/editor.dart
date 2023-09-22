@@ -119,7 +119,7 @@ class Editor extends StatelessWidget {
   Widget _buildDesktopEditor(
     BuildContext context,
     EditorState editorState,
-    ScrollController? scrollController,
+    EditorScrollController? scrollController,
   ) {
     final customBlockComponentBuilders = {
       ...standardBlockComponentBuilderMap,
@@ -136,7 +136,7 @@ class Editor extends StatelessWidget {
     return AppFlowyEditor(
       editorState: editorState,
       shrinkWrap: false,
-      //scrollController: scrollController,
+      editorScrollController: scrollController,
       blockComponentBuilders: customBlockComponentBuilders,
       commandShortcutEvents: [
         customToggleHighlightCommand(
