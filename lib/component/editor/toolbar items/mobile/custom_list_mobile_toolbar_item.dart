@@ -26,12 +26,12 @@ class _ListMenu extends StatefulWidget {
 class _ListMenuState extends State<_ListMenu> {
   final lists = [
     ListUnit(
-      icon: AFMobileIcons.bulletedList,
+      icon: Icon(Unicon.list_ul),
       label: AppFlowyEditorLocalizations.current.bulletedList,
       name: 'bulleted_list',
     ),
     ListUnit(
-      icon: AFMobileIcons.numberedList,
+      icon: Icon(Icons.format_list_numbered),
       label: AppFlowyEditorLocalizations.current.numberedList,
       name: 'numbered_list',
     ),
@@ -45,7 +45,7 @@ class _ListMenuState extends State<_ListMenu> {
       final isSelected = node.type == currentList.name;
 
       return MobileToolbarItemMenuBtn(
-        icon: AFMobileIcon(afMobileIcons: currentList.icon),
+        icon: currentList.icon,
         label: Text(currentList.label),
         isSelected: isSelected,
         onPressed: () {
@@ -78,7 +78,7 @@ class _ListMenuState extends State<_ListMenu> {
 }
 
 class ListUnit {
-  final AFMobileIcons icon;
+  final Icon icon;
   final String label;
   final String name;
 
