@@ -180,7 +180,7 @@ class Editor extends StatelessWidget {
   EditorStyle customizeEditorStyle(BuildContext context) {
     return EditorStyle(
       padding: PlatformExtension.isDesktopOrWeb
-          ? const EdgeInsets.only(left: 50, right: 50)
+          ? const EdgeInsets.symmetric(horizontal: 50)
           : const EdgeInsets.symmetric(horizontal: 20),
       cursorColor: Theme.of(context).colorScheme.primary,
       selectionColor:
