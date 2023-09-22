@@ -1,7 +1,8 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
+import 'package:flutter/material.dart';
 
 final customQuoteMobileToolbarItem = MobileToolbarItem.action(
-  itemIcon: AFMobileIcon(afMobileIcons: AFMobileIcons.quote),
+  itemIcon: Icon(Icons.format_quote_rounded),
   actionHandler: ((editorState, selection) {
     final node = editorState.getNodeAtPath(selection.start.path)!;
     final isQuote = node.type == QuoteBlockKeys.type;
