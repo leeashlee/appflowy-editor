@@ -13,15 +13,27 @@ class NoteCollection implements NoteEntry {
     this.name, [
     bool withFocus = false,
     List<NoteEntry> initial = const [],
+    int manualIndex = -1,
   ]) {
     if (initial.length != 0) {
       developer
           .log("starting NoteCollection with $initial and focus = $withFocus");
     }
     notes.addAll(initial);
-    // set the first notefile
-    curr =
-        (withFocus) ? notes.firstWhere((element) => element is NoteFile) : null;
+    // set the current notefile (if were told this collection is in focus)
+    if (withFocus) {
+      // prefer the manual index
+      if (manualIndex > -1) {
+        curr = notes[manualIndex];
+        // DISCOURAGED: searching for the first notefile and just taking that
+      } else {
+        curr = notes.firstWhere((element) => element is NoteFile);
+      }
+      // throw an exception rather sooner than waiting for undefined behaviour
+      if (curr == null) {
+        throw Exception("no element in focus but this collection is in focus");
+      }
+    }
   }
 
   NoteEntry getEntry(int index) {
@@ -52,8 +64,8 @@ class NoteCollection implements NoteEntry {
   }
 
   @override
-  NoteEntry? getCurr() {
-    return (curr != null) ? curr!.getCurr() : null; // be recursive
+  NoteEntry? getCurrNotefile() {
+    return (curr != null) ? curr!.getCurrNotefile() : null; // be recursive
   }
 
   @override
@@ -71,8 +83,8 @@ class NoteCollection implements NoteEntry {
 
   void setCurr(NoteEntry? newCurr) {
     developer.log("$name: setCurr: from $curr to $newCurr");
-    if (getCurr() is NoteCollection) {
-      getCurr()!.looseFocus();
+    if (curr != null && curr is NoteCollection) {
+      curr!.looseFocus();
     }
     curr = newCurr;
     _onWrite();
@@ -109,16 +121,26 @@ class NoteCollection implements NoteEntry {
 
   static NoteEntry fromJson(Map input, bool withFocus) {
     List<NoteEntry> body = [];
+    int curr = -1;
+    if (input.containsKey("curr")) {
+      curr = input["curr"];
+    }
     for (var inp in input["body"]!) {
       body.add(NoteEntry.fromJson(inp, false));
     }
-    return NoteCollection(input["name"] as String, withFocus, body);
+    return NoteCollection(
+      input["name"] as String,
+      (withFocus || curr > -1),
+      body,
+      curr,
+    );
   }
 
   @override
   Map<String, Object?> toJson() {
     return {
       "name": name,
+      "curr": _getCurrIndex(),
       "type": "NoteCollection",
       "body": notes.map((x) {
         return x.toJson();

@@ -89,9 +89,9 @@ class _HomePageState extends State<HomePage> {
     );
 
     _widgetBuilder = (context) => Editor(
-          editorState: (notes.getCurr() as NoteFile).getBody(),
+          editorState: (notes.getCurrNotefile() as NoteFile).getBody(),
           onEditorStateChange: (editorState) {
-            (notes.getCurr() as NoteFile).setBody(editorState);
+            (notes.getCurrNotefile() as NoteFile).setBody(editorState);
           },
         );
   }
@@ -101,9 +101,9 @@ class _HomePageState extends State<HomePage> {
     super.reassemble();
 
     _widgetBuilder = (context) => Editor(
-          editorState: (notes.getCurr() as NoteFile).getBody(),
+          editorState: (notes.getCurrNotefile() as NoteFile).getBody(),
           onEditorStateChange: (editorState) {
-            (notes.getCurr() as NoteFile).setBody(editorState);
+            (notes.getCurrNotefile() as NoteFile).setBody(editorState);
           },
         );
   }
@@ -115,12 +115,12 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: PlatformExtension.isDesktopOrWeb,
       drawer: _buildDrawer(context),
       appBar: CustomAppBar(
-        notes.getCurr()!.getName(),
+        notes.getCurrNotefile()!.getName(),
         //FIXME This to display the current collection name
         notes.getName(),
         (input) {
           setState(() {
-            notes.getCurr()!.setName(input);
+            notes.getCurrNotefile()!.setName(input);
           });
         },
       ),
@@ -210,7 +210,7 @@ class _HomePageState extends State<HomePage> {
         ),
         onPressed: () {
           _exportFile(
-            (notes.getCurr() as NoteFile).getBody(),
+            (notes.getCurrNotefile() as NoteFile).getBody(),
             ExportFileType.markdown,
           );
         },
@@ -229,7 +229,7 @@ class _HomePageState extends State<HomePage> {
         ),
         onPressed: () {
           _exportFile(
-            (notes.getCurr() as NoteFile).getBody(),
+            (notes.getCurrNotefile() as NoteFile).getBody(),
             ExportFileType.html,
           );
         },
@@ -308,6 +308,11 @@ class _HomePageState extends State<HomePage> {
       NoteEntry currI = currNotes.getEntry(i);
       dev.log("buildNotes: Building ListTile No. $i");
       if (currI is NoteFile) {
+        Color prim = Theme.of(context).colorScheme.primary;
+        Color sec = Theme.of(context).colorScheme.secondaryContainer;
+        Color bg = (currI == notes.getCurrNotefile()) ? prim : sec;
+        Color fg = (currI == notes.getCurrNotefile()) ? sec : prim;
+        dev.log("buildNotes: Colors: bg: ${bg.toHex()} fg: ${fg.toHex()}");
         retVal.add(
           Slidable(
             endActionPane: ActionPane(
@@ -316,9 +321,8 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.secondaryContainer,
-                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: bg,
+                  foregroundColor: fg,
                   icon: Unicon.edit_alt,
                   onPressed: (context) => showDialog<String>(
                     context: context,
@@ -386,9 +390,8 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.secondaryContainer,
-                  foregroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: bg,
+                  foregroundColor: fg,
                   icon: Unicon.edit_alt,
                   onPressed: (context) => showDialog<String>(
                     context: context,
@@ -414,8 +417,8 @@ class _HomePageState extends State<HomePage> {
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
                   icon: Unicon.trash,
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  foregroundColor: Theme.of(context).colorScheme.onError,
+                  backgroundColor: bg,
+                  foregroundColor: fg,
                   onPressed: (context) => showDialog<String>(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -453,12 +456,14 @@ class _HomePageState extends State<HomePage> {
               child: TextButton(
                 style: TextButton.styleFrom(
                   alignment: Alignment.centerLeft,
+                  foregroundColor: fg,
+                  backgroundColor: bg,
                 ),
                 onPressed: () {
                   dev.log("buildNotes: onSwitchNote: switching to $i");
                   switchNote(parents!, currI);
                   dev.log(
-                    "buildNote: onSwitchNote: switched to $i -> ${notes.getCurr()}",
+                    "buildNote: onSwitchNote: switched to $i -> ${notes.getCurrNotefile()}",
                   );
                 },
                 child: Text(
@@ -525,9 +530,9 @@ class _HomePageState extends State<HomePage> {
     setState(
       () {
         _widgetBuilder = (context) => Editor(
-              editorState: (notes.getCurr() as NoteFile).getBody(),
+              editorState: (notes.getCurrNotefile() as NoteFile).getBody(),
               onEditorStateChange: (editorState) {
-                (notes.getCurr() as NoteFile).setBody(editorState);
+                (notes.getCurrNotefile() as NoteFile).setBody(editorState);
               },
             );
       },
