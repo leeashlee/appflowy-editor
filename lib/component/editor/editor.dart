@@ -14,6 +14,15 @@ import 'package:noel_notes/component/editor/toolbar%20items/custom_paragraph_too
 import 'package:noel_notes/component/editor/toolbar%20items/custom_quote_toolbar_item.dart';
 import 'package:noel_notes/component/editor/toolbar%20items/custom_text_color_toolbar_item.dart';
 import 'package:noel_notes/component/editor/toolbar%20items/custom_text_direction_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_code_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_divider_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_heading_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_link_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_list_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_quote_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_text_and_background_color_tool_bar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_text_decoration_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_todo_list_mobile_toolbar_item.dart';
 
 class Editor extends StatelessWidget {
   const Editor({
@@ -61,15 +70,15 @@ class Editor extends StatelessWidget {
             editorState: editorState,
             //TODO Changing those colours to Material You
             toolbarItems: [
-              textDecorationMobileToolbarItem,
-              buildTextAndBackgroundColorMobileToolbarItem(),
-              headingMobileToolbarItem,
-              todoListMobileToolbarItem,
-              listMobileToolbarItem,
-              linkMobileToolbarItem,
-              quoteMobileToolbarItem,
-              dividerMobileToolbarItem,
-              codeMobileToolbarItem,
+              customTextDecorationMobileToolbarItem,
+              customBuildTextAndBackgroundColorMobileToolbarItem(),
+              customHeadingMobileToolbarItem,
+              customTodoListMobileToolbarItem,
+              customListMobileToolbarItem,
+              customLinkMobileToolbarItem,
+              customQuoteMobileToolbarItem,
+              customDividerMobileToolbarItem,
+              customCodeMobileToolbarItem,
             ],
           ),
         ],
