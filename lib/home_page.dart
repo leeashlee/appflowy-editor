@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildDrawer(BuildContext context) {
     var children = [
       SizedBox(
-        height: 4,
+        height: 25,
       ),
       _buildSeparator(context, 'Your Saved Notes 📝'),
     ];
@@ -233,25 +233,6 @@ class _HomePageState extends State<HomePage> {
         },
         icon: const Icon(Unicon.export_icon),
         label: const Text('Export to Markdown'),
-      ),
-
-      const SizedBox(height: 4),
-
-      ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          alignment: Alignment.centerLeft,
-          elevation: 0.0,
-          shadowColor: Colors.transparent,
-        ),
-        onPressed: () {
-          _exportFile(
-            (notes.getCurrNotefile() as NoteFile).getBody(),
-            ExportFileType.html,
-          );
-        },
-        icon: const Icon(Unicon.export_icon),
-        label: const Text('Export to HTML'),
       ),
 
       Divider(
