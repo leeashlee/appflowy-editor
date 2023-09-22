@@ -44,7 +44,7 @@ class Editor extends StatelessWidget {
         onEditorStateChange(editorState);
       }
     });
-    final scrollController = EditorScrollController(editorState: editorState);
+    final ScrollController scrollController = ScrollController();
     if (PlatformExtension.isMobile) {
       return Column(
         children: [
@@ -52,18 +52,19 @@ class Editor extends StatelessWidget {
             child: _buildMobileEditor(
               context,
               editorState,
-              null,
-              //scrollController,
+              scrollController,
             ),
           ),
           MobileToolbar(
             backgroundColor: Theme.of(context).colorScheme.background,
             foregroundColor: Theme.of(context).colorScheme.onBackground,
             clearDiagonalLineColor: Theme.of(context).colorScheme.tertiary,
-            tabbarSelectedBackgroundColor: Theme.of(context).colorScheme.surface,
-            tabbarSelectedForegroundColor: Theme.of(context).colorScheme.onSurface,
+            tabbarSelectedBackgroundColor:
+                Theme.of(context).colorScheme.surface,
+            tabbarSelectedForegroundColor:
+                Theme.of(context).colorScheme.onSurface,
             itemOutlineColor: Theme.of(context).colorScheme.outline,
-            itemHighlightColor: Theme.of(context).colorScheme.primary,
+            itemHighlightColor: Theme.of(context).colorScheme.inversePrimary,
             outlineColor: Theme.of(context).colorScheme.outline,
             primaryColor: Theme.of(context).colorScheme.primary,
             onPrimaryColor: Theme.of(context).colorScheme.onPrimary,
@@ -99,15 +100,16 @@ class Editor extends StatelessWidget {
           ...customAlignmentItems,
         ],
         editorState: editorState,
-        editorScrollController: scrollController,
+        scrollController: scrollController,
         //FIXME material colors to sync
         style: FloatingToolbarStyle(
           backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
           toolbarActiveColor: Theme.of(context).colorScheme.onSurfaceVariant,
         ),
         child: _buildDesktopEditor(
-          context, editorState, null,
-          //scrollController,
+          context,
+          editorState,
+          scrollController,
         ),
       );
     }
@@ -116,19 +118,19 @@ class Editor extends StatelessWidget {
   Widget _buildMobileEditor(
     BuildContext context,
     EditorState editorState,
-    EditorScrollController? scrollController,
+    ScrollController? scrollController,
   ) {
     return AppFlowyEditor(
       editorStyle: customizeEditorStyle(context),
       editorState: editorState,
-      editorScrollController: scrollController,
+      scrollController: scrollController,
     );
   }
 
   Widget _buildDesktopEditor(
     BuildContext context,
     EditorState editorState,
-    EditorScrollController? scrollController,
+    ScrollController? scrollController,
   ) {
     final customBlockComponentBuilders = {
       ...standardBlockComponentBuilderMap,
@@ -145,7 +147,7 @@ class Editor extends StatelessWidget {
     return AppFlowyEditor(
       editorState: editorState,
       shrinkWrap: false,
-      editorScrollController: scrollController,
+      scrollController: scrollController,
       blockComponentBuilders: customBlockComponentBuilders,
       commandShortcutEvents: [
         customToggleHighlightCommand(
