@@ -168,6 +168,23 @@ class _HomePageState extends State<HomePage> {
         initiallyExpanded: true,
         expandedAlignment: Alignment.centerLeft,
         title: Text(notes.getName()),
+        trailing: IconButton(
+          iconSize: 20.0,
+          onPressed: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => customAlertDialog(
+              context,
+              'Create a new note?',
+              'Note Name:',
+              'Untitled',
+              const Icon(Unicon.edit_alt),
+              (String input) {
+                addNote(input);
+              },
+            ),
+          ),
+          icon: const Icon(Unicon.file_medical),
+        ),
         children: (buildNotes(context, notes)),
       ),
       const SizedBox(height: 4),
@@ -311,7 +328,9 @@ class _HomePageState extends State<HomePage> {
         Color prim = Theme.of(context).colorScheme.primary;
         Color sec = Colors.transparent;
         Color bg = (currI == notes.getCurrNotefile()) ? prim : sec;
-        Color fg = (currI == notes.getCurrNotefile()) ? Theme.of(context).colorScheme.onPrimary : prim;
+        Color fg = (currI == notes.getCurrNotefile())
+            ? Theme.of(context).colorScheme.onPrimary
+            : prim;
         dev.log("buildNotes: Colors: bg: ${bg.toHex()} fg: ${fg.toHex()}");
         retVal.add(
           Slidable(
@@ -457,7 +476,8 @@ class _HomePageState extends State<HomePage> {
               child: TextButton(
                 style: TextButton.styleFrom(
                   alignment: Alignment.centerLeft,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
                   foregroundColor: fg,
                   backgroundColor: bg,
                 ),
