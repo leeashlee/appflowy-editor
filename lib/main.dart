@@ -72,7 +72,7 @@ class AppView extends StatelessWidget {
                 print("inited storage = ${state.data!}");
                 return HomePage(storage);
               } else {
-                return const LinearProgressIndicator();
+                return LinearProgressIndicator();
               }
             },
           ),
