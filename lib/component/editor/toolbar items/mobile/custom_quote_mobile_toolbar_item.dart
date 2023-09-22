@@ -1,8 +1,9 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 final customQuoteMobileToolbarItem = MobileToolbarItem.action(
-  itemIcon: Icon(Icons.format_quote_rounded),
+  itemIcon: Icon(CupertinoIcons.text_quote),
   actionHandler: ((editorState, selection) {
     final node = editorState.getNodeAtPath(selection.start.path)!;
     final isQuote = node.type == QuoteBlockKeys.type;
