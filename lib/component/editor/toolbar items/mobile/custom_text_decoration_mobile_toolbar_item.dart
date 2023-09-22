@@ -1,8 +1,9 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 
 final customTextDecorationMobileToolbarItem = MobileToolbarItem.withMenu(
-  itemIcon: AFMobileIcon(afMobileIcons: AFMobileIcons.textDecoration, color: Theme.of(context).colorScheme.primary,),
+  itemIcon: Icon(Unicon.text),
   itemMenuBuilder: (editorState, selection, _) {
     return _TextDecorationMenu(editorState, selection);
   },
@@ -25,22 +26,22 @@ class _TextDecorationMenu extends StatefulWidget {
 class _TextDecorationMenuState extends State<_TextDecorationMenu> {
   final textDecorations = [
     TextDecorationUnit(
-      icon: AFMobileIcons.bold,
+      icon: Icon(Unicon.bold),
       label: AppFlowyEditorLocalizations.current.bold,
       name: AppFlowyRichTextKeys.bold,
     ),
     TextDecorationUnit(
-      icon: AFMobileIcons.italic,
+      icon: Icon(Unicon.italic),
       label: AppFlowyEditorLocalizations.current.italic,
       name: AppFlowyRichTextKeys.italic,
     ),
     TextDecorationUnit(
-      icon: AFMobileIcons.underline,
+      icon: Icon(Unicon.underline),
       label: AppFlowyEditorLocalizations.current.underline,
       name: AppFlowyRichTextKeys.underline,
     ),
     TextDecorationUnit(
-      icon: AFMobileIcons.strikethrough,
+      icon: Icon(Unicon.text_strike_through),
       label: AppFlowyEditorLocalizations.current.strikethrough,
       name: AppFlowyRichTextKeys.strikethrough,
     ),
@@ -58,9 +59,7 @@ class _TextDecorationMenuState extends State<_TextDecorationMenu> {
       });
 
       return MobileToolbarItemMenuBtn(
-        icon: AFMobileIcon(
-          afMobileIcons: currentDecoration.icon,
-        ),
+        icon: currentDecoration.icon,
         label: Text(currentDecoration.label),
         isSelected: isSelected,
         onPressed: () {
@@ -87,7 +86,7 @@ class _TextDecorationMenuState extends State<_TextDecorationMenu> {
 }
 
 class TextDecorationUnit {
-  final AFMobileIcons icon;
+  final Icon icon;
   final String label;
   final String name;
 

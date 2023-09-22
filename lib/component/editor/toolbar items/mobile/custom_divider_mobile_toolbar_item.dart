@@ -1,8 +1,9 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 
 final customDividerMobileToolbarItem = MobileToolbarItem.action(
-  itemIcon: AFMobileIcon(afMobileIcons: AFMobileIcons.divider, color: Theme.of(context).colorScheme.primary,),
+  itemIcon: Icon(Unicon.ellipsis_h),
   actionHandler: ((editorState, selection) {
     // same as the [handler] of [dividerMenuItem] in Desktop
     final selection = editorState.selection;

@@ -1,12 +1,13 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 
 MobileToolbarItem customBuildTextAndBackgroundColorMobileToolbarItem({
   List<ColorOption>? textColorOptions,
   List<ColorOption>? backgroundColorOptions,
 }) {
   return MobileToolbarItem.withMenu(
-    itemIcon: AFMobileIcon(afMobileIcons: AFMobileIcons.color, color: Theme.of(context).colorScheme.primary,),
+    itemIcon: Icon(Unicon.palette),
     itemMenuBuilder: (editorState, selection, _) {
       return _TextAndBackgroundColorMenu(
         editorState,

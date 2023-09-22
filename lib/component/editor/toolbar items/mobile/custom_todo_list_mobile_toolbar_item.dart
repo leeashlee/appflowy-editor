@@ -1,8 +1,9 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 
 final customTodoListMobileToolbarItem = MobileToolbarItem.action(
-  itemIcon: AFMobileIcon(afMobileIcons: AFMobileIcons.checkbox, color: Theme.of(context).colorScheme.primary,),
+  itemIcon: Icon(Unicon.check_circle),
   actionHandler: (editorState, selection) async {
     final node = editorState.getNodeAtPath(selection.start.path)!;
     final isTodoList = node.type == TodoListBlockKeys.type;

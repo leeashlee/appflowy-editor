@@ -1,11 +1,9 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 
 final customLinkMobileToolbarItem = MobileToolbarItem.withMenu(
-  itemIcon: AFMobileIcon(
-    afMobileIcons: AFMobileIcons.link,
-    color: Theme.of(context).colorScheme.primary,
-  ),
+  itemIcon: Icon(Unicon.link),
   itemMenuBuilder: (editorState, selection, itemMenuService) {
     final String? linkText = editorState.getDeltaAttributeValueInSelection(
       AppFlowyRichTextKeys.href,
