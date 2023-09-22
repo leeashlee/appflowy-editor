@@ -309,9 +309,9 @@ class _HomePageState extends State<HomePage> {
       dev.log("buildNotes: Building ListTile No. $i");
       if (currI is NoteFile) {
         Color prim = Theme.of(context).colorScheme.primary;
-        Color sec = Theme.of(context).colorScheme.secondaryContainer;
+        Color sec = Colors.transparent;
         Color bg = (currI == notes.getCurrNotefile()) ? prim : sec;
-        Color fg = (currI == notes.getCurrNotefile()) ? sec : prim;
+        Color fg = (currI == notes.getCurrNotefile()) ? Theme.of(context).colorScheme.onPrimary : prim;
         dev.log("buildNotes: Colors: bg: ${bg.toHex()} fg: ${fg.toHex()}");
         retVal.add(
           Slidable(
@@ -321,8 +321,9 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
-                  backgroundColor: bg,
-                  foregroundColor: fg,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.secondaryContainer,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Unicon.edit_alt,
                   onPressed: (context) => showDialog<String>(
                     context: context,
@@ -390,8 +391,9 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
-                  backgroundColor: bg,
-                  foregroundColor: fg,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.secondaryContainer,
+                  foregroundColor: Theme.of(context).colorScheme.primary,
                   icon: Unicon.edit_alt,
                   onPressed: (context) => showDialog<String>(
                     context: context,
@@ -417,8 +419,8 @@ class _HomePageState extends State<HomePage> {
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
                   icon: Unicon.trash,
-                  backgroundColor: bg,
-                  foregroundColor: fg,
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                  foregroundColor: Theme.of(context).colorScheme.onError,
                   onPressed: (context) => showDialog<String>(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -452,10 +454,10 @@ class _HomePageState extends State<HomePage> {
             ),
             child: SizedBox(
               width: 320,
-              //TODO Highlighting a note you're currently editing
               child: TextButton(
                 style: TextButton.styleFrom(
                   alignment: Alignment.centerLeft,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                   foregroundColor: fg,
                   backgroundColor: bg,
                 ),
