@@ -1,7 +1,6 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:noel_notes/component/editor/custom_icon_item_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:noel_notes/font_awesome5_icons.dart';
 
 final ToolbarItem customQuoteItem = ToolbarItem(
   id: 'editor.quote',
