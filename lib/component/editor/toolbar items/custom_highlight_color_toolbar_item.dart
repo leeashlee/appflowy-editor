@@ -19,7 +19,13 @@ ToolbarItem customBuildHighlightColorItem({List<ColorOption>? colorOptions}) {
         });
       });
       return CustomSVGIconItemWidget(
-        iconName: 'toolbar/highlight_color',
+       iconBuilder: (_) => Icon(
+                Icons.border_color_rounded,
+                size: 16,
+                color: isHighlight
+                    ? highlightColor
+                    : Theme.of(context).colorScheme.primary,
+              ),
         iconSize: const Size.square(14),
         isHighlight: isHighlight,
         highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,

@@ -11,7 +11,13 @@ final ToolbarItem customNumberedListItem = ToolbarItem(
     final node = editorState.getNodeAtPath(selection.start.path)!;
     final isHighlight = node.type == 'numbered_list';
     return CustomSVGIconItemWidget(
-      iconName: 'toolbar/numbered_list',
+      iconBuilder: (_) => Icon(
+                Icons.format_list_numbered,
+                size: 16,
+                color: isHighlight
+                    ? highlightColor
+                    : Theme.of(context).colorScheme.primary,
+              ),
       isHighlight: isHighlight,
       highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
       normalColor: Theme.of(context).colorScheme.primary,

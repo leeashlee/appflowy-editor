@@ -20,7 +20,13 @@ ToolbarItem customBuildTextColorItem({
         });
       });
       return CustomSVGIconItemWidget(
-        iconName: 'toolbar/text_color',
+        iconBuilder: (_) => Icon(
+                Icons.format_color_text_rounded,
+                size: 16,
+                color: isHighlight
+                    ? highlightColor
+                    : Theme.of(context).colorScheme.primary,
+              ),
         isHighlight: isHighlight,
         highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
         normalColor: Theme.of(context).colorScheme.primary,
