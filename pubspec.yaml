@@ -123,3 +123,6 @@ flutter:
     - family:  Unicon
       fonts:
        - asset: assets/fonts/Unicon.ttf
+    - family: FontAwesome
+      fonts:
+      - asset: assets/fonts/FontAwesome5.ttf
