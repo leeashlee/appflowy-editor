@@ -98,7 +98,7 @@ class ThemeCubit extends Cubit<ThemeData> {
   );
 
   static final _darkTheme = ThemeData(
-    fontFamily: GoogleFonts.notoSans().fontFamily,
+    fontFamily: GoogleFonts.quicksand().fontFamily,
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color.fromARGB(255, 255, 164, 194),
       brightness: Brightness.dark,
