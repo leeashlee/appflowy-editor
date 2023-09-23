@@ -562,7 +562,7 @@ class _HomePageState extends State<HomePage> {
     if (Platform.isAndroid || Platform.isIOS) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Export isn`t limited to mobile yet.'),
+          content: Text('Export isn`t available to mobile yet.'),
         ),
       );
       Navigator.pop(context, "OK");
