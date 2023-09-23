@@ -34,7 +34,7 @@ dependencies:
   shared_preferences: ">=2.2.1"
   localstorage: ^4.0.1+4
   provider: ^6.0.3
-  url_launcher: ^6.1.5
+  url_launcher: ^6.1.14
   path_provider: ^2.0.15
   google_fonts: ^6.0.0
   flutter_localizations:

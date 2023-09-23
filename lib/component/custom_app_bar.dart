@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:noel_notes/component/about_screen.dart';
 
 import '../unicon_icons.dart';
 
@@ -75,6 +76,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
             PopupMenuDivider(),
             MenuItemButton(
               child: Text("About"),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AboutScreen()),
+              ),
               leadingIcon: Icon(Unicon.info_circle),
             ),
           ],
