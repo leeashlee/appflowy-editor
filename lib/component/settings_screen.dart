@@ -18,6 +18,7 @@ class SettingsScreen extends StatelessWidget {
             MenuItemButton(
               leadingIcon: const Icon(Unicon.brightness_half),
               child: const Text('Change Theme'),
+              //TODO Changing the theme in a radio menu
               onPressed: () => {
                 context.read<ThemeCubit>().toggleTheme(),
               },
