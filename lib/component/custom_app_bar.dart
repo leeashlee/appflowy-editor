@@ -3,12 +3,6 @@ import 'package:flutter/services.dart';
 
 import '../unicon_icons.dart';
 
-enum UserMenu {
-  accountinfo,
-  settings,
-  about,
-}
-
 class CustomAppBar extends AppBar {
   final String label;
   final String icon;
@@ -69,40 +63,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
             );
           },
           menuChildren: [
-            const PopupMenuItem<UserMenu>(
-              enabled: false,
-              value: UserMenu.accountinfo,
-              child: Row(
-                children: [
-                  Icon(Unicon.chat_bubble_user),
-                  SizedBox(width: 10),
-                  Text("Account Info"),
-                ],
-              ),
+            MenuItemButton(
+              child: Text("Account Info"),
+              leadingIcon: Icon(Unicon.chat_bubble_user),
             ),
             PopupMenuDivider(),
-            const PopupMenuItem<UserMenu>(
-              enabled: false,
-              value: UserMenu.settings,
-              child: Row(
-                children: [
-                  Icon(Unicon.wrench),
-                  SizedBox(width: 10),
-                  Text("Settings"),
-                ],
-              ),
+            MenuItemButton(
+              child: Text("Settings"),
+              leadingIcon: Icon(Unicon.wrench),
             ),
             PopupMenuDivider(),
-            const PopupMenuItem<UserMenu>(
-              enabled: false,
-              value: UserMenu.about,
-              child: Row(
-                children: [
-                  Icon(Unicon.info_circle),
-                  SizedBox(width: 10),
-                  Text("About"),
-                ],
-              ),
+            MenuItemButton(
+              child: Text("About"),
+              leadingIcon: Icon(Unicon.info_circle),
             ),
           ],
         ),

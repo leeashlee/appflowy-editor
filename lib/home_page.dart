@@ -235,9 +235,6 @@ class _HomePageState extends State<HomePage> {
         label: const Text('Export to Markdown'),
       ),
 
-      Divider(
-        color: Theme.of(context).colorScheme.outline,
-      ),
       // Import Notes
       _buildSeparator(context, 'Import a New Note 📁'),
       ElevatedButton.icon(
@@ -252,10 +249,6 @@ class _HomePageState extends State<HomePage> {
         },
         icon: const Icon(Unicon.import_icon),
         label: const Text('Import From Markdown'),
-      ),
-
-      Divider(
-        color: Theme.of(context).colorScheme.outline,
       ),
 
       // Settings
