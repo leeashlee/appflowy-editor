@@ -7,6 +7,7 @@ import 'dart:math';
 
 import 'dart:developer' as dev;
 import 'package:appflowy_editor/appflowy_editor.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:noel_notes/Notes/NoteCollection.dart';
@@ -569,7 +570,7 @@ class _HomePageState extends State<HomePage> {
         throw UnimplementedError();
     }
 
-    if (!kIsWeb) {
+    if (!kIsWeb && !Platform.isAndroid && !Platform.isIOS) {
       final path = await FilePicker.platform.saveFile(
         fileName: 'document.${fileType.extension}',
       );
@@ -583,6 +584,18 @@ class _HomePageState extends State<HomePage> {
           );
         }
       }
+    }
+    if (Platform.isAndroid) {
+      FileSaver.instance.saveFile(
+        name: 'document',
+        ext: fileType.extension,
+      );
+    }
+    if (Platform.isIOS) {
+      FileSaver.instance.saveFile(
+        name: 'document',
+        ext: fileType.extension,
+      );
     } else {
       final blob = html.Blob([result], 'text/plain', 'native');
       html.AnchorElement(
