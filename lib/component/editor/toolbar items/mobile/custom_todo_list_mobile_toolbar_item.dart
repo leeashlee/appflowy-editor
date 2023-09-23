@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:noel_notes/unicon_icons.dart';
 
 final customTodoListMobileToolbarItem = MobileToolbarItem.action(
-  itemIcon: Icon(Unicon.check_circle),
+  itemIcon: const Icon(Unicon.check_circle),
   actionHandler: (editorState, selection) async {
     final node = editorState.getNodeAtPath(selection.start.path)!;
     final isTodoList = node.type == TodoListBlockKeys.type;

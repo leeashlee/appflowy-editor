@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:noel_notes/unicon_icons.dart';
 
 final customDividerMobileToolbarItem = MobileToolbarItem.action(
-  itemIcon: Icon(Unicon.ellipsis_h),
+  itemIcon: const Icon(Unicon.ellipsis_h),
   actionHandler: ((editorState, selection) {
     // same as the [handler] of [dividerMenuItem] in Desktop
     final selection = editorState.selection;

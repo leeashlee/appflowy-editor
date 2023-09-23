@@ -62,6 +62,7 @@ class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   Timer? syncTimer;
   final myNoteController = TextEditingController();
+  // ignore: unnecessary_new
   LocalStorage storage = new LocalStorage("storage");
 
   late NoteCollection notes;
@@ -151,7 +152,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildDrawer(BuildContext context) {
     var children = [
-      SizedBox(
+      const SizedBox(
         height: 25,
       ),
       _buildSeparator(context, 'Your Saved Notes 📝'),

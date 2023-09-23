@@ -10,10 +10,10 @@ class AboutScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("About"),
       ),
-      body: Container(padding: EdgeInsets.all(8),
+      body: Container(padding: const EdgeInsets.all(8),
         child: Column(
           children: [
-            SafeArea(
+            const SafeArea(
               minimum: EdgeInsets.all(8),
               child: Text(
                 textAlign: TextAlign.center,
@@ -21,8 +21,8 @@ class AboutScreen extends StatelessWidget {
               ),
             ),
             MenuItemButton(
-              leadingIcon: Icon(Unicon.link),
-              child: Text("Website"),
+              leadingIcon: const Icon(Unicon.link),
+              child: const Text("Website"),
               onPressed: () async {
                 final Uri url = Uri.parse('https://www.ashleehee.com/');
                 if (!await launchUrl(url)) {
@@ -31,8 +31,8 @@ class AboutScreen extends StatelessWidget {
               },
             ),
             MenuItemButton(
-              leadingIcon: Icon(Unicon.github_alt),
-              child: Text("Source Code"),
+              leadingIcon: const Icon(Unicon.github_alt),
+              child: const Text("Source Code"),
               onPressed: () async {
                 final Uri url = Uri.parse('https://github.com/leeashlee/my-text-editor');
                 if (!await launchUrl(url)) {

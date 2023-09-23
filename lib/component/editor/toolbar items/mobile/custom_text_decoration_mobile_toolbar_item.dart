@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:noel_notes/unicon_icons.dart';
 
 final customTextDecorationMobileToolbarItem = MobileToolbarItem.withMenu(
-  itemIcon: Icon(Unicon.text),
+  itemIcon: const Icon(Unicon.text),
   itemMenuBuilder: (editorState, selection, _) {
     return _TextDecorationMenu(editorState, selection);
   },
@@ -26,22 +26,22 @@ class _TextDecorationMenu extends StatefulWidget {
 class _TextDecorationMenuState extends State<_TextDecorationMenu> {
   final textDecorations = [
     TextDecorationUnit(
-      icon: Icon(Unicon.bold),
+      icon: const Icon(Unicon.bold),
       label: AppFlowyEditorLocalizations.current.bold,
       name: AppFlowyRichTextKeys.bold,
     ),
     TextDecorationUnit(
-      icon: Icon(Unicon.italic),
+      icon: const Icon(Unicon.italic),
       label: AppFlowyEditorLocalizations.current.italic,
       name: AppFlowyRichTextKeys.italic,
     ),
     TextDecorationUnit(
-      icon: Icon(Unicon.underline),
+      icon: const Icon(Unicon.underline),
       label: AppFlowyEditorLocalizations.current.underline,
       name: AppFlowyRichTextKeys.underline,
     ),
     TextDecorationUnit(
-      icon: Icon(Unicon.text_strike_through),
+      icon: const Icon(Unicon.text_strike_through),
       label: AppFlowyEditorLocalizations.current.strikethrough,
       name: AppFlowyRichTextKeys.strikethrough,
     ),

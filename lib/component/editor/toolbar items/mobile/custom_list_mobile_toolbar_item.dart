@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:noel_notes/unicon_icons.dart';
 
 final customListMobileToolbarItem = MobileToolbarItem.withMenu(
-  itemIcon: Icon(Unicon.list_ul),
+  itemIcon: const Icon(Unicon.list_ul),
   itemMenuBuilder: (editorState, selection, _) {
     return _ListMenu(editorState, selection);
   },
@@ -26,12 +26,12 @@ class _ListMenu extends StatefulWidget {
 class _ListMenuState extends State<_ListMenu> {
   final lists = [
     ListUnit(
-      icon: Icon(Unicon.list_ul),
+      icon: const Icon(Unicon.list_ul),
       label: AppFlowyEditorLocalizations.current.bulletedList,
       name: 'bulleted_list',
     ),
     ListUnit(
-      icon: Icon(Icons.format_list_numbered),
+      icon: const Icon(Icons.format_list_numbered),
       label: AppFlowyEditorLocalizations.current.numberedList,
       name: 'numbered_list',
     ),

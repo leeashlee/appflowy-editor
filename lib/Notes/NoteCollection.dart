@@ -15,7 +15,7 @@ class NoteCollection implements NoteEntry {
     List<NoteEntry> initial = const [],
     int manualIndex = -1,
   ]) {
-    if (initial.length != 0) {
+    if (initial.isNotEmpty) {
       developer
           .log("starting NoteCollection with $initial and focus = $withFocus");
     }

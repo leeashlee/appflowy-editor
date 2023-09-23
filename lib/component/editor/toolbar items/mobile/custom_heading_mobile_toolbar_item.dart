@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:noel_notes/font_awesome5_icons.dart';
 
 final customHeadingMobileToolbarItem = MobileToolbarItem.withMenu(
-  itemIcon: Icon(FontAwesome5.heading, size: 20,),
+  itemIcon: const Icon(FontAwesome5.heading, size: 20,),
   itemMenuBuilder: (editorState, selection, _) {
     return _HeadingMenu(
       selection,

@@ -64,22 +64,22 @@ class _CustomAppBarState extends State<CustomAppBar> {
             );
           },
           menuChildren: [
-            MenuItemButton(
-              child: Text("Account Info"),
+            const MenuItemButton(
               leadingIcon: Icon(Unicon.chat_bubble_user),
+              child: Text("Account Info"),
             ),
-            PopupMenuDivider(),
-            MenuItemButton(
-              child: Text("Settings"),
+            const PopupMenuDivider(),
+            const MenuItemButton(
               leadingIcon: Icon(Unicon.wrench),
+              child: Text("Settings"),
             ),
-            PopupMenuDivider(),
+            const PopupMenuDivider(),
             MenuItemButton(
-              child: Text("About"),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const AboutScreen()),
               ),
-              leadingIcon: Icon(Unicon.info_circle),
+              leadingIcon: const Icon(Unicon.info_circle),
+              child: const Text("About"),
             ),
           ],
         ),

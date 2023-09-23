@@ -7,7 +7,7 @@ MobileToolbarItem customBuildTextAndBackgroundColorMobileToolbarItem({
   List<ColorOption>? backgroundColorOptions,
 }) {
   return MobileToolbarItem.withMenu(
-    itemIcon: Icon(Unicon.palette),
+    itemIcon: const Icon(Unicon.palette),
     itemMenuBuilder: (editorState, selection, _) {
       return _TextAndBackgroundColorMenu(
         editorState,
