@@ -284,7 +284,6 @@ class _HomePageState extends State<HomePage> {
     return _widgetBuilder(context);
   }
 
-  //TODO Learning how to make it a Reorderable List View
   List<Widget> buildNotes(
     BuildContext context,
     NoteCollection currNotes, [
