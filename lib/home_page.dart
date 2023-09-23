@@ -7,14 +7,12 @@ import 'dart:math';
 
 import 'dart:developer' as dev;
 import 'package:appflowy_editor/appflowy_editor.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:noel_notes/Notes/NoteCollection.dart';
 import 'package:noel_notes/Notes/NoteEntry.dart';
 import 'package:noel_notes/component/custom_alert_dialog.dart';
 import 'package:noel_notes/component/custom_app_bar.dart';
-import 'package:noel_notes/main.dart';
 import 'package:noel_notes/component/editor/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -250,25 +248,6 @@ class _HomePageState extends State<HomePage> {
         },
         icon: const Icon(Unicon.import_icon),
         label: const Text('Import From Markdown'),
-      ),
-
-      // Settings
-      _buildSeparator(context, 'Preferences ⚙️'),
-
-      //Theme
-      ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          alignment: Alignment.centerLeft,
-          elevation: 0.0,
-          shadowColor: Colors.transparent,
-        ),
-        onPressed: () => {
-          context.read<ThemeCubit>().toggleTheme(),
-          Navigator.pop(context, 'OK'),
-        },
-        icon: const Icon(Unicon.brightness_half),
-        label: const Text('Change Theme'),
       ),
     ]);
 
