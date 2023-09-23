@@ -40,6 +40,13 @@ class AboutScreen extends StatelessWidget {
                 }
               },
             ),
+            MenuItemButton(
+              leadingIcon: const Icon(Unicon.clipboard_notes),
+              child: const Text("License"),
+              onPressed:() {
+                showLicensePage(context: context);
+              },
+            ),
           ],
         ),
       ),
