@@ -185,14 +185,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.5.0"
-  file_saver:
-    dependency: "direct main"
-    description:
-      name: file_saver
-      sha256: "591d25e750e3a4b654f7b0293abc2ed857242f82ca7334051b2a8ceeb369dac8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.8"
   flutter:
     dependency: "direct main"
     description: flutter

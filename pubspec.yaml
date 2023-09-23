@@ -35,7 +35,7 @@ dependencies:
   localstorage: ^4.0.1+4
   provider: ^6.0.3
   url_launcher: ^6.1.14
-  path_provider: ^2.0.15
+  path_provider: ^2.1.1
   google_fonts: ^6.0.0
   flutter_localizations:
     sdk: flutter
@@ -50,7 +50,6 @@ dependencies:
   flutter_slidable: ^3.0.0
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^2.0.3
-  file_saver: ^0.2.8
 
 dev_dependencies:
   flutter_test:
