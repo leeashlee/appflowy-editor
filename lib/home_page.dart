@@ -559,6 +559,15 @@ class _HomePageState extends State<HomePage> {
 
 // file stuff
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
+    if (Platform.isAndroid || Platform.isIOS) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Export isn`t limited to mobile yet.'),
+        ),
+      );
+      Navigator.pop(context, "OK");
+      return null;
+    }
     var result = '';
 
     switch (fileType) {
