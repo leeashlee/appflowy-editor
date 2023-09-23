@@ -17,7 +17,7 @@ class AboutScreen extends StatelessWidget {
               minimum: EdgeInsets.all(8),
               child: Text(
                 textAlign: TextAlign.center,
-                "Note Editor\nVersion 1.0.0\nMade with love by AshLee!",
+                "Note Editor\nVersion 1.0.0",
               ),
             ),
             MenuItemButton(
