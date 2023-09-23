@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:noel_notes/component/about_screen.dart';
+import 'package:noel_notes/component/account_info_screen.dart';
 
 import '../unicon_icons.dart';
 
@@ -64,9 +65,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
             );
           },
           menuChildren: [
-            const MenuItemButton(
-              leadingIcon: Icon(Unicon.chat_bubble_user),
-              child: Text("Account Info"),
+            MenuItemButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AccountInfo()),
+              ),
+              leadingIcon: const Icon(Unicon.chat_bubble_user),
+              child: const Text("Account Info"),
             ),
             const PopupMenuDivider(),
             const MenuItemButton(
