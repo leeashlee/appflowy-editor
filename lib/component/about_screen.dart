@@ -9,7 +9,7 @@ class AboutScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("About"),
       ),
-      body: Container(
+      body: Container(padding: EdgeInsets.all(8),
         child: Column(
           children: [
             SafeArea(
