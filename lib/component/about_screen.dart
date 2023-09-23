@@ -41,6 +41,16 @@ class AboutScreen extends StatelessWidget {
               },
             ),
             MenuItemButton(
+              leadingIcon: const Icon(Unicon.coffee),
+              child: const Text("Buy Me A Coffee"),
+              onPressed: () async {
+                final Uri url = Uri.parse('https://www.buymeacoffee.com/ashleehee');
+                if (!await launchUrl(url)) {
+                  throw Exception('Could not launch $url');
+                }
+              },
+            ),
+            MenuItemButton(
               leadingIcon: const Icon(Unicon.clipboard_notes),
               child: const Text("License"),
               onPressed:() {
