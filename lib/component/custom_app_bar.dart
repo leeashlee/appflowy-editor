@@ -3,6 +3,12 @@ import 'package:flutter/services.dart';
 
 import '../unicon_icons.dart';
 
+enum UserMenu {
+  accountinfo,
+  settings,
+  about,
+}
+
 class CustomAppBar extends AppBar {
   final String label;
   final String icon;
@@ -46,8 +52,60 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ),
         ),
       ),
-      actions: const [
-        IconButton(onPressed: null, icon: Icon(Unicon.user)),
+      actions: [
+        MenuAnchor(
+          builder:
+              (BuildContext context, MenuController controller, Widget? child) {
+            return IconButton(
+              onPressed: () {
+                if (controller.isOpen) {
+                  controller.close();
+                } else {
+                  controller.open();
+                }
+              },
+              icon: const Icon(Unicon.user),
+              tooltip: 'Settings',
+            );
+          },
+          menuChildren: [
+            const PopupMenuItem<UserMenu>(
+              enabled: false,
+              value: UserMenu.accountinfo,
+              child: Row(
+                children: [
+                  Icon(Unicon.chat_bubble_user),
+                  SizedBox(width: 10),
+                  Text("Account Info"),
+                ],
+              ),
+            ),
+            PopupMenuDivider(),
+            const PopupMenuItem<UserMenu>(
+              enabled: false,
+              value: UserMenu.settings,
+              child: Row(
+                children: [
+                  Icon(Unicon.wrench),
+                  SizedBox(width: 10),
+                  Text("Settings"),
+                ],
+              ),
+            ),
+            PopupMenuDivider(),
+            const PopupMenuItem<UserMenu>(
+              enabled: false,
+              value: UserMenu.about,
+              child: Row(
+                children: [
+                  Icon(Unicon.info_circle),
+                  SizedBox(width: 10),
+                  Text("About"),
+                ],
+              ),
+            ),
+          ],
+        ),
       ],
     );
     return appBar;
