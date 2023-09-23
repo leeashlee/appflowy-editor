@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noel_notes/unicon_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -20,6 +21,7 @@ class AboutScreen extends StatelessWidget {
               ),
             ),
             MenuItemButton(
+              leadingIcon: Icon(Unicon.link),
               child: Text("Website"),
               onPressed: () async {
                 final Uri url = Uri.parse('https://www.ashleehee.com/');
@@ -29,6 +31,7 @@ class AboutScreen extends StatelessWidget {
               },
             ),
             MenuItemButton(
+              leadingIcon: Icon(Unicon.github_alt),
               child: Text("Source Code"),
               onPressed: () async {
                 final Uri url = Uri.parse('https://github.com/leeashlee/my-text-editor');
