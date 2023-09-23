@@ -1,6 +1,5 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 final customQuoteMobileToolbarItem = MobileToolbarItem.action(
   itemIcon: Icon(CupertinoIcons.text_quote),

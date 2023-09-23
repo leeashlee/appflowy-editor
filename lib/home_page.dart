@@ -451,7 +451,8 @@ class _HomePageState extends State<HomePage> {
                 style: TextButton.styleFrom(
                   alignment: Alignment.centerLeft,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5)),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                   foregroundColor: fg,
                   backgroundColor: bg,
                 ),
