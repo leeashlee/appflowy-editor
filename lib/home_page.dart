@@ -344,7 +344,7 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {
                             setState(() {
                               Navigator.pop(context, 'OK');
-                              notes.removeEntry(currI);
+                              removeNote(currI, currNotes);
                             });
                           },
                           child: const Text('OK'),
@@ -411,7 +411,7 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {
                             setState(() {
                               Navigator.pop(context, 'OK');
-                              notes.removeEntry(currI);
+                              removeNote(currI, currNotes);
                             });
                           },
                           child: const Text('OK'),
@@ -530,10 +530,16 @@ class _HomePageState extends State<HomePage> {
     setState(
       () {
         into!.addEntry(newNote);
-        dev.log(
-          "addNote: ${jsonEncode(into.toJson())}",
-        );
         //switchNote(into as List<NoteCollection>, newNote);
+      },
+    );
+  }
+
+  void removeNote(NoteEntry old,[NoteCollection? into]) {
+    into = (into != null) ? into : notes;
+    setState(
+      () {
+        into!.removeEntry(old);
       },
     );
   }
