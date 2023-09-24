@@ -559,15 +559,6 @@ class _HomePageState extends State<HomePage> {
 
 // file stuff
   void _exportFile(EditorState editorState, ExportFileType fileType) async {
-    if (Platform.isAndroid || Platform.isIOS) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Export isn`t available to mobile yet.'),
-        ),
-      );
-      Navigator.pop(context, "OK");
-      return null;
-    }
     var result = '';
 
     switch (fileType) {
@@ -578,9 +569,18 @@ class _HomePageState extends State<HomePage> {
         throw UnimplementedError();
     }
 
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Export isn`t available to mobile yet.'),
+        ),
+      );
+      Navigator.pop(context, "OK");
+      return null;
+    }
     if (!kIsWeb) {
       final path = await FilePicker.platform.saveFile(
-        fileName: 'document.${fileType.extension}',
+        fileName: '${notes.getCurrNotefile()!.getName()}.${fileType.extension}',
       );
       if (path != null) {
         await File(path).writeAsString(result);
@@ -597,7 +597,7 @@ class _HomePageState extends State<HomePage> {
       html.AnchorElement(
         href: html.Url.createObjectUrlFromBlob(blob).toString(),
       )
-        ..setAttribute('download', 'document.${fileType.extension}')
+        ..setAttribute('download', '${notes.getCurrNotefile()!.getName()}.${fileType.extension}')
         ..click();
     }
   }
