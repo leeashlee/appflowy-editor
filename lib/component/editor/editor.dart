@@ -44,7 +44,7 @@ class Editor extends StatelessWidget {
         onEditorStateChange(editorState);
       }
     });
-    final ScrollController scrollController = ScrollController();
+    final EditorScrollController editorScrollController = EditorScrollController(editorState: editorState);
     if (PlatformExtension.isMobile) {
       return Column(
         children: [
@@ -52,7 +52,7 @@ class Editor extends StatelessWidget {
             child: _buildMobileEditor(
               context,
               editorState,
-              scrollController,
+              editorScrollController,
             ),
           ),
           MobileToolbar(
@@ -99,7 +99,7 @@ class Editor extends StatelessWidget {
           ...customAlignmentItems,
         ],
         editorState: editorState,
-        scrollController: scrollController,
+        editorScrollController: editorScrollController,
         //FIXME material colors to sync
         style: FloatingToolbarStyle(
           backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
@@ -108,7 +108,7 @@ class Editor extends StatelessWidget {
         child: _buildDesktopEditor(
           context,
           editorState,
-          scrollController,
+          editorScrollController,
         ),
       );
     }
@@ -117,19 +117,19 @@ class Editor extends StatelessWidget {
   Widget _buildMobileEditor(
     BuildContext context,
     EditorState editorState,
-    ScrollController? scrollController,
+    EditorScrollController? editorScrollController,
   ) {
     return AppFlowyEditor(
       editorStyle: customizeEditorStyle(context),
       editorState: editorState,
-      scrollController: scrollController,
+      editorScrollController: editorScrollController,
     );
   }
 
   Widget _buildDesktopEditor(
     BuildContext context,
     EditorState editorState,
-    ScrollController? scrollController,
+    EditorScrollController? editorScrollController,
   ) {
     final customBlockComponentBuilders = {
       ...standardBlockComponentBuilderMap,
@@ -146,7 +146,7 @@ class Editor extends StatelessWidget {
     return AppFlowyEditor(
       editorState: editorState,
       shrinkWrap: false,
-      scrollController: scrollController,
+      editorScrollController: editorScrollController,
       blockComponentBuilders: customBlockComponentBuilders,
       commandShortcutEvents: [
         customToggleHighlightCommand(
