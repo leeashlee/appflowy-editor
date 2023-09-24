@@ -137,7 +137,8 @@ class _HomePageState extends State<HomePage> {
             'Untitled',
             const Icon(Unicon.edit_alt),
             (String input) {
-              addNote(input);
+              NoteFile newNote = addNote(input);
+              switchNote([notes], newNote);
             },
           ),
         ),
@@ -428,6 +429,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onPressed: () {
                   switchNote(parents!, currI);
+                  Navigator.pop(context, "OK");
                 },
                 child: Text(
                   currI.getName(),
@@ -540,16 +542,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   // note stuff
-  void addNote(String input, [NoteCollection? into]) {
+  NoteFile addNote(String input, [NoteCollection? into]) {
     NoteFile newNote = NoteFile(input, EditorState.blank());
     // if into is null use the root
     into = (into != null) ? into : notes;
     setState(
       () {
         into!.addEntry(newNote);
-        switchNote([into], newNote);
       },
     );
+    return newNote;
   }
 
   void removeNote(NoteEntry old, [NoteCollection? into]) {
@@ -571,7 +573,6 @@ class _HomePageState extends State<HomePage> {
       // the last parent is the parent of the file
       parents[parents.length - 1].switchFocus(file);
     });
-    Navigator.pop(context, 'OK');
   }
 
 // file stuff
