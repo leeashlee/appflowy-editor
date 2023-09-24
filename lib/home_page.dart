@@ -444,7 +444,8 @@ class _HomePageState extends State<HomePage> {
             childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
             initiallyExpanded: currI.isInFocus(),
             expandedAlignment: Alignment.centerLeft,
-            leading: IconButton(
+            trailing: IconButton(
+              color: Theme.of(context).colorScheme.error,
               onPressed: () => showDialog<String>(
                     context: context,
                     builder: (context) => AlertDialog(
