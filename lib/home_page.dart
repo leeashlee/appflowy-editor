@@ -157,8 +157,6 @@ class _HomePageState extends State<HomePage> {
     ];
     dev.log("_buildDrawer: Notes length: ${notes.getLength()}");
 
-    //children.addAll(buildNotes(context, notes));
-
     children.addAll([
       ExpansionTile(
         textColor: Theme.of(context).colorScheme.primary,
