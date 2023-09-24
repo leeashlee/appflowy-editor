@@ -549,7 +549,6 @@ class _HomePageState extends State<HomePage> {
     setState(
       () {
         into!.addEntry(newNote);
-        //switchNote(into as List<NoteCollection>, newNote);
       },
     );
   }
