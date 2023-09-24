@@ -75,7 +75,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    dev.log("initState");
     super.initState();
 
     notes = initNotes();
@@ -155,7 +154,6 @@ class _HomePageState extends State<HomePage> {
       ),
       _buildSeparator(context, 'Your Saved Notes 📝'),
     ];
-    dev.log("_buildDrawer: Notes length: ${notes.getLength()}");
 
     children.addAll([
       ExpansionTile(
@@ -269,12 +267,8 @@ class _HomePageState extends State<HomePage> {
     parents = (parents != null) ? List.from(parents) : [];
     parents.add(currNotes);
     List<Widget> retVal = [];
-    dev.log(
-      "buildNotes: ${jsonEncode(parents.map((e) => e.getName()).toList())}, $currNotes,",
-    );
     for (int i = 0; i < currNotes.getLength(); i++) {
       NoteEntry currI = currNotes.getEntry(i);
-      dev.log("buildNotes: Building ListTile No. $i");
       if (currI is NoteFile) {
         Color prim = Theme.of(context).colorScheme.primary;
         Color sec = Colors.transparent;
@@ -282,7 +276,6 @@ class _HomePageState extends State<HomePage> {
         Color fg = (currI == notes.getCurrNotefile())
             ? Theme.of(context).colorScheme.onPrimary
             : prim;
-        dev.log("buildNotes: Colors: bg: ${bg.toHex()} fg: ${fg.toHex()}");
         retVal.add(
           Slidable(
             endActionPane: ActionPane(
@@ -434,11 +427,7 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor: bg,
                 ),
                 onPressed: () {
-                  dev.log("buildNotes: onSwitchNote: switching to $i");
                   switchNote(parents!, currI);
-                  dev.log(
-                    "buildNote: onSwitchNote: switched to $i -> ${notes.getCurrNotefile()}",
-                  );
                 },
                 child: Text(
                   currI.getName(),
@@ -545,10 +534,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void sorting() {
-    dev.log("sorting: sorter pressed");
     notes.keepSorted((a, b) {
       int res = boolToInt(b is NoteCollection) - boolToInt(a is NoteCollection);
-      print("Sorter: ${a.toString()} vs ${b.toString()} == $res");
       return res;
     });
   }
@@ -577,10 +564,6 @@ class _HomePageState extends State<HomePage> {
 
   void switchNote(List<NoteCollection> parents, NoteFile file) {
     setState(() {
-      dev.log(
-        "switchNote: parents: ${jsonEncode(parents.map((e) => e.getName()).toList())}",
-      );
-      dev.log("switchNote: new: ${file.getName()}");
       // switch the focus recursively for all parents (propagate)
       for (var i = 0; i < parents.length - 1; i++) {
         parents[i].switchFocus(parents[i + 1]);
@@ -679,17 +662,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void doSync() {
-    dev.log("doSync: starting...");
-    dev.log("doSync: before: ${storage.getItem("notes")}");
     storage.setItem("notes", notes);
-    dev.log("doSync: after: ${storage.getItem("notes")}");
   }
 
   NoteCollection initNotes() {
-    dev.log("initNotes: ${LocalStorage('storage').getItem('notes')}");
-    dev.log("initNotes: widget.storage ${storage.getItem("notes")}");
     Map? lclNotes = storage.getItem("notes");
-    dev.log("initNotes: lclNotes $lclNotes");
 
     if (lclNotes == null) {
       return NoteCollection(
