@@ -90,6 +90,10 @@ class NoteCollection implements NoteEntry {
     _onWrite();
   }
 
+  bool isInFocus(){
+    return curr != null;
+  }
+
   void switchFocus(NoteEntry noteEntry) {
     setCurr(noteEntry);
   }

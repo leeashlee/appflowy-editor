@@ -453,7 +453,7 @@ class _HomePageState extends State<HomePage> {
             textColor: Theme.of(context).colorScheme.primary,
             tilePadding: const EdgeInsets.symmetric(horizontal: 8.0),
             childrenPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-            initiallyExpanded: false,
+            initiallyExpanded: currI.isInFocus(),
             expandedAlignment: Alignment.centerLeft,
             title: Row(
               children: [
