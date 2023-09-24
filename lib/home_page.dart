@@ -447,33 +447,31 @@ class _HomePageState extends State<HomePage> {
             trailing: IconButton(
               color: Theme.of(context).colorScheme.error,
               onPressed: () => showDialog<String>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Do you wanna delete the collection?'),
-                      content: const Text("It can't be undone."),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
-                        ),
-                        FilledButton(
-                          style: FilledButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.error,
-                            foregroundColor:
-                                Theme.of(context).colorScheme.onError,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              Navigator.pop(context, 'OK');
-                              removeNote(currI);
-                            });
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Do you wanna delete the collection?'),
+                  content: const Text("It can't be undone."),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                      child: const Text('Cancel'),
                     ),
-                  ),
+                    FilledButton(
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.error,
+                        foregroundColor: Theme.of(context).colorScheme.onError,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          Navigator.pop(context, 'OK');
+                          removeNote(currI);
+                        });
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              ),
               icon: const Icon(Unicon.trash),
             ),
             title: Row(
@@ -549,6 +547,7 @@ class _HomePageState extends State<HomePage> {
     setState(
       () {
         into!.addEntry(newNote);
+        switchNote([into], newNote);
       },
     );
   }
@@ -615,8 +614,10 @@ class _HomePageState extends State<HomePage> {
       html.AnchorElement(
         href: html.Url.createObjectUrlFromBlob(blob).toString(),
       )
-        ..setAttribute('download',
-            '${notes.getCurrNotefile()!.getName()}.${fileType.extension}')
+        ..setAttribute(
+          'download',
+          '${notes.getCurrNotefile()!.getName()}.${fileType.extension}',
+        )
         ..click();
     }
   }
