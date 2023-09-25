@@ -19,7 +19,7 @@ class SettingsScreen extends StatelessWidget {
           children: [
             MenuItemButton(
               leadingIcon: const Icon(Unicon.brightness_half),
-              child: const Text('Change Theme'),
+              child: const Text('Theme'),
               onPressed: () => showDialog<String>(
                 context: context,
                 builder: (context) => SimpleDialog(
