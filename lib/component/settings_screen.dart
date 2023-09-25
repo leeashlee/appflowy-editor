@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noel_notes/main.dart';
 import 'package:noel_notes/unicon_icons.dart';
 
+Brightness? _brightness = Brightness.light;
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
   @override
@@ -18,10 +20,34 @@ class SettingsScreen extends StatelessWidget {
             MenuItemButton(
               leadingIcon: const Icon(Unicon.brightness_half),
               child: const Text('Change Theme'),
-              //TODO Changing the theme in a radio menu
-              onPressed: () => {
-                context.read<ThemeCubit>().toggleTheme(),
-              },
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (context) => SimpleDialog(
+                  title: const Text("Change theme mode?"),
+                  children: [
+                    RadioListTile(
+                      title: const Text("Light"),
+                      value: Brightness.light,
+                      groupValue: _brightness,
+                      onChanged: (value) {
+                        _brightness = value;
+                        context.read<ThemeCubit>().toggleTheme();
+                        Navigator.pop(context);
+                      },
+                    ),
+                    RadioListTile(
+                      title: const Text("Dark"),
+                      value: Brightness.dark,
+                      groupValue: _brightness,
+                      onChanged: (value) {
+                        _brightness = value;
+                        context.read<ThemeCubit>().toggleTheme();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
