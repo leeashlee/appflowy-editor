@@ -21,10 +21,10 @@ packages:
     dependency: "direct main"
     description:
       name: appflowy_editor
-      sha256: "7a650cb4333dd4461adbb66082d837480ceba8aff95b1ef2255315b2f459e3e8"
+      sha256: "9eb900013ee2c4926b35807fd8fb565bf58e5fcf9563ab48a75854302aad7df3"
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.2"
+    version: "1.4.3"
   archive:
     dependency: transitive
     description:
@@ -321,10 +321,10 @@ packages:
     dependency: transitive
     description:
       name: image
-      sha256: "6e703d5e2f8c63fb31a77753915c1ec8baebde8088844e0d29f71b8f0b108888"
+      sha256: "93d1141eb65fe62414d5492de96ca2bff97eba0ca9218a89ad407a6f201fcadf"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.0"
+    version: "4.1.2"
   intl:
     dependency: transitive
     description:
