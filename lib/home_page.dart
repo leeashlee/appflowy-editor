@@ -114,7 +114,6 @@ class _HomePageState extends State<HomePage> {
       drawer: _buildDrawer(context),
       appBar: CustomAppBar(
         notes.getCurrNoteFile()!.getName(),
-        //FIXME This to display the current collection name
         notes.getCurrNoteCollection().getName(),
         (input) {
           setState(() {
