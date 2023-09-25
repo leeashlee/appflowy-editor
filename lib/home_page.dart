@@ -87,9 +87,9 @@ class _HomePageState extends State<HomePage> {
     );
 
     _widgetBuilder = (context) => Editor(
-          editorState: (notes.getCurrNotefile() as NoteFile).getBody(),
+          editorState: (notes.getCurrNoteFile() as NoteFile).getBody(),
           onEditorStateChange: (editorState) {
-            (notes.getCurrNotefile() as NoteFile).setBody(editorState);
+            (notes.getCurrNoteFile() as NoteFile).setBody(editorState);
           },
         );
   }
@@ -99,9 +99,9 @@ class _HomePageState extends State<HomePage> {
     super.reassemble();
 
     _widgetBuilder = (context) => Editor(
-          editorState: (notes.getCurrNotefile() as NoteFile).getBody(),
+          editorState: (notes.getCurrNoteFile() as NoteFile).getBody(),
           onEditorStateChange: (editorState) {
-            (notes.getCurrNotefile() as NoteFile).setBody(editorState);
+            (notes.getCurrNoteFile() as NoteFile).setBody(editorState);
           },
         );
   }
@@ -113,12 +113,12 @@ class _HomePageState extends State<HomePage> {
       extendBodyBehindAppBar: PlatformExtension.isDesktopOrWeb,
       drawer: _buildDrawer(context),
       appBar: CustomAppBar(
-        notes.getCurrNotefile()!.getName(),
+        notes.getCurrNoteFile()!.getName(),
         //FIXME This to display the current collection name
-        notes.getName(),
+        notes.getCurrNoteCollection().getName(),
         (input) {
           setState(() {
-            notes.getCurrNotefile()!.setName(input);
+            notes.getCurrNoteFile()!.setName(input);
           });
         },
       ),
@@ -223,7 +223,7 @@ class _HomePageState extends State<HomePage> {
         ),
         onPressed: () {
           _exportFile(
-            (notes.getCurrNotefile() as NoteFile).getBody(),
+            (notes.getCurrNoteFile() as NoteFile).getBody(),
             ExportFileType.markdown,
           );
         },
@@ -273,8 +273,8 @@ class _HomePageState extends State<HomePage> {
       if (currI is NoteFile) {
         Color prim = Theme.of(context).colorScheme.primary;
         Color sec = Colors.transparent;
-        Color bg = (currI == notes.getCurrNotefile()) ? prim : sec;
-        Color fg = (currI == notes.getCurrNotefile())
+        Color bg = (currI == notes.getCurrNoteFile()) ? prim : sec;
+        Color fg = (currI == notes.getCurrNoteFile())
             ? Theme.of(context).colorScheme.onPrimary
             : prim;
         retVal.add(
@@ -525,9 +525,9 @@ class _HomePageState extends State<HomePage> {
     setState(
       () {
         _widgetBuilder = (context) => Editor(
-              editorState: (notes.getCurrNotefile() as NoteFile).getBody(),
+              editorState: (notes.getCurrNoteFile() as NoteFile).getBody(),
               onEditorStateChange: (editorState) {
-                (notes.getCurrNotefile() as NoteFile).setBody(editorState);
+                (notes.getCurrNoteFile() as NoteFile).setBody(editorState);
               },
             );
       },
@@ -598,7 +598,7 @@ class _HomePageState extends State<HomePage> {
     }
     if (!kIsWeb) {
       final path = await FilePicker.platform.saveFile(
-        fileName: '${notes.getCurrNotefile()!.getName()}.${fileType.extension}',
+        fileName: '${notes.getCurrNoteFile()!.getName()}.${fileType.extension}',
       );
       if (path != null) {
         await File(path).writeAsString(result);
@@ -617,7 +617,7 @@ class _HomePageState extends State<HomePage> {
       )
         ..setAttribute(
           'download',
-          '${notes.getCurrNotefile()!.getName()}.${fileType.extension}',
+          '${notes.getCurrNoteFile()!.getName()}.${fileType.extension}',
         )
         ..click();
     }

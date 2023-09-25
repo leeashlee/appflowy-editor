@@ -7,7 +7,7 @@ import 'NoteCollection.dart';
 abstract class NoteEntry {
   String getName();
   void setName(String name);
-  NoteEntry? getCurrNotefile();
+  NoteEntry? getCurrNoteFile();
   void looseFocus();
   Map<String, Object?> toJson();
   static NoteEntry fromJson(Map<String, Object?> input, bool withFocus) {
@@ -65,7 +65,7 @@ class NoteFile implements NoteEntry {
   }
 
   @override
-  NoteEntry? getCurrNotefile() {
+  NoteEntry? getCurrNoteFile() {
     return this;
   }
 

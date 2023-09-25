@@ -64,8 +64,18 @@ class NoteCollection implements NoteEntry {
   }
 
   @override
-  NoteEntry? getCurrNotefile() {
-    return (curr != null) ? curr!.getCurrNotefile() : null; // be recursive
+  NoteEntry? getCurrNoteFile() {
+    return (curr != null) ? curr!.getCurrNoteFile() : null; // be recursive
+  }
+
+  NoteCollection getCurrNoteCollection() {
+    if (curr is NoteFile) {
+      return this;
+    } else if (curr != null && curr is NoteCollection) {
+      return (curr as NoteCollection).getCurrNoteCollection();
+    } else {
+      throw UnimplementedError();
+    }
   }
 
   @override
@@ -90,7 +100,7 @@ class NoteCollection implements NoteEntry {
     _onWrite();
   }
 
-  bool isInFocus(){
+  bool isInFocus() {
     return curr != null;
   }
 
