@@ -3,13 +3,30 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 
 import 'NoteCollection.dart';
+import 'dart:developer' as dev;
+import 'package:intl/intl.dart';
 
 abstract class NoteEntry {
-  String getName();
-  void setName(String name);
+  String name;
+  NoteEntry(this.name);
+
+  String getName() {
+    return name;
+  }
+
+  void setName(String name) {
+    this.name = name;
+    _onWrite();
+  }
+
   NoteEntry? getCurrNoteFile();
+
   void looseFocus();
+
   Map<String, Object?> toJson();
+
+  void _onWrite();
+
   static NoteEntry fromJson(Map<String, Object?> input, bool withFocus) {
     print("NoteEntry fromJson $input");
     switch (input["type"]) {
@@ -23,18 +40,42 @@ abstract class NoteEntry {
   }
 }
 
-class NoteFile implements NoteEntry {
-  String name;
+class NoteFile extends NoteEntry {
   EditorState body;
+  DateTime createdAt = DateTime.now();
+  DateTime editedAt = DateTime.now();
 
-  NoteFile(this.name, this.body);
+  NoteFile(
+    String name,
+    this.body, [
+    DateTime? manualCreatedAt,
+    DateTime? manualEditedAt,
+  ]) : super(name) {
+    createdAt = manualCreatedAt ?? DateTime.now();
+    editedAt = manualEditedAt ?? DateTime.now();
+  }
 
   @override
   Map<String, Object> toJson() {
-    return {"name": name, "type": "NoteFile", "body": body.document.toJson()};
+    return {
+      "name": name,
+      "type": "NoteFile",
+      "body": body.document.toJson(),
+      "createdAt": createdAt.toUtc().millisecondsSinceEpoch,
+      "editedAt": editedAt.toUtc().millisecondsSinceEpoch,
+    };
   }
 
   static NoteFile fromJson(Map input) {
+    int createdAt = 0;
+    int editedAt = 0;
+    if (input.containsKey("createdAt") && input.containsKey("editedAt")) {
+      createdAt = input["createdAt"];
+      editedAt = input["editedAt"];
+    } else {
+      dev.log("createdAt or editedAt missing, setting date to 0");
+    }
+
     print("got input: $input");
     return NoteFile(
       input["name"] as String,
@@ -43,17 +84,9 @@ class NoteFile implements NoteEntry {
           input["body"]!,
         ),
       ),
+      DateTime.fromMillisecondsSinceEpoch(createdAt, isUtc: true),
+      DateTime.fromMillisecondsSinceEpoch(editedAt, isUtc: true),
     );
-  }
-
-  @override
-  String getName() {
-    return name;
-  }
-
-  @override
-  void setName(String name) {
-    this.name = name;
   }
 
   EditorState getBody() {
@@ -62,6 +95,11 @@ class NoteFile implements NoteEntry {
 
   void setBody(EditorState body) {
     this.body = body;
+    _onWrite();
+  }
+
+  String getStyledEditedTime() {
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(editedAt);
   }
 
   @override
@@ -72,5 +110,10 @@ class NoteFile implements NoteEntry {
   @override
   void looseFocus() {
     // currently does nothing but might be used to save or smthg
+  }
+
+  @override
+  void _onWrite() {
+    editedAt = DateTime.now();
   }
 }

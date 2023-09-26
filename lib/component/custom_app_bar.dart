@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:noel_notes/component/about_screen.dart';
-import 'package:noel_notes/component/account_info_screen.dart';
+import 'package:noel_notes/pages/about.dart';
+import 'package:noel_notes/pages/account_info.dart';
 import 'package:noel_notes/component/settings_screen.dart';
 
 import '../unicon_icons.dart';

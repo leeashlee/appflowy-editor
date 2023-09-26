@@ -9,17 +9,18 @@ import 'dart:developer' as dev;
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:noel_notes/Notes/NoteCollection.dart';
-import 'package:noel_notes/Notes/NoteEntry.dart';
-import 'package:noel_notes/component/custom_alert_dialog.dart';
-import 'package:noel_notes/component/custom_app_bar.dart';
-import 'package:noel_notes/component/editor/editor.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:noel_notes/unicon_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
+
+import 'Notes/NoteCollection.dart';
+import 'Notes/NoteEntry.dart';
+import 'component/alert_dialog.dart';
+import 'component/custom_app_bar.dart';
+import 'component/editor/editor.dart';
+import 'unicon_icons.dart';
 
 //TODO Adding an account with username and password that keeps your files on the server
 //TODO Encryption
@@ -431,7 +432,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pop(context, "OK");
                 },
                 child: Text(
-                  currI.getName(),
+                  "${currI.getName()} - ${currI.getStyledEditedTime()}",
                 ),
               ),
             ),

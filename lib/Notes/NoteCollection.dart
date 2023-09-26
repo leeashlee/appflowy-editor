@@ -1,23 +1,21 @@
 // ignore_for_file: file_names
 
 import 'package:noel_notes/Notes/NoteEntry.dart';
-import 'dart:developer' as developer;
+import 'dart:developer' as dev;
 
-class NoteCollection implements NoteEntry {
-  String name;
+class NoteCollection extends NoteEntry {
   List<NoteEntry> notes = [];
   NoteEntry? curr;
   Comparator? comparator;
 
   NoteCollection(
-    this.name, [
+    String name, [
     bool withFocus = false,
     List<NoteEntry> initial = const [],
     int manualIndex = -1,
-  ]) {
+  ]) : super(name) {
     if (initial.isNotEmpty) {
-      developer
-          .log("starting NoteCollection with $initial and focus = $withFocus");
+      dev.log("starting NoteCollection with $initial and focus = $withFocus");
     }
     notes.addAll(initial);
     // set the current notefile (if were told this collection is in focus)
@@ -40,13 +38,8 @@ class NoteCollection implements NoteEntry {
     return notes[index];
   }
 
-  @override
-  String getName() {
-    return name;
-  }
-
   void addEntry(NoteEntry neww) {
-    developer.log("New entry: ${neww.getName()}");
+    dev.log("New entry: ${neww.getName()}");
     notes.add(neww);
     _onWrite();
   }
@@ -92,7 +85,7 @@ class NoteCollection implements NoteEntry {
   }
 
   void setCurr(NoteEntry? newCurr) {
-    developer.log("$name: setCurr: from $curr to $newCurr");
+    dev.log("$name: setCurr: from $curr to $newCurr");
     if (curr != null && curr is NoteCollection) {
       curr!.looseFocus();
     }
@@ -110,7 +103,7 @@ class NoteCollection implements NoteEntry {
 
   @override
   void looseFocus() {
-    developer.log("$name: looseFocus: $curr");
+    dev.log("$name: looseFocus: $curr");
     setCurr(null);
   }
 
