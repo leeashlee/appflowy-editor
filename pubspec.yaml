@@ -50,6 +50,7 @@ dependencies:
   flutter_slidable: ^3.0.0
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^2.0.3
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
