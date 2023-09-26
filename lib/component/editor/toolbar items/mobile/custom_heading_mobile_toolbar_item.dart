@@ -1,6 +1,6 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
-import 'package:noel_notes/font_awesome5_icons.dart';
+import 'package:noel_notes/component/font_awesome5_icons.dart';
 
 final customHeadingMobileToolbarItem = MobileToolbarItem.withMenu(
   itemIcon: const Icon(FontAwesome5.heading, size: 20,),

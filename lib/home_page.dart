@@ -20,7 +20,7 @@ import 'Notes/NoteEntry.dart';
 import 'component/alert_dialog.dart';
 import 'component/custom_app_bar.dart';
 import 'component/editor/editor.dart';
-import 'unicon_icons.dart';
+import '/component/unicon_icons.dart';
 
 //TODO Adding an account with username and password that keeps your files on the server
 //TODO Encryption

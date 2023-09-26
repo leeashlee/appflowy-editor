@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:noel_notes/pages/about.dart';
 import 'package:noel_notes/pages/account_info.dart';
-import 'package:noel_notes/component/settings_screen.dart';
+import 'package:noel_notes/pages/settings.dart';
 
-import '../unicon_icons.dart';
+import '/component/unicon_icons.dart';
 
 class CustomAppBar extends AppBar {
   final String label;
