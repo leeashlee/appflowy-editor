@@ -99,7 +99,7 @@ class NoteFile extends NoteEntry {
   }
 
   String getStyledEditedTime() {
-    return DateFormat('yyyy-MM-dd HH:mm:ss').format(editedAt);
+    return DateFormat('dd-MM-yyyy HH:mm').format(editedAt);
   }
 
   @override

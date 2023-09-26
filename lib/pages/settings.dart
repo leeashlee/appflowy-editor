@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noel_notes/main.dart';
-import 'package:noel_notes/unicon_icons.dart';
+
+import '../component/unicon_icons.dart';
 
 Brightness? _brightness = Brightness.light;
 
