@@ -420,7 +420,7 @@ class _HomePageState extends State<HomePage> {
               width: 320,
               child: TextButton(
                 style: TextButton.styleFrom(
-                  alignment: Alignment.centerLeft,
+                  //alignment: Alignment.centerLeft,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
                   ),
@@ -431,8 +431,19 @@ class _HomePageState extends State<HomePage> {
                   switchNote(parents!, currI);
                   Navigator.pop(context, "OK");
                 },
-                child: Text(
-                  "${currI.getName()} - ${currI.getStyledEditedTime()}",
+                child: Column(
+                  children: [
+                    Text(
+                      currI.getName(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15,),
+                    ),
+                    Text(
+                      currI.getStyledEditedTime(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.normal, fontSize: 12,),
+                    ),
+                  ],
                 ),
               ),
             ),
