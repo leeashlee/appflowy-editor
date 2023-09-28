@@ -58,35 +58,17 @@ class SettingsScreen extends StatelessWidget {
                 context: context,
                 builder: (context) => SimpleDialog(
                   title: const Text("Change theme color?"),
-                  children: [
-                    RadioListTile(
-                      title: const Text("Peach Pink"),
-                      value: Accents.peachPink,
+                  children: List<RadioListTile>.generate(
+                    Accents.values.length,
+                    (index) => RadioListTile(
+                      value: Accents.values,
                       groupValue: _colors,
                       onChanged: (value) {
                         _colors = value;
                         Navigator.pop(context);
                       },
                     ),
-                    RadioListTile(
-                      title: const Text("Baby Blue"),
-                      value: Accents.babyBlue,
-                      groupValue: _colors,
-                      onChanged: (value) {
-                        _colors = value;
-                        Navigator.pop(context);
-                      },
-                    ),
-                    RadioListTile(
-                      title: const Text("Navy"),
-                      value: Accents.navy,
-                      groupValue: _colors,
-                      onChanged: (value) {
-                        _colors = value;
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
