@@ -32,7 +32,7 @@ enum Accents {
 
 class ThemeCubit extends Cubit<ThemeData> {
   /// {@macro brightness_cubit}
-  ThemeCubit() : super(_lightTheme);
+  ThemeCubit() : super(_peachLightTheme);
 
   static ThemeData _makeThemeData(Brightness brightness, Color color) {
     return ThemeData(
@@ -45,12 +45,20 @@ class ThemeCubit extends Cubit<ThemeData> {
     );
   }
 
-  static final _lightTheme = _makeThemeData(Brightness.light, Accents.peachPink.color);
+  static final _peachLightTheme = _makeThemeData(Brightness.light, Accents.peachPink.color);
 
-  static final _darkTheme = _makeThemeData(Brightness.dark, Accents.peachPink.color);
+  static final _peachDarkTheme = _makeThemeData(Brightness.dark, Accents.peachPink.color);
+
+  static final _blueLightTheme = _makeThemeData(Brightness.light, Accents.babyBlue.color);
+
+  static final _blueDarkTheme = _makeThemeData(Brightness.dark, Accents.babyBlue.color);
+
+  static final _navyLightTheme = _makeThemeData(Brightness.light, Accents.navy.color);
+
+  static final _navyDarkTheme = _makeThemeData(Brightness.dark, Accents.navy.color);
 
   /// Toggles the current brightness between light and dark.
   void toggleTheme() {
-    emit(state.brightness == Brightness.dark ? _lightTheme : _darkTheme);
+    emit(state.brightness == Brightness.dark ? _peachLightTheme : _peachDarkTheme);
   }
 }
