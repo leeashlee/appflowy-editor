@@ -4,12 +4,6 @@ import 'package:noel_notes/component/themes.dart';
 
 import '../component/icons/unicon_icons.dart';
 
-enum Accents {
-  peachPink,
-  babyBlue,
-  navy,
-}
-
 Brightness? _brightness = Brightness.light;
 Accents? _colors = Accents.peachPink;
 

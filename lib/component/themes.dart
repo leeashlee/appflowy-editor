@@ -19,29 +19,45 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
-class ThemeCubit extends Cubit<ThemeData> {
-  static Color peachPink = const Color.fromARGB(255, 255, 164, 194);
-  static Color babyBlue = const Color.fromARGB(255, 157, 220, 251);
-  static Color navy = const Color.fromARGB(255, 125, 136, 217);
+enum Accents {
+  peachPink(
+    color: Color.fromARGB(255, 255, 164, 194),
+  ),
+  babyBlue(
+    color: Color.fromARGB(255, 157, 220, 251),
+  ),
+  navy(
+    color: Color.fromARGB(255, 125, 136, 217),
+  );
 
+  const Accents({
+    required this.color
+  });
+
+  final Color color;
+}
+
+
+
+class ThemeCubit extends Cubit<ThemeData> {
   /// {@macro brightness_cubit}
   ThemeCubit() : super(_lightTheme);
 
   static final _lightTheme = ThemeData(
     fontFamily: GoogleFonts.quicksand().fontFamily,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: peachPink,
+      seedColor: Accents.peachPink.color,
+      brightness: Brightness.light,
     ),
-    brightness: Brightness.light,
     useMaterial3: true,
   );
 
   static final _darkTheme = ThemeData(
     fontFamily: GoogleFonts.quicksand().fontFamily,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: peachPink,
+      seedColor: Accents.peachPink.color,
+      brightness: Brightness.dark,
     ),
-    brightness: Brightness.dark,
     useMaterial3: true,
   );
 
