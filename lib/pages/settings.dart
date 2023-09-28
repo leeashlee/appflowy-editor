@@ -61,7 +61,8 @@ class SettingsScreen extends StatelessWidget {
                   children: List<RadioListTile>.generate(
                     Accents.values.length,
                     (index) => RadioListTile(
-                      value: Accents.values,
+                      value: Accents.values[index],
+                      title: Text(Accents.values[index].title),
                       groupValue: _colors,
                       onChanged: (value) {
                         _colors = value;
