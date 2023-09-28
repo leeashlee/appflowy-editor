@@ -4,7 +4,15 @@ import 'package:noel_notes/component/Themes.dart';
 
 import '../component/unicon_icons.dart';
 
+enum Accents {
+  peachPink,
+  babyBlue,
+  navy,
+}
+
+
 Brightness? _brightness = Brightness.light;
+Accents? _colors = Accents.peachPink;
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -43,6 +51,45 @@ class SettingsScreen extends StatelessWidget {
                       onChanged: (value) {
                         _brightness = value;
                         context.read<ThemeCubit>().toggleTheme();
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            MenuItemButton(
+              leadingIcon: const Icon(Unicon.palette),
+              child: const Text('Accents'),
+              onPressed: () => showDialog<String>(
+                context: context,
+                builder: (context) => SimpleDialog(
+                  title: const Text("Change theme color?"),
+                  children: [
+                    RadioListTile(
+                      title: const Text("Peach Pink"),
+                      value: Accents.peachPink,
+                      groupValue: _colors,
+                      onChanged: (value) {
+                        _colors = value;
+                        Navigator.pop(context);
+                      },
+                    ),
+                    RadioListTile(
+                      title: const Text("Baby Blue"),
+                      value: Accents.babyBlue,
+                      groupValue: _colors,
+                      onChanged: (value) {
+                        _colors = value;
+                        Navigator.pop(context);
+                      },
+                    ),
+                    RadioListTile(
+                      title: const Text("Navy"),
+                      value: Accents.navy,
+                      groupValue: _colors,
+                      onChanged: (value) {
+                        _colors = value;
                         Navigator.pop(context);
                       },
                     ),
