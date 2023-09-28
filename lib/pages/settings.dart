@@ -71,6 +71,7 @@ class SettingsScreen extends StatelessWidget {
                       groupValue: _colors,
                       onChanged: (value) {
                         _colors = value;
+                        context.read<ThemeCubit>().changeAccent();
                         Navigator.pop(context);
                       },
                     ),
@@ -80,6 +81,7 @@ class SettingsScreen extends StatelessWidget {
                       groupValue: _colors,
                       onChanged: (value) {
                         _colors = value;
+                        context.read<ThemeCubit>().changeAccent();
                         Navigator.pop(context);
                       },
                     ),
@@ -89,6 +91,7 @@ class SettingsScreen extends StatelessWidget {
                       groupValue: _colors,
                       onChanged: (value) {
                         _colors = value;
+                        context.read<ThemeCubit>().changeAccent();
                         Navigator.pop(context);
                       },
                     ),
