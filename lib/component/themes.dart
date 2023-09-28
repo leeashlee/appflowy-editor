@@ -21,6 +21,8 @@ class AppBlocObserver extends BlocObserver {
 
 class ThemeCubit extends Cubit<ThemeData> {
   static Color peachPink = const Color.fromARGB(255, 255, 164, 194);
+  static Color babyBlue = const Color.fromARGB(255, 157, 220, 251);
+  static Color navy = const Color.fromARGB(255, 125, 136, 217);
 
   /// {@macro brightness_cubit}
   ThemeCubit() : super(_lightTheme);
