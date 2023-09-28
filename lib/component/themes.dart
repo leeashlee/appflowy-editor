@@ -67,4 +67,20 @@ class ThemeCubit extends Cubit<ThemeData> {
   void toggleTheme() {
     emit(state.brightness == Brightness.dark ? _lightTheme : _darkTheme);
   }
+
+  void changeAccent() {
+    emit(
+      state.colorScheme ==
+              ColorScheme.fromSeed(
+                seedColor: peachPink,
+              )
+          ? peachPinkTheme
+          : state.colorScheme ==
+                  ColorScheme.fromSeed(
+                    seedColor: babyBlue,
+                  )
+              ? babyBlueTheme
+              : navyTheme,
+    );
+  }
 }
