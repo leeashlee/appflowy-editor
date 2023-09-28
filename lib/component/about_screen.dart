@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noel_notes/unicon_icons.dart';
+import 'package:noel_notes/component/unicon_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
