@@ -20,23 +20,11 @@ class AppBlocObserver extends BlocObserver {
 }
 
 enum Accents {
-  peachPink(
-    color: Color.fromARGB(255, 255, 164, 194),
-    title: "Peach Pink",
-  ),
-  babyBlue(
-    color: Color.fromARGB(255, 157, 220, 251),
-    title: "Baby Blue",
-  ),
-  navy(
-    color: Color.fromARGB(255, 125, 136, 217),
-    title: "Navy",
-  );
+  peachPink(Color.fromARGB(255, 255, 164, 194), "Peach Pink"),
+  babyBlue(Color.fromARGB(255, 157, 220, 251), "Baby Blue"),
+  navy(Color.fromARGB(255, 125, 136, 217), "Navy");
 
-  const Accents({
-    required this.color,
-    required this.title,
-  });
+  const Accents(this.color, this.title);
 
   final Color color;
   final String title;
