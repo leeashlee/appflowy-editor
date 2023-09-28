@@ -2,27 +2,26 @@ import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:noel_notes/component/editor/toolbar%20items/custom_alignment_toolbar_items.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/custom_bulleted_list_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/custom_format_toolbar_items.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/custom_heading_toolbar_items.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/custom_highlight_color_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/custom_link_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/custom_numbered_list_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/custom_paragraph_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/custom_quote_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/custom_text_color_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/custom_text_direction_toolbar_items.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_code_mobile_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_divider_mobile_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_heading_mobile_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_link_mobile_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_list_mobile_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_quote_mobile_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_text_and_background_color_tool_bar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_text_decoration_mobile_toolbar_item.dart';
-import 'package:noel_notes/component/editor/toolbar%20items/mobile/custom_todo_list_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_alignment_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_bulleted_list_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_format_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_heading_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_highlight_color_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_link_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_numbered_list_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_paragraph_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_quote_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_text_color_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/custom_text_direction_toolbar_items.dart';
+import 'package:noel_notes/component/editor/toolbar_items/mobile/custom_code_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/mobile/custom_divider_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/mobile/custom_heading_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/mobile/custom_link_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/mobile/custom_list_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/mobile/custom_quote_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/mobile/custom_text_and_background_color_tool_bar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/mobile/custom_text_decoration_mobile_toolbar_item.dart';
+import 'package:noel_notes/component/editor/toolbar_items/mobile/custom_todo_list_mobile_toolbar_item.dart';
 
 class Editor extends StatelessWidget {
   const Editor({

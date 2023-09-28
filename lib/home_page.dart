@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
         Color prim = Theme.of(context).colorScheme.primary;
         Color sec = Colors.transparent;
         Color bg = (currI == notes.getCurrNoteFile()) ? prim : sec;
-        Color fg = (currI == notes.getCurrNoteFile()) ? sec : prim;
+        Color fg = (currI == notes.getCurrNoteFile()) ? Theme.of(context).colorScheme.onPrimary : prim;
         retVal.add(
           Slidable(
             endActionPane: ActionPane(

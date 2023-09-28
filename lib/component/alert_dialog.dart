@@ -40,7 +40,7 @@ class CustomAlertDialog extends StatelessWidget {
   final AlertType type;
   final void Function(String? input) onOk;
 
-  CustomAlertDialog(this.type, this.onOk);
+  const CustomAlertDialog(this.type, this.onOk, {super.key});
 
   @override
   Widget build(BuildContext context) {
