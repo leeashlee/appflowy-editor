@@ -85,13 +85,15 @@ class AppView extends StatelessWidget {
 }
 
 class ThemeCubit extends Cubit<ThemeData> {
+  static Color peachPink = const Color.fromARGB(255, 255, 164, 194);
+
   /// {@macro brightness_cubit}
   ThemeCubit() : super(_lightTheme);
 
   static final _lightTheme = ThemeData(
     fontFamily: GoogleFonts.quicksand().fontFamily,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color.fromARGB(255, 255, 164, 194),
+      seedColor: peachPink,
       brightness: Brightness.light,
     ),
     useMaterial3: true,
@@ -100,7 +102,7 @@ class ThemeCubit extends Cubit<ThemeData> {
   static final _darkTheme = ThemeData(
     fontFamily: GoogleFonts.quicksand().fontFamily,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color.fromARGB(255, 255, 164, 194),
+      seedColor: peachPink,
       brightness: Brightness.dark,
     ),
     useMaterial3: true,
