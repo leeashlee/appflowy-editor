@@ -31,8 +31,8 @@ class ThemeCubit extends Cubit<ThemeData> {
     fontFamily: GoogleFonts.quicksand().fontFamily,
     colorScheme: ColorScheme.fromSeed(
       seedColor: peachPink,
-      brightness: Brightness.light,
     ),
+    brightness: Brightness.light,
     useMaterial3: true,
   );
 
@@ -40,8 +40,8 @@ class ThemeCubit extends Cubit<ThemeData> {
     fontFamily: GoogleFonts.quicksand().fontFamily,
     colorScheme: ColorScheme.fromSeed(
       seedColor: peachPink,
-      brightness: Brightness.dark,
     ),
+    brightness: Brightness.dark,
     useMaterial3: true,
   );
 
