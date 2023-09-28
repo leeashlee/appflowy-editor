@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:noel_notes/main.dart';
+import 'package:noel_notes/component/Themes.dart';
 
 import '../component/unicon_icons.dart';
 
