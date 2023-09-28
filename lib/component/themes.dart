@@ -22,27 +22,25 @@ class AppBlocObserver extends BlocObserver {
 enum Accents {
   peachPink(
     color: Color.fromARGB(255, 255, 164, 194),
-    title: "Peach Pink"
+    title: "Peach Pink",
   ),
   babyBlue(
     color: Color.fromARGB(255, 157, 220, 251),
-    title: "Baby Blue"
+    title: "Baby Blue",
   ),
   navy(
     color: Color.fromARGB(255, 125, 136, 217),
-    title: "Navy"
+    title: "Navy",
   );
 
   const Accents({
     required this.color,
-    required this.title
+    required this.title,
   });
 
   final Color color;
   final String title;
 }
-
-
 
 class ThemeCubit extends Cubit<ThemeData> {
   /// {@macro brightness_cubit}
