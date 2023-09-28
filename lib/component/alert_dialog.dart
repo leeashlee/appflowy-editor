@@ -1,32 +1,74 @@
 import 'package:flutter/material.dart';
 import 'package:noel_notes/component/custom_text_field.dart';
 
-AlertDialog customAlertDialog(
-  BuildContext context,
-  String title,
-  String label,
-  String hint,
-  Widget icon,
-  void Function(String input) onOk,
-) {
-  CustomTextField textField = CustomTextField(title, label, hint, icon);
-  return AlertDialog(
-    title: Text(title),
-    content: textField,
-    actions: <Widget>[
-      TextButton(
-        onPressed: () => {
-          Navigator.pop(context, 'Cancel'),
-        },
-        child: const Text('Cancel'),
-      ),
-      FilledButton(
-        onPressed: () {
-          onOk(textField.getText());
-          Navigator.pop(context, 'OK');
-        },
-        child: const Text('OK'),
-      ),
-    ],
+import 'icons/unicon_icons.dart';
+
+enum AlertType {
+  newFile(
+    title: "Create a new note?",
+    label: "Note Name:",
+    hint: "Untitled",
+    icon: Icon(Unicon.edit_alt),
+  ),
+  newCollec(
+    title: "Create a new note collection?",
+    label: "Note Collection Name:",
+    hint: "My Notes",
+    icon: Icon(Unicon.book_open),
+  ),
+  renameFile(
+    title: "Rename the note?",
+    label: "Note Name:",
+    hint: "Untitled",
+    icon: Icon(Unicon.edit_alt),
   );
+
+  const AlertType({
+    required this.title,
+    required this.label,
+    required this.hint,
+    required this.icon,
+  });
+
+  final String title;
+  final String label;
+  final String hint;
+  final Widget icon;
+}
+
+class CustomAlertDialog extends StatelessWidget {
+  final AlertType type;
+  final void Function(String? input) onOk;
+
+  CustomAlertDialog(this.type, this.onOk);
+
+  @override
+  Widget build(BuildContext context) {
+    CustomTextField field = CustomTextField(
+      type.title,
+      type.label,
+      type.hint,
+      type.icon,
+    );
+
+    return AlertDialog(
+      title: Text(type.title),
+      content: field,
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, 'Cancel');
+          },
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          onPressed: () {
+            onOk(field.getText());
+            Navigator.pop(context, 'OK');
+          },
+          child: const Text('OK'),
+        ),
+      ],
+    );
+  }
 }

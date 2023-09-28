@@ -29,38 +29,20 @@ class ThemeCubit extends Cubit<ThemeData> {
 
   static final _lightTheme = ThemeData(
     fontFamily: GoogleFonts.quicksand().fontFamily,
-    /*colorScheme: ColorScheme.fromSeed(
+    colorScheme: ColorScheme.fromSeed(
       seedColor: peachPink,
-    ),*/
+    ),
     brightness: Brightness.light,
     useMaterial3: true,
   );
 
   static final _darkTheme = ThemeData(
     fontFamily: GoogleFonts.quicksand().fontFamily,
-    /*colorScheme: ColorScheme.fromSeed(
+    colorScheme: ColorScheme.fromSeed(
       seedColor: peachPink,
-    ),*/
+    ),
     brightness: Brightness.dark,
     useMaterial3: true,
-  );
-
-  static final peachPinkTheme = ThemeData(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: peachPink,
-    ),
-  );
-
-  static final babyBlueTheme = ThemeData(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: babyBlue,
-    ),
-  );
-
-  static final navyTheme = ThemeData(
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: navy,
-    ),
   );
 
   /// Toggles the current brightness between light and dark.

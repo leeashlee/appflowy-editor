@@ -1,7 +1,7 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:noel_notes/component/editor/custom_icon_item_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:noel_notes/component/unicon_icons.dart';
+import 'package:noel_notes/component/icons/unicon_icons.dart';
 
 final ToolbarItem customParagraphItem = ToolbarItem(
   id: 'editor.paragraph',
@@ -14,12 +14,12 @@ final ToolbarItem customParagraphItem = ToolbarItem(
     final delta = (node.delta ?? Delta()).toJson();
     return CustomSVGIconItemWidget(
       iconBuilder: (_) => Icon(
-                Unicon.text_fields,
-                size: 16,
-                color: isHighlight
-                    ? highlightColor
-                    : Theme.of(context).colorScheme.primary,
-              ),
+        Unicon.text_fields,
+        size: 16,
+        color: isHighlight
+            ? highlightColor
+            : Theme.of(context).colorScheme.primary,
+      ),
       isHighlight: isHighlight,
       highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,
       normalColor: Theme.of(context).colorScheme.primary,

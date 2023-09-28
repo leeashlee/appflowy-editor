@@ -20,7 +20,7 @@ import 'Notes/NoteEntry.dart';
 import 'component/alert_dialog.dart';
 import 'component/custom_app_bar.dart';
 import 'component/editor/editor.dart';
-import '/component/unicon_icons.dart';
+import 'component/icons/unicon_icons.dart';
 
 //TODO Adding an account with username and password that keeps your files on the server
 //TODO Encryption
@@ -124,20 +124,16 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(vertical: 70),
-        child: _buildBody(context),
+        child: _widgetBuilder(context),
       ),
       //endlessly load
       floatingActionButton: FloatingActionButton.small(
         onPressed: () => showDialog<String>(
           context: context,
-          builder: (BuildContext context) => customAlertDialog(
-            context,
-            'Create a new note?',
-            'Note Name:',
-            'Untitled',
-            const Icon(Unicon.edit_alt),
-            (String input) {
-              NoteFile newNote = addNote(input);
+          builder: (BuildContext context) => CustomAlertDialog(
+            AlertType.newFile,
+            (String? input) {
+              NoteFile newNote = addNote(input ?? "Untitled");
               switchNote([notes], newNote);
             },
           ),
@@ -168,16 +164,10 @@ class _HomePageState extends State<HomePage> {
           iconSize: 20.0,
           onPressed: () => showDialog<String>(
             context: context,
-            builder: (BuildContext context) => customAlertDialog(
-              context,
-              'Create a new note?',
-              'Note Name:',
-              'Untitled',
-              const Icon(Unicon.edit_alt),
-              (String input) {
-                addNote(input);
-              },
-            ),
+            builder: (BuildContext context) =>
+                CustomAlertDialog(AlertType.newFile, (input) {
+              addNote(input!);
+            }),
           ),
           icon: const Icon(Unicon.file_medical),
         ),
@@ -193,21 +183,16 @@ class _HomePageState extends State<HomePage> {
           shadowColor: Colors.transparent,
         ),
         onPressed: () => showDialog<String>(
-          context: context,
-          builder: (BuildContext context) => customAlertDialog(
-            context,
-            'Create a new note collection?',
-            'Note Collection Name:',
-            'My Notes',
-            const Icon(Unicon.book_open),
-            (String input) {
-              setState(() {
-                notes.addEntry(NoteCollection(input));
-                sorting();
-              });
-            },
-          ),
-        ),
+            context: context,
+            builder: (BuildContext context) => CustomAlertDialog(
+                  AlertType.newCollec,
+                  (input) {
+                    setState(() {
+                      notes.addEntry(NoteCollection(input!));
+                      sorting();
+                    });
+                  },
+                )),
         icon: const Icon(Unicon.books),
         label: const Text('Create a new note collection'),
       ),
@@ -256,10 +241,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
-    return _widgetBuilder(context);
-  }
-
   List<Widget> buildNotes(
     BuildContext context,
     NoteCollection currNotes, [
@@ -274,9 +255,7 @@ class _HomePageState extends State<HomePage> {
         Color prim = Theme.of(context).colorScheme.primary;
         Color sec = Colors.transparent;
         Color bg = (currI == notes.getCurrNoteFile()) ? prim : sec;
-        Color fg = (currI == notes.getCurrNoteFile())
-            ? Theme.of(context).colorScheme.onPrimary
-            : prim;
+        Color fg = (currI == notes.getCurrNoteFile()) ? sec : prim;
         retVal.add(
           Slidable(
             endActionPane: ActionPane(
@@ -291,20 +270,14 @@ class _HomePageState extends State<HomePage> {
                   icon: Unicon.edit_alt,
                   onPressed: (context) => showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => customAlertDialog(
-                      context,
-                      'Rename the note?',
-                      'Note Name:',
-                      'Untitled',
-                      const Icon(Unicon.edit_alt),
-                      (input) {
-                        setState(
-                          () {
-                            currI.setName(input);
-                          },
-                        );
-                      },
-                    ),
+                    builder: (BuildContext context) =>
+                        CustomAlertDialog(AlertType.renameFile, (input) {
+                      setState(
+                        () {
+                          currI.setName(input!);
+                        },
+                      );
+                    }),
                   ),
                 ),
                 const SizedBox(
@@ -361,20 +334,14 @@ class _HomePageState extends State<HomePage> {
                   icon: Unicon.edit_alt,
                   onPressed: (context) => showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => customAlertDialog(
-                      context,
-                      'Rename the note?',
-                      'Note Name:',
-                      'Untitled',
-                      const Icon(Unicon.edit_alt),
-                      (input) {
-                        setState(
-                          () {
-                            currI.setName(input);
-                          },
-                        );
-                      },
-                    ),
+                    builder: (BuildContext context) =>
+                        CustomAlertDialog(AlertType.renameFile, (input) {
+                      setState(
+                        () {
+                          currI.setName(input!);
+                        },
+                      );
+                    }),
                   ),
                 ),
                 const SizedBox(
@@ -499,16 +466,10 @@ class _HomePageState extends State<HomePage> {
                   iconSize: 20.0,
                   onPressed: () => showDialog<String>(
                     context: context,
-                    builder: (BuildContext context) => customAlertDialog(
-                      context,
-                      'Create a new note?',
-                      'Note Name:',
-                      'Untitled',
-                      const Icon(Unicon.edit_alt),
-                      (input) {
-                        addNote(input, currI);
-                      },
-                    ),
+                    builder: (BuildContext context) =>
+                        CustomAlertDialog(AlertType.newFile, (input) {
+                      addNote(input!, currI);
+                    }),
                   ),
                   icon: const Icon(Unicon.file_medical),
                 ),

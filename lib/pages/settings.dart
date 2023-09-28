@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:noel_notes/component/Themes.dart';
+import 'package:noel_notes/component/themes.dart';
 
-import '../component/unicon_icons.dart';
+import '../component/icons/unicon_icons.dart';
 
 enum Accents {
   peachPink,

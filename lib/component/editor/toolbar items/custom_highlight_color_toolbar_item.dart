@@ -1,7 +1,7 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:noel_notes/component/editor/custom_icon_item_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:noel_notes/component/unicon_icons.dart';
+import 'package:noel_notes/component/icons/unicon_icons.dart';
 
 ToolbarItem customBuildHighlightColorItem({List<ColorOption>? colorOptions}) {
   return ToolbarItem(
@@ -20,13 +20,13 @@ ToolbarItem customBuildHighlightColorItem({List<ColorOption>? colorOptions}) {
         });
       });
       return CustomSVGIconItemWidget(
-       iconBuilder: (_) => Icon(
-                Unicon.edit_alt,
-                size: 16,
-                color: isHighlight
-                    ? highlightColor
-                    : Theme.of(context).colorScheme.primary,
-              ),
+        iconBuilder: (_) => Icon(
+          Unicon.edit_alt,
+          size: 16,
+          color: isHighlight
+              ? highlightColor
+              : Theme.of(context).colorScheme.primary,
+        ),
         iconSize: const Size.square(14),
         isHighlight: isHighlight,
         highlightColor: Theme.of(context).colorScheme.onSurfaceVariant,

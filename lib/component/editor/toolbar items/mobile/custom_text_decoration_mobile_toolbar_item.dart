@@ -1,6 +1,6 @@
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
-import 'package:noel_notes/component/unicon_icons.dart';
+import 'package:noel_notes/component/icons/unicon_icons.dart';
 
 final customTextDecorationMobileToolbarItem = MobileToolbarItem.withMenu(
   itemIcon: const Icon(Unicon.text),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noel_notes/component/unicon_icons.dart';
+import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -10,7 +10,8 @@ class AboutScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("About"),
       ),
-      body: Container(padding: const EdgeInsets.all(8),
+      body: Container(
+        padding: const EdgeInsets.all(8),
         child: Column(
           children: [
             const SafeArea(
@@ -34,7 +35,8 @@ class AboutScreen extends StatelessWidget {
               leadingIcon: const Icon(Unicon.github_alt),
               child: const Text("Source Code"),
               onPressed: () async {
-                final Uri url = Uri.parse('https://github.com/leeashlee/my-text-editor');
+                final Uri url =
+                    Uri.parse('https://github.com/leeashlee/my-text-editor');
                 if (!await launchUrl(url)) {
                   throw Exception('Could not launch $url');
                 }
@@ -44,7 +46,8 @@ class AboutScreen extends StatelessWidget {
               leadingIcon: const Icon(Unicon.coffee),
               child: const Text("Buy Me A Coffee"),
               onPressed: () async {
-                final Uri url = Uri.parse('https://www.buymeacoffee.com/ashleehee');
+                final Uri url =
+                    Uri.parse('https://www.buymeacoffee.com/ashleehee');
                 if (!await launchUrl(url)) {
                   throw Exception('Could not launch $url');
                 }
@@ -53,7 +56,7 @@ class AboutScreen extends StatelessWidget {
             MenuItemButton(
               leadingIcon: const Icon(Unicon.clipboard_notes),
               child: const Text("License"),
-              onPressed:() {
+              onPressed: () {
                 showLicensePage(context: context);
               },
             ),

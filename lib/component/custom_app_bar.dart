@@ -4,7 +4,7 @@ import 'package:noel_notes/pages/about.dart';
 import 'package:noel_notes/pages/account_info.dart';
 import 'package:noel_notes/pages/settings.dart';
 
-import '/component/unicon_icons.dart';
+import 'icons/unicon_icons.dart';
 
 class CustomAppBar extends AppBar {
   final String label;
