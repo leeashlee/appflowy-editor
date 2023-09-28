@@ -51,6 +51,13 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_lints: ^2.0.3
   intl: ^0.18.1
+  stacked: ^3.4.1+1
+  build_runner: ^2.4.6
+  stacked_generator: ^1.5.1
+  logger: ^1.4.0
+  share_plus: ^7.1.0
+  permission_handler: ^11.0.0
+  image_downloader: ^0.31.0
 
 dev_dependencies:
   flutter_test:
