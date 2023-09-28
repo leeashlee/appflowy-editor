@@ -183,16 +183,17 @@ class _HomePageState extends State<HomePage> {
           shadowColor: Colors.transparent,
         ),
         onPressed: () => showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => CustomAlertDialog(
-                  AlertType.newCollec,
-                  (input) {
-                    setState(() {
-                      notes.addEntry(NoteCollection(input!));
-                      sorting();
-                    });
-                  },
-                )),
+          context: context,
+          builder: (BuildContext context) => CustomAlertDialog(
+            AlertType.newCollec,
+            (input) {
+              setState(() {
+                notes.addEntry(NoteCollection(input!));
+                sorting();
+              });
+            },
+          ),
+        ),
         icon: const Icon(Unicon.books),
         label: const Text('Create a new note collection'),
       ),
@@ -255,7 +256,9 @@ class _HomePageState extends State<HomePage> {
         Color prim = Theme.of(context).colorScheme.primary;
         Color sec = Colors.transparent;
         Color bg = (currI == notes.getCurrNoteFile()) ? prim : sec;
-        Color fg = (currI == notes.getCurrNoteFile()) ? Theme.of(context).colorScheme.onPrimary : prim;
+        Color fg = (currI == notes.getCurrNoteFile())
+            ? Theme.of(context).colorScheme.onPrimary
+            : prim;
         retVal.add(
           Slidable(
             endActionPane: ActionPane(
