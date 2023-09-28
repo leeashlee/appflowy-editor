@@ -34,20 +34,20 @@ class ThemeCubit extends Cubit<ThemeData> {
   /// {@macro brightness_cubit}
   ThemeCubit() : super(_lightTheme);
 
-  static ThemeData _makeThemeData(Brightness brightness) {
+  static ThemeData _makeThemeData(Brightness brightness, Color color) {
     return ThemeData(
       fontFamily: GoogleFonts.quicksand().fontFamily,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Accents.peachPink.color,
+        seedColor: color,
         brightness: brightness,
       ),
       useMaterial3: true,
     );
   }
 
-  static final _lightTheme = _makeThemeData(Brightness.light);
+  static final _lightTheme = _makeThemeData(Brightness.light, Accents.peachPink.color);
 
-  static final _darkTheme = _makeThemeData(Brightness.dark);
+  static final _darkTheme = _makeThemeData(Brightness.dark, Accents.peachPink.color);
 
   /// Toggles the current brightness between light and dark.
   void toggleTheme() {
