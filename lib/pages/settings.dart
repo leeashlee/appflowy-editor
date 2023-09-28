@@ -10,7 +10,6 @@ enum Accents {
   navy,
 }
 
-
 Brightness? _brightness = Brightness.light;
 Accents? _colors = Accents.peachPink;
 
