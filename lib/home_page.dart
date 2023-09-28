@@ -280,7 +280,7 @@ class _HomePageState extends State<HomePage> {
         retVal.add(
           Slidable(
             endActionPane: ActionPane(
-              extentRatio: 1 / 1.2,
+              extentRatio: 1 / 2,
               motion: const StretchMotion(),
               children: [
                 SlidableAction(
@@ -288,7 +288,6 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor:
                       Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
-                  label: "Rename",
                   icon: Unicon.edit_alt,
                   onPressed: (context) => showDialog<String>(
                     context: context,
@@ -313,7 +312,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
-                  label: "Delete",
                   icon: Unicon.trash,
                   backgroundColor: Theme.of(context).colorScheme.error,
                   foregroundColor: Theme.of(context).colorScheme.onError,
@@ -352,7 +350,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             startActionPane: ActionPane(
-              extentRatio: 1 / 1.2,
+              extentRatio: 1 / 2,
               motion: const StretchMotion(),
               children: [
                 SlidableAction(
@@ -360,7 +358,6 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor:
                       Theme.of(context).colorScheme.secondaryContainer,
                   foregroundColor: Theme.of(context).colorScheme.primary,
-                  label: "Rename",
                   icon: Unicon.edit_alt,
                   onPressed: (context) => showDialog<String>(
                     context: context,
@@ -386,7 +383,6 @@ class _HomePageState extends State<HomePage> {
                 SlidableAction(
                   borderRadius: BorderRadius.circular(4),
                   icon: Unicon.trash,
-                  label: "Delete",
                   backgroundColor: Theme.of(context).colorScheme.error,
                   foregroundColor: Theme.of(context).colorScheme.onError,
                   onPressed: (context) => showDialog<String>(
@@ -440,12 +436,16 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       currI.getName(),
                       style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15,),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
                     ),
                     Text(
                       currI.getStyledEditedTime(),
                       style: const TextStyle(
-                          fontWeight: FontWeight.normal, fontSize: 12,),
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                      ),
                     ),
                   ],
                 ),
