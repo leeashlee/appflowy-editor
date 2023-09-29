@@ -77,13 +77,6 @@ enum Settings {
     Accent.values,
     Accent.peachPink,
     Unicon.palette,
-  ),
-  editorTitle(
-    StringSetting.make,
-    String,
-    null,
-    "Testing",
-    Unicon.pound_circle,
   );
 
   const Settings(
