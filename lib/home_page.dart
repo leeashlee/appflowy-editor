@@ -15,8 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
-import 'Notes/NoteCollection.dart';
-import 'Notes/NoteEntry.dart';
+import 'model/settings/manager.dart';
+import 'model/notes/NoteCollection.dart';
+import 'model/notes/NoteEntry.dart';
 import 'component/alert_dialog.dart';
 import 'component/custom_app_bar.dart';
 import 'component/editor/editor.dart';
@@ -50,8 +51,9 @@ class HomePage extends StatefulWidget {
   }).timeout(const Duration(seconds: 10));
 
   LocalStorage storage;
+  SettingsManager settings;
 
-  HomePage(this.storage, {Key? key}) : super(key: key);
+  HomePage(this.storage, this.settings, {Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -60,10 +62,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   Timer? syncTimer;
-  final myNoteController = TextEditingController();
   // ignore: unnecessary_new
-  LocalStorage storage = new LocalStorage("storage");
-
   late NoteCollection notes;
   late WidgetBuilder _widgetBuilder;
 
@@ -121,6 +120,7 @@ class _HomePageState extends State<HomePage> {
             notes.getCurrNoteFile()!.setName(input);
           });
         },
+        widget.settings,
       ),
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(vertical: 70),
@@ -293,34 +293,12 @@ class _HomePageState extends State<HomePage> {
                   foregroundColor: Theme.of(context).colorScheme.onError,
                   onPressed: (context) => showDialog<String>(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Do you wanna delete the note?'),
-                      content: const Text("It can't be undone."),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => {
-                            Navigator.pop(context, 'Cancel'),
-                            myNoteController.clear(),
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                        FilledButton(
-                          style: FilledButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.error,
-                            foregroundColor:
-                                Theme.of(context).colorScheme.onError,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              Navigator.pop(context, 'OK');
-                              removeNote(currI, currNotes);
-                            });
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
+                    builder: (context) =>
+                        CustomAlertDialog(AlertType.delFile, (input) {
+                      setState(
+                        () => removeNote(currI, currNotes),
+                      );
+                    }),
                   ),
                 ),
               ],
@@ -643,11 +621,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   void doSync() {
-    storage.setItem("notes", notes);
+    widget.storage.setItem("notes", notes);
+    widget.storage.setItem("settings", widget.settings.toJson());
   }
 
   NoteCollection initNotes() {
-    Map? lclNotes = storage.getItem("notes");
+    Map? lclNotes = widget.storage.getItem("notes");
 
     if (lclNotes == null) {
       return NoteCollection(

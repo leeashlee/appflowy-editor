@@ -21,6 +21,12 @@ enum AlertType {
     label: "Note Name:",
     hint: "Untitled",
     icon: Icon(Unicon.edit_alt),
+  ),
+  delFile(
+    title: "Delete the note?",
+    label: null,
+    hint: null,
+    icon: Icon(Unicon.trash_alt),
   );
 
   const AlertType({
@@ -31,8 +37,8 @@ enum AlertType {
   });
 
   final String title;
-  final String label;
-  final String hint;
+  final String? label;
+  final String? hint;
   final Widget icon;
 }
 
@@ -44,12 +50,15 @@ class CustomAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CustomTextField field = CustomTextField(
-      type.title,
-      type.label,
-      type.hint,
-      type.icon,
-    );
+    CustomTextField? field;
+    if (type.label != null && type.hint != null) {
+      field = CustomTextField(
+        type.title,
+        type.label!,
+        type.hint!,
+        type.icon,
+      );
+    }
 
     return AlertDialog(
       title: Text(type.title),
@@ -63,7 +72,7 @@ class CustomAlertDialog extends StatelessWidget {
         ),
         FilledButton(
           onPressed: () {
-            onOk(field.getText());
+            onOk(field?.getText());
             Navigator.pop(context, 'OK');
           },
           child: const Text('OK'),

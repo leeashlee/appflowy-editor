@@ -1,7 +1,8 @@
 // ignore_for_file: file_names
 
-import 'package:noel_notes/Notes/NoteEntry.dart';
 import 'dart:developer' as dev;
+
+import 'NoteEntry.dart';
 
 class NoteCollection extends NoteEntry {
   List<NoteEntry> notes = [];

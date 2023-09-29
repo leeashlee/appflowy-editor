@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:noel_notes/model/settings/manager.dart';
 import 'package:noel_notes/pages/about.dart';
 import 'package:noel_notes/pages/account_info.dart';
 import 'package:noel_notes/pages/settings.dart';
@@ -10,10 +11,10 @@ class CustomAppBar extends AppBar {
   final String label;
   final String icon;
   final Function(String input) onEnter;
-
+  SettingsManager settings;
   final controller = TextEditingController();
 
-  CustomAppBar(this.label, this.icon, this.onEnter, {super.key});
+  CustomAppBar(this.label, this.icon, this.onEnter, this.settings, {super.key});
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -22,7 +23,7 @@ class CustomAppBar extends AppBar {
 class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
-    AppBar appBar = AppBar(
+    return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).colorScheme.background,
         systemNavigationBarColor: Theme.of(context).colorScheme.background,
@@ -76,7 +77,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
             const PopupMenuDivider(),
             MenuItemButton(
               onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                MaterialPageRoute(
+                    builder: (context) => SettingsScreen(widget.settings)),
               ),
               leadingIcon: const Icon(Unicon.wrench),
               child: const Text("Settings"),
@@ -93,6 +95,5 @@ class _CustomAppBarState extends State<CustomAppBar> {
         ),
       ],
     );
-    return appBar;
   }
 }

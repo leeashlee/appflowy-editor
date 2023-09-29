@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:noel_notes/component/themes.dart';
+import 'package:noel_notes/model/settings/entry.dart';
+import 'package:noel_notes/model/settings/folder.dart';
+import 'package:noel_notes/model/settings/manager.dart';
 
 import '../component/icons/unicon_icons.dart';
 
-Brightness? _brightness = Brightness.light;
-Accents? _colors = Accents.peachPink;
-
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+  SettingsManager settings;
+  SettingsScreen(this.settings, {super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,28 +27,18 @@ class SettingsScreen extends StatelessWidget {
                 context: context,
                 builder: (context) => SimpleDialog(
                   title: const Text("Change theme mode?"),
-                  children: [
-                    RadioListTile(
-                      title: const Text("Light"),
-                      value: Brightness.light,
-                      groupValue: _brightness,
-                      onChanged: (value) {
-                        _brightness = value;
-                        context.read<ThemeCubit>().toggleTheme();
-                        Navigator.pop(context);
-                      },
-                    ),
-                    RadioListTile(
-                      title: const Text("Dark"),
-                      value: Brightness.dark,
-                      groupValue: _brightness,
-                      onChanged: (value) {
-                        _brightness = value;
-                        context.read<ThemeCubit>().toggleTheme();
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
+                  children: List<RadioListTile>.generate(
+                      Brightness.values.length,
+                      (index) => RadioListTile(
+                            title: Text(Brightness.values[index].name),
+                            value: index == 0, // 0 is dark
+                            groupValue: settings["theme"]!["isDark"],
+                            onChanged: (value) {
+                              settings["theme"]!["isDark"] = value;
+                              context.read<ThemeCubit>().toggleTheme();
+                              Navigator.pop(context);
+                            },
+                          )),
                 ),
               ),
             ),
@@ -59,13 +50,14 @@ class SettingsScreen extends StatelessWidget {
                 builder: (context) => SimpleDialog(
                   title: const Text("Change theme color?"),
                   children: List<RadioListTile>.generate(
-                    Accents.values.length,
+                    Accent.values.length,
                     (index) => RadioListTile(
-                      value: Accents.values[index],
-                      title: Text(Accents.values[index].title),
-                      groupValue: _colors,
+                      value: index,
+                      title: Text(Accent.values[index].title),
+                      groupValue: Accent.values[settings["theme"]!["accent"]],
                       onChanged: (value) {
-                        _colors = value;
+                        // the accent gets saved as the index
+                        settings["theme"]!["accent"] = value;
                         Navigator.pop(context);
                       },
                     ),
