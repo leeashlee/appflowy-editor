@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'entry.dart';
 import 'node.dart';
 
@@ -33,7 +35,8 @@ class SettingsFolder implements SettingsNode {
   }
 
   // this defines SettingsFolder["example"]
-  operator [](String key) {
+  @override
+  dynamic operator [](String key) {
     var val = getValue(key);
     return (val is SettingsEntry) ? val.body : val;
   }

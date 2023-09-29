@@ -7,6 +7,7 @@ import 'package:noel_notes/pages/settings.dart';
 
 import 'icons/unicon_icons.dart';
 
+// ignore: must_be_immutable
 class CustomAppBar extends AppBar {
   final String label;
   final String icon;
@@ -78,7 +79,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
             MenuItemButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: (context) => SettingsScreen(widget.settings)),
+                  builder: (context) => SettingsScreen(widget.settings),
+                ),
               ),
               leadingIcon: const Icon(Unicon.wrench),
               child: const Text("Settings"),

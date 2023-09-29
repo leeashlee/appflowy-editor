@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'node.dart';
 
 class SettingsEntry<T> implements SettingsNode {
@@ -14,7 +16,7 @@ class SettingsEntry<T> implements SettingsNode {
   }
 
   @override
-  operator [](String key) {
+  SettingsEntry<T> operator [](String key) {
     print("Accessing Entry like it is a folder: $key");
     return this;
   }

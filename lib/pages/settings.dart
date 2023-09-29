@@ -1,4 +1,4 @@
-import 'dart:js';
+// ignore_for_file: must_be_immutable, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:noel_notes/component/alert_dialog.dart';
@@ -113,15 +113,17 @@ class SettingsScreen extends StatelessWidget {
     List<RadioListTile> out = [];
     for (final e in allowedList) {
       print("$e, ${e.runtimeType}");
-      out.add(RadioListTile(
-        value: e,
-        title: Text(e.toString()),
-        groupValue: currVal,
-        onChanged: (value) {
-          onChange(value);
-          Navigator.pop(context);
-        },
-      ));
+      out.add(
+        RadioListTile(
+          value: e,
+          title: Text(e.toString()),
+          groupValue: currVal,
+          onChanged: (value) {
+            onChange(value);
+            Navigator.pop(context);
+          },
+        ),
+      );
     }
     return SimpleDialog(
       title: Text("Change $name?"),

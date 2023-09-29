@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:noel_notes/component/themes.dart';
@@ -18,8 +20,10 @@ class SettingsField<T> {
       Map.fromEntries(SettingEvent.values.map((e) => MapEntry(e, [])));
 
   // add an observer to this field
-  void addObserver(SettingEvent event,
-      void Function(SettingsField<T> field, SettingEvent event) observer) {
+  void addObserver(
+    SettingEvent event,
+    void Function(SettingsField<T> field, SettingEvent event) observer,
+  ) {
     observers[event]!.add(observer);
   }
 
@@ -83,7 +87,12 @@ enum Settings {
   );
 
   const Settings(
-      this.klass, this.allowedType, this.allowedList, this.value, this.icon);
+    this.klass,
+    this.allowedType,
+    this.allowedList,
+    this.value,
+    this.icon,
+  );
 
   final SettingsField Function(Object value) klass;
   final Type allowedType; // only allow said type
@@ -124,7 +133,11 @@ class SettingsManager {
 
   /// This converts jsonified objects into [SettingsField] according to [Settings]
   Object singleObjectFromJson(
-      Type allowedType, List? allowedList, Object input, Object def) {
+    Type allowedType,
+    List? allowedList,
+    Object input,
+    Object def,
+  ) {
     if (def is Enum) {
       input as int;
       assert(allowedList != null && allowedList.length > input);
@@ -154,7 +167,8 @@ class SettingsManager {
         return (input as StringSetting).getValue();
       default:
         throw UnimplementedError(
-            "singleObjectToJson: ${input.runtimeType} - $input");
+          "singleObjectToJson: ${input.runtimeType} - $input",
+        );
     }
   }
 

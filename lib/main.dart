@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, must_be_immutable
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,12 +45,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ignore: must_be_immutable
 class AppView extends StatefulWidget {
   LocalStorage storage;
   SettingsManager settings;
   AppView(this.storage, this.settings, {Key? key}) : super(key: key);
 
+  @override
   State<AppView> createState() => _AppViewState();
 }
 
