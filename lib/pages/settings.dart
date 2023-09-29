@@ -1,11 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:noel_notes/component/themes.dart';
-import 'package:noel_notes/model/settings/entry.dart';
-import 'package:noel_notes/model/settings/folder.dart';
-import 'package:noel_notes/model/settings/manager.dart';
+import 'dart:js';
 
-import '../component/icons/unicon_icons.dart';
+import 'package:flutter/material.dart';
+import 'package:noel_notes/component/alert_dialog.dart';
+import 'package:noel_notes/model/settings/manager.dart';
 
 class SettingsScreen extends StatelessWidget {
   SettingsManager settings;
@@ -19,55 +16,116 @@ class SettingsScreen extends StatelessWidget {
       body: Container(
         padding: const EdgeInsets.all(8),
         child: Column(
-          children: [
-            MenuItemButton(
-              leadingIcon: const Icon(Unicon.brightness_half),
-              child: const Text('Theme'),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (context) => SimpleDialog(
-                  title: const Text("Change theme mode?"),
-                  children: List<RadioListTile>.generate(
-                      Brightness.values.length,
-                      (index) => RadioListTile(
-                            title: Text(Brightness.values[index].name),
-                            value: index == 0, // 0 is dark
-                            groupValue: settings["theme"]!["isDark"],
-                            onChanged: (value) {
-                              settings["theme"]!["isDark"] = value;
-                              context.read<ThemeCubit>().toggleTheme();
-                              Navigator.pop(context);
-                            },
-                          )),
-                ),
-              ),
-            ),
-            MenuItemButton(
-              leadingIcon: const Icon(Unicon.palette),
-              child: const Text('Accents'),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (context) => SimpleDialog(
-                  title: const Text("Change theme color?"),
-                  children: List<RadioListTile>.generate(
-                    Accent.values.length,
-                    (index) => RadioListTile(
-                      value: index,
-                      title: Text(Accent.values[index].title),
-                      groupValue: Accent.values[settings["theme"]!["accent"]],
-                      onChanged: (value) {
-                        // the accent gets saved as the index
-                        settings["theme"]!["accent"] = value;
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          children: buildButtons(context, settings),
         ),
       ),
+    );
+  }
+
+  List<MenuItemButton> buildButtons(
+    BuildContext context,
+    SettingsManager settings,
+  ) {
+    List<MenuItemButton> out = [];
+    for (final e in Settings.values) {
+      out.add(
+        customBtn(
+          e.icon,
+          e.name,
+          context,
+          e.allowedType,
+          e.allowedList,
+          settings.getValue(e),
+          e.value,
+          (value) {
+            settings.setValue(e, value);
+          },
+        ),
+      );
+    }
+    return out;
+  }
+
+  MenuItemButton customBtn(
+    IconData icon,
+    String name,
+    BuildContext context,
+    Type allowedType,
+    List? allowedList,
+    currVal,
+    defVal,
+    void Function(dynamic value) onChange,
+  ) {
+    return MenuItemButton(
+      leadingIcon: Icon(icon),
+      child: Text(name),
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (context) => genChild(
+          allowedList,
+          allowedType,
+          context,
+          currVal,
+          defVal,
+          onChange,
+          name,
+        ),
+      ),
+    );
+  }
+
+  Widget genChild(
+    List? allowedList,
+    Type allowedType,
+    BuildContext context,
+    currVal,
+    defVal,
+    void Function(dynamic value) onChange,
+    String name,
+  ) {
+    if (defVal is Enum) {
+      // ugh you cant compare types with each other >:(
+      return genRadio(allowedList!, context, currVal, onChange, name);
+    } else if (allowedType == String) {
+      if (allowedList != null) {
+        return genRadio(allowedList, context, currVal, onChange, name);
+      } else {
+        //FIXME: URGENT should be properly implemented
+        return CustomAlertDialog(AlertType.renameFile, (input) {
+          print(input);
+          throw UnimplementedError();
+        });
+      }
+    } else {
+      throw UnimplementedError(
+        "Preference redering not implemented yet for: $allowedType",
+      );
+    }
+  }
+
+  SimpleDialog genRadio(
+    List allowedList,
+    BuildContext context,
+    dynamic currVal,
+    void Function(dynamic value) onChange,
+    String name,
+  ) {
+    List<RadioListTile> out = [];
+    for (final e in allowedList) {
+      print("$e, ${e.runtimeType}");
+      out.add(RadioListTile(
+        value: e,
+        title: Text(e.toString()),
+        groupValue: currVal,
+        onChanged: (value) {
+          onChange(value);
+          Navigator.pop(context);
+        },
+      ));
+    }
+    return SimpleDialog(
+      title: Text("Change $name?"),
+      children: out,
     );
   }
 }

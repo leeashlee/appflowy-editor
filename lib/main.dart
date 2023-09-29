@@ -2,6 +2,7 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +33,7 @@ class MyApp extends StatelessWidget {
           print("inited storage = ${state.data!}");
           // init settings
           settings = SettingsManager(storage.getItem("settings"));
-          return BlocProvider(
-            create: (_) => ThemeCubit(settings.getTheme()),
-            child: AppView(storage, settings),
-          );
+          return AppView(storage, settings);
         } else {
           // TODO: proper loading screen
           return const Center(
@@ -48,29 +46,51 @@ class MyApp extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class AppView extends StatelessWidget {
+class AppView extends StatefulWidget {
   LocalStorage storage;
   SettingsManager settings;
   AppView(this.storage, this.settings, {Key? key}) : super(key: key);
 
+  State<AppView> createState() => _AppViewState();
+}
+
+class _AppViewState extends State<AppView> {
+  @override
+  void initState() {
+    // subcribe to theme & accent
+    for (final e in [Settings.theme, Settings.accent]) {
+      widget.settings.addObserver(e, SettingEvent.write, (field, event) {
+        setState(() {});
+      });
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeCubit, ThemeData>(
-      builder: (_, theme) {
-        return MaterialApp(
-          title: settings["title"] as String? ?? "My text editor",
-          theme: theme,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            AppFlowyEditorLocalizations.delegate,
-          ],
-          supportedLocales: const [Locale('en', 'US')],
-          debugShowCheckedModeBanner: false,
-          home: HomePage(storage, settings),
-        );
-      },
+    return MaterialApp(
+      title: "settings.getValue<String>(Settings.editorTitle)",
+      theme: makeThemeData(widget.settings),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        AppFlowyEditorLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en', 'US')],
+      debugShowCheckedModeBanner: false,
+      home: HomePage(widget.storage, widget.settings),
     );
   }
+}
+
+ThemeData makeThemeData(SettingsManager mgr) {
+  return ThemeData(
+    fontFamily: GoogleFonts.quicksand().fontFamily,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: mgr.getValue<Accent>(Settings.accent).color,
+      brightness: mgr.getValue<Brightness>(Settings.theme),
+    ),
+    useMaterial3: true,
+  );
 }
