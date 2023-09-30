@@ -105,9 +105,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
             const PopupMenuDivider(),
             MenuItemButton(
               style: MenuItemButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.onError,
-                backgroundColor: Theme.of(context).colorScheme.error,
-                iconColor: Theme.of(context).colorScheme.onError,
+                foregroundColor: Theme.of(context).colorScheme.error,
+                //backgroundColor: Theme.of(context).colorScheme.error,
+                iconColor: Theme.of(context).colorScheme.error,
               ),
               onPressed: () {
                 signOut();
