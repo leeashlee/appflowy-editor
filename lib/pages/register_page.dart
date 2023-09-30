@@ -3,7 +3,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:noel_notes/AppWrite/auth_api.dart';
-import 'package:noel_notes/component/icons/font_awesome5_icons.dart';
 import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:provider/provider.dart';
 

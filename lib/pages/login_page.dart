@@ -138,16 +138,8 @@ class _LoginPageState extends State<LoginPage> {
                     icon: const Icon(Unicon.google),
                   ),
                   IconButton(
-                    onPressed: () => signInWithProvider('apple'),
-                    icon: const Icon(Unicon.apple_alt),
-                  ),
-                  IconButton(
                     onPressed: () => signInWithProvider('github'),
                     icon: const Icon(Unicon.github_alt),
-                  ),
-                  IconButton(
-                    onPressed: () => signInWithProvider('twitter'),
-                    icon: const Icon(Unicon.twitter_alt),
                   ),
                 ],
               ),
