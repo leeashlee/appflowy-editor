@@ -7,6 +7,9 @@ import 'package:localstorage/localstorage.dart';
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:noel_notes/AppWrite/auth_api.dart';
+import 'package:noel_notes/pages/login_page.dart';
+import 'package:provider/provider.dart';
 
 import 'component/themes.dart';
 import 'home_page.dart';
@@ -16,7 +19,12 @@ void main() {
   Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => AuthAPI(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -68,6 +76,8 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
+    final value = context.watch<AuthAPI>().status;
+    print('TOP CHANGE Value changed to: $value!');
     return MaterialApp(
       title: "Note Editor",
       theme: makeThemeData(widget.settings),
@@ -79,7 +89,13 @@ class _AppViewState extends State<AppView> {
       ],
       supportedLocales: const [Locale('en', 'US')],
       debugShowCheckedModeBanner: false,
-      home: HomePage(widget.storage, widget.settings),
+      home: value == AuthStatus.uninitialized
+            ? const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              )
+            : value == AuthStatus.authenticated
+                ? HomePage(widget.storage, widget.settings)
+                : const LoginPage(),
     );
   }
 }

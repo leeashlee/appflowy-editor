@@ -70,7 +70,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           menuChildren: [
             MenuItemButton(
               onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const AccountInfo()),
+                MaterialPageRoute(builder: (context) => const AccountPage()),
               ),
               leadingIcon: const Icon(Unicon.chat_bubble_user),
               child: const Text("Account Info"),
