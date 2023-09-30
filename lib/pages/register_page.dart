@@ -99,6 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: passwordTextController,
                 decoration: const InputDecoration(
                   labelText: 'Password',
+                  helperText: "Password must contain 8 characters",
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,

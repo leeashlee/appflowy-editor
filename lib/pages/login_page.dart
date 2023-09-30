@@ -102,6 +102,7 @@ class _LoginPageState extends State<LoginPage> {
               TextField(
                 controller: passwordTextController,
                 decoration: const InputDecoration(
+                  helperText: "Password must contain 8 characters",
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
