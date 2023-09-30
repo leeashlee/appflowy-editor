@@ -69,7 +69,7 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "settings.getValue<String>(Settings.editorTitle)",
+      title: "Note Editor",
       theme: makeThemeData(widget.settings),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
