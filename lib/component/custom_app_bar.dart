@@ -102,6 +102,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               leadingIcon: const Icon(Unicon.info_circle),
               child: const Text("About"),
             ),
+            const PopupMenuDivider(),
             MenuItemButton(
               style: MenuItemButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.onError,
