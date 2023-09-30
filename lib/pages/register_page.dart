@@ -3,6 +3,8 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:noel_notes/AppWrite/auth_api.dart';
+import 'package:noel_notes/component/icons/font_awesome5_icons.dart';
+import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -13,6 +15,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final usernameTextController = TextEditingController();
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
@@ -33,6 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       final AuthAPI appwrite = context.read<AuthAPI>();
       await appwrite.createUser(
+        name: usernameTextController.text,
         email: emailTextController.text,
         password: passwordTextController.text,
       );
@@ -77,6 +81,14 @@ class _RegisterPageState extends State<RegisterPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextField(
+                controller: usernameTextController,
+                decoration: const InputDecoration(
+                  labelText: 'Username',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
                 controller: emailTextController,
                 decoration: const InputDecoration(
                   labelText: 'Email',
@@ -94,10 +106,13 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               const SizedBox(height: 16),
               ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  shadowColor: Colors.transparent,
+                ),
                 onPressed: () {
                   createAccount();
                 },
-                icon: const Icon(Icons.app_registration),
+                icon: const Icon(Unicon.left_arrow_to_left),
                 label: const Text('Sign up'),
               ),
             ],

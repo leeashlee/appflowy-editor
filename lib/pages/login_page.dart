@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   signIn();
                 },
-                icon: const Icon(Icons.login),
+                icon: const Icon(Unicon.entry),
                 label: const Text("Sign in"),
               ),
               TextButton(

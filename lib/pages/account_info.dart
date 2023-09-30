@@ -48,14 +48,6 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Account'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              signOut();
-            },
-          ),
-        ],
       ),
       body: Center(
         child: Padding(
@@ -71,6 +63,7 @@ class _AccountPageState extends State<AccountPage> {
               Text('$email'),
               const SizedBox(height: 40),
               Card(
+                shadowColor: Colors.transparent,
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(

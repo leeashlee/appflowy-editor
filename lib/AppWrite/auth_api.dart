@@ -54,6 +54,7 @@ class AuthAPI extends ChangeNotifier {
   }
 
   Future<User> createUser({
+    required String name,
     required String email,
     required String password,
   }) async {
@@ -62,7 +63,7 @@ class AuthAPI extends ChangeNotifier {
         userId: ID.unique(),
         email: email,
         password: password,
-        name: 'AshLee Lee',
+        name: name,
       );
       return user;
     } finally {
