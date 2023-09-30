@@ -68,6 +68,7 @@ class _AccountPageState extends State<AccountPage> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: [
+                      //TODO: Adding Update name, email and password
                       TextField(
                         controller: bioTextController,
                         decoration: const InputDecoration(
