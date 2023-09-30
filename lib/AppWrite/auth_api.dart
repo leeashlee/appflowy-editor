@@ -86,6 +86,21 @@ class AuthAPI extends ChangeNotifier {
     }
   }
 
+  updateEmail({
+    required String email,
+    required String password,
+  }) async {
+    return account.updateEmail(email: email, password: password);
+  }
+
+  updateName({required String name}) async {
+    return account.updateName(name: name);
+  }
+
+  updatePassword({required String password}) async {
+    return account.updatePassword(password: password);
+  }
+
   signInWithProvider({required String provider}) async {
     try {
       final session = await account.createOAuth2Session(provider: provider);

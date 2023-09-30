@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:noel_notes/AppWrite/auth_api.dart';
+import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:provider/provider.dart';
 
 class AccountPage extends StatefulWidget {
@@ -15,6 +16,9 @@ class _AccountPageState extends State<AccountPage> {
   late String? email;
   late String? username;
   TextEditingController bioTextController = TextEditingController();
+  TextEditingController usernameTextController = TextEditingController();
+  TextEditingController emailTextController = TextEditingController();
+  TextEditingController passwordTextController = TextEditingController();
 
   @override
   void initState() {
@@ -31,16 +35,39 @@ class _AccountPageState extends State<AccountPage> {
     });
   }
 
-  savePreferences() {
+  //FIXME Names to be synced inside Flutter
+  saveName() {
     final AuthAPI appwrite = context.read<AuthAPI>();
-    appwrite.updatePreferences(bio: bioTextController.text);
-    const snackbar = SnackBar(content: Text('Preferences updated!'));
+    appwrite.updateName(name: usernameTextController.text);
+    const snackbar = SnackBar(content: Text('Name updated!'));
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
-  signOut() {
+  saveEmail() {
+    if (emailTextController.text == "" || passwordTextController.text == "") {
+      const snackbar = SnackBar(
+          content: Text('Email wasn`t saved, Email or password is empty.'));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      return null;
+    }
     final AuthAPI appwrite = context.read<AuthAPI>();
-    appwrite.signOut();
+    appwrite.updateEmail(
+        email: emailTextController.text, password: passwordTextController.text);
+    const snackbar = SnackBar(content: Text('Email updated!'));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+  }
+
+  savePassword() {
+    if (passwordTextController.text == "") {
+      const snackbar =
+          SnackBar(content: Text('Password wasn`t saved because it`s empty.'));
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      return null;
+    }
+    final AuthAPI appwrite = context.read<AuthAPI>();
+    appwrite.updatePassword(password: passwordTextController.text);
+    const snackbar = SnackBar(content: Text('Password updated!'));
+    ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
   @override
@@ -56,34 +83,134 @@ class _AccountPageState extends State<AccountPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'Welcome back $username!',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              Text('$email'),
-              const SizedBox(height: 40),
-              Card(
-                shadowColor: Colors.transparent,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      //TODO: Adding Update name, email and password
-                      TextField(
-                        controller: bioTextController,
-                        decoration: const InputDecoration(
-                          labelText: 'Your Bio',
-                          border: OutlineInputBorder(),
-                        ),
+                      Text(
+                        username!,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
-                      const SizedBox(height: 16),
-                      TextButton(
-                        onPressed: () => savePreferences(),
-                        child: const Text('Save Preferences'),
+                      IconButton(
+                        onPressed: () => showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Edit Username?'),
+                            content: TextField(
+                              controller: usernameTextController,
+                              decoration: const InputDecoration(
+                                labelText: 'Change Name',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  usernameTextController.clear();
+                                  Navigator.pop(context, 'Cancel');
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  saveName();
+                                  usernameTextController.clear();
+                                  Navigator.pop(context, 'Save');
+                                },
+                                child: const Text('Save'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        icon: const Icon(Unicon.edit),
                       ),
                     ],
                   ),
-                ),
+                  MenuItemButton(
+                    child: const Text("Change Email"),
+                    onPressed: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        scrollable: true,
+                        title: const Text('Change Email?'),
+                        content: Column(
+                          children: [
+                            TextField(
+                              controller: emailTextController,
+                              decoration: const InputDecoration(
+                                labelText: 'Email',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            TextField(
+                              controller: passwordTextController,
+                              decoration: const InputDecoration(
+                                labelText: 'Password',
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              emailTextController.clear();
+                              passwordTextController.clear();
+                              Navigator.pop(context, 'Cancel');
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              saveEmail();
+                              emailTextController.clear();
+                              passwordTextController.clear();
+                              Navigator.pop(context, 'Save');
+                            },
+                            child: const Text('Save'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  MenuItemButton(
+                    child: const Text("Change Password"),
+                    onPressed: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Change Password?'),
+                        content: TextField(
+                          controller: passwordTextController,
+                          decoration: const InputDecoration(
+                            labelText: 'Password',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              passwordTextController.clear();
+                              Navigator.pop(context, 'Cancel');
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              savePassword();
+                              passwordTextController.clear();
+                              Navigator.pop(context, 'Save');
+                            },
+                            child: const Text('Save'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
