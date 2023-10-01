@@ -15,7 +15,6 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   late String? email;
   late String? username;
-  TextEditingController bioTextController = TextEditingController();
   TextEditingController usernameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
@@ -26,13 +25,6 @@ class _AccountPageState extends State<AccountPage> {
     final AuthAPI appwrite = context.read<AuthAPI>();
     email = appwrite.email;
     username = appwrite.username;
-    appwrite.getUserPreferences().then((value) {
-      if (value.data.isNotEmpty) {
-        setState(() {
-          bioTextController.text = value.data['bio'];
-        });
-      }
-    });
   }
 
   //FIXME Names to be synced inside Flutter
