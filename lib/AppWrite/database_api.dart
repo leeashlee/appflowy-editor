@@ -24,17 +24,17 @@ class DatabaseAPI {
     databases = Databases(client);
   }
 
-  Future<DocumentList> getMessages() {
+  Future<DocumentList> getNotes() {
     return databases.listDocuments(
       databaseId: APPWRITE_DATABASE_ID,
-      collectionId: COLLECTION_MESSAGES,
+      collectionId: COLLECTION_NOTES,
     );
   }
 
-  Future<Document> addMessage({required String message}) {
+  Future<Document> addNotes({required String message}) {
     return databases.createDocument(
       databaseId: APPWRITE_DATABASE_ID,
-      collectionId: COLLECTION_MESSAGES,
+      collectionId: COLLECTION_NOTES,
       documentId: ID.unique(),
       data: {
         'text': message,
@@ -44,10 +44,10 @@ class DatabaseAPI {
     );
   }
 
-  Future<dynamic> deleteMessage({required String id}) {
+  Future<dynamic> deleteNotes({required String id}) {
     return databases.deleteDocument(
       databaseId: APPWRITE_DATABASE_ID,
-      collectionId: COLLECTION_MESSAGES,
+      collectionId: COLLECTION_NOTES,
       documentId: id,
     );
   }
