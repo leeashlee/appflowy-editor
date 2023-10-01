@@ -24,30 +24,31 @@ class DatabaseAPI {
     databases = Databases(client);
   }
 
-  Future<DocumentList> getNotes() {
+  Future<DocumentList> getNoteEntry() {
     return databases.listDocuments(
       databaseId: APPWRITE_DATABASE_ID,
-      collectionId: COLLECTION_NOTES,
+      collectionId: COLLECTION_NOTEENTRY,
     );
   }
 
-  Future<Document> addNotes({required String message}) {
+  Future<Document> addNoteEntry({required String body, required String name}) {
     return databases.createDocument(
       databaseId: APPWRITE_DATABASE_ID,
-      collectionId: COLLECTION_NOTES,
+      collectionId: COLLECTION_NOTEENTRY,
       documentId: ID.unique(),
       data: {
-        'text': message,
-        'date': DateTime.now().toString(),
-        'user_id': auth.userid,
+        'name': name,
+        'body': body,
+        'createdAt': DateTime.now().toString(),
+        'editedAt': DateTime.now().toString(),
       },
     );
   }
 
-  Future<dynamic> deleteNotes({required String id}) {
+  Future<dynamic> deleteNoteEntry({required String id}) {
     return databases.deleteDocument(
       databaseId: APPWRITE_DATABASE_ID,
-      collectionId: COLLECTION_NOTES,
+      collectionId: COLLECTION_NOTEENTRY,
       documentId: id,
     );
   }
