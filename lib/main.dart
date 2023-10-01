@@ -43,7 +43,6 @@ class MyApp extends StatelessWidget {
           settings = SettingsManager(storage.getItem("settings"));
           return AppView(storage, settings);
         } else {
-          // TODO: proper loading screen
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -77,7 +76,6 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     final value = context.watch<AuthAPI>().status;
-    print('TOP CHANGE Value changed to: $value!');
     return MaterialApp(
       title: "Note Editor",
       theme: makeThemeData(widget.settings),
