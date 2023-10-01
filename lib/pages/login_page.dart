@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 16),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  shadowColor: Colors.transparent
+                  shadowColor: Colors.transparent,
                 ),
                 onPressed: () {
                   signIn();

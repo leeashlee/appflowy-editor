@@ -46,13 +46,16 @@ class _AccountPageState extends State<AccountPage> {
   saveEmail() {
     if (emailTextController.text == "" || passwordTextController.text == "") {
       const snackbar = SnackBar(
-          content: Text('Email wasn`t saved, Email or password is empty.'));
+        content: Text('Email wasn`t saved, Email or password is empty.'),
+      );
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
       return null;
     }
     final AuthAPI appwrite = context.read<AuthAPI>();
     appwrite.updateEmail(
-        email: emailTextController.text, password: passwordTextController.text);
+      email: emailTextController.text,
+      password: passwordTextController.text,
+    );
     const snackbar = SnackBar(content: Text('Email updated!'));
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
