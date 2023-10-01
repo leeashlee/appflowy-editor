@@ -80,6 +80,21 @@ class _AccountPageState extends State<AccountPage> {
             children: [
               Column(
                 children: [
+                  Text(
+                    "Profile",
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    height: 65,
+                    width: 65,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      image: const DecorationImage(image: AssetImage("assets/images/icon.png")),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -122,95 +137,106 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                     ],
                   ),
-                  MenuItemButton(
-                    child: const Text("Change Email"),
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        scrollable: true,
-                        title: const Text('Change Email?'),
-                        content: Column(
-                          children: [
-                            TextField(
-                              controller: emailTextController,
-                              decoration: const InputDecoration(
-                                labelText: 'Email',
-                                border: OutlineInputBorder(),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            TextField(
-                              controller: passwordTextController,
-                              decoration: const InputDecoration(
-                                labelText: 'Password',
-                                helperText:
-                                    "Password must contain 8 characters",
-                                border: OutlineInputBorder(),
-                              ),
-                              obscureText: true,
-                            ),
-                          ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        email!,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              emailTextController.clear();
-                              passwordTextController.clear();
-                              Navigator.pop(context, 'Cancel');
-                            },
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              saveEmail();
-                              emailTextController.clear();
-                              passwordTextController.clear();
-                              Navigator.pop(context, 'Save');
-                            },
-                            child: const Text('Save'),
-                          ),
-                        ],
                       ),
-                    ),
-                  ),
-                  MenuItemButton(
-                    child: const Text("Change Password"),
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Change Password?'),
-                        content: TextField(
-                          controller: passwordTextController,
-                          decoration: const InputDecoration(
-                            labelText: 'Password',
-                            helperText: "Password must contain 8 characters",
-                            border: OutlineInputBorder(),
+                      TextButton(
+                        onPressed: () => showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            scrollable: true,
+                            title: const Text('Change Email?'),
+                            content: Column(
+                              children: [
+                                TextField(
+                                  controller: emailTextController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Email',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                TextField(
+                                  controller: passwordTextController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Password',
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  obscureText: true,
+                                ),
+                              ],
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  emailTextController.clear();
+                                  passwordTextController.clear();
+                                  Navigator.pop(context, 'Cancel');
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  saveEmail();
+                                  emailTextController.clear();
+                                  passwordTextController.clear();
+                                  Navigator.pop(context, 'Save');
+                                },
+                                child: const Text('Save'),
+                              ),
+                            ],
                           ),
-                          obscureText: true,
                         ),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              passwordTextController.clear();
-                              Navigator.pop(context, 'Cancel');
-                            },
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              savePassword();
-                              passwordTextController.clear();
-                              Navigator.pop(context, 'Save');
-                            },
-                            child: const Text('Save'),
-                          ),
-                        ],
+                        child: const Text("Change Email"),
                       ),
-                    ),
+                    ],
                   ),
                 ],
+              ),
+              const Divider(),
+              TextButton(
+                child: const Text("Change Password"),
+                onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Change Password?'),
+                    content: TextField(
+                      controller: passwordTextController,
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
+                        helperText: "Password must contain 8 characters",
+                        border: OutlineInputBorder(),
+                      ),
+                      obscureText: true,
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          passwordTextController.clear();
+                          Navigator.pop(context, 'Cancel');
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          savePassword();
+                          passwordTextController.clear();
+                          Navigator.pop(context, 'Save');
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
