@@ -150,8 +150,11 @@ class _AccountPageState extends State<AccountPage> {
                               controller: passwordTextController,
                               decoration: const InputDecoration(
                                 labelText: 'Password',
+                                helperText:
+                                    "Password must contain 8 characters",
                                 border: OutlineInputBorder(),
                               ),
+                              obscureText: true,
                             ),
                           ],
                         ),
@@ -187,8 +190,10 @@ class _AccountPageState extends State<AccountPage> {
                           controller: passwordTextController,
                           decoration: const InputDecoration(
                             labelText: 'Password',
+                            helperText: "Password must contain 8 characters",
                             border: OutlineInputBorder(),
                           ),
+                          obscureText: true,
                         ),
                         actions: <Widget>[
                           TextButton(
