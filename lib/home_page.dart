@@ -23,7 +23,6 @@ import 'component/custom_app_bar.dart';
 import 'component/editor/editor.dart';
 import 'component/icons/unicon_icons.dart';
 
-//TODO Adding an account with username and password that keeps your files on the server
 //TODO Encryption
 enum ExportFileType {
   markdown,
