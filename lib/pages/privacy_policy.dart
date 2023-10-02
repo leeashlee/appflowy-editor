@@ -850,10 +850,13 @@ Based on the applicable laws of your country, you may have the right to request 
       ),
       body: Container(
         padding: const EdgeInsets.all(8),
-        child: Markdown(data: privacyPolicy, onTapLink:(text, href, title) {
-          launchUrl(Uri.parse(href!));
-        },),
+        child: Markdown(
+          data: privacyPolicy,
+          onTapLink: (text, href, title) {
+            launchUrl(Uri.parse(href!));
+          },
         ),
+      ),
     );
   }
 }
