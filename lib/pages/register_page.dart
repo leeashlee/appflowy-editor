@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:noel_notes/AppWrite/auth_api.dart';
 import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:noel_notes/pages/login_page.dart';
+import 'package:noel_notes/pages/privacy_policy.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -126,6 +127,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 icon: const Icon(Unicon.left_arrow_to_left),
                 label: const Text('Sign up'),
               ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PrivacyPolicy(),
+                      ),
+                    );
+                  },
+                  child: const Text("Privacy Policy")),
             ],
           ),
         ),
