@@ -65,6 +65,35 @@ class _AccountPageState extends State<AccountPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
+  void showDialogue(String title, Widget? content,
+      TextEditingController controller1, TextEditingController controller2) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        scrollable: true,
+        title: Text(title),
+        content: content,
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              controller1.clear();
+              Navigator.pop(context, 'Cancel');
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              saveName();
+              controller1.clear();
+              Navigator.pop(context, 'Save');
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +120,8 @@ class _AccountPageState extends State<AccountPage> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Theme.of(context).colorScheme.surfaceVariant,
-                      image: const DecorationImage(image: AssetImage("assets/images/icon.png")),
+                      image: const DecorationImage(
+                          image: AssetImage("assets/images/icon.png")),
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -103,36 +133,20 @@ class _AccountPageState extends State<AccountPage> {
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       IconButton(
-                        onPressed: () => showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Edit Username?'),
-                            content: TextField(
+                        onPressed: () {
+                          showDialogue(
+                            'Edit Username?',
+                            TextField(
                               controller: usernameTextController,
                               decoration: const InputDecoration(
                                 labelText: 'Change Name',
                                 border: OutlineInputBorder(),
                               ),
                             ),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  usernameTextController.clear();
-                                  Navigator.pop(context, 'Cancel');
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  saveName();
-                                  usernameTextController.clear();
-                                  Navigator.pop(context, 'Save');
-                                },
-                                child: const Text('Save'),
-                              ),
-                            ],
-                          ),
-                        ),
+                            usernameTextController,
+                            usernameTextController,
+                          );
+                        },
                         icon: const Icon(Unicon.edit),
                       ),
                     ],
@@ -148,12 +162,10 @@ class _AccountPageState extends State<AccountPage> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () => showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            scrollable: true,
-                            title: const Text('Change Email?'),
-                            content: Column(
+                        onPressed: () {
+                          showDialogue(
+                            'Change Email?',
+                            Column(
                               children: [
                                 TextField(
                                   controller: emailTextController,
@@ -175,27 +187,10 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                               ],
                             ),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  emailTextController.clear();
-                                  passwordTextController.clear();
-                                  Navigator.pop(context, 'Cancel');
-                                },
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  saveEmail();
-                                  emailTextController.clear();
-                                  passwordTextController.clear();
-                                  Navigator.pop(context, 'Save');
-                                },
-                                child: const Text('Save'),
-                              ),
-                            ],
-                          ),
-                        ),
+                            emailTextController,
+                            passwordTextController,
+                          );
+                        },
                         child: const Text("Change Email"),
                       ),
                     ],
@@ -205,11 +200,10 @@ class _AccountPageState extends State<AccountPage> {
               const Divider(),
               TextButton(
                 child: const Text("Change Password"),
-                onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text('Change Password?'),
-                    content: TextField(
+                onPressed: () {
+                  showDialogue(
+                    'Change Password?',
+                    TextField(
                       controller: passwordTextController,
                       decoration: const InputDecoration(
                         labelText: 'Password',
@@ -218,25 +212,10 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                       obscureText: true,
                     ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          passwordTextController.clear();
-                          Navigator.pop(context, 'Cancel');
-                        },
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          savePassword();
-                          passwordTextController.clear();
-                          Navigator.pop(context, 'Save');
-                        },
-                        child: const Text('Save'),
-                      ),
-                    ],
-                  ),
-                ),
+                    passwordTextController,
+                    passwordTextController,
+                  );
+                },
               ),
             ],
           ),
