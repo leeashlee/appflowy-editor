@@ -65,8 +65,12 @@ class _AccountPageState extends State<AccountPage> {
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
   }
 
-  void showDialogue(String title, Widget? content,
-      TextEditingController controller1, TextEditingController controller2) {
+  void showDialogue(
+    String title,
+    Widget? content,
+    TextEditingController controller1,
+    TextEditingController controller2,
+  ) {
     showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -121,7 +125,8 @@ class _AccountPageState extends State<AccountPage> {
                       shape: BoxShape.circle,
                       color: Theme.of(context).colorScheme.surfaceVariant,
                       image: const DecorationImage(
-                          image: AssetImage("assets/images/icon.png")),
+                        image: AssetImage("assets/images/icon.png"),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 4),
