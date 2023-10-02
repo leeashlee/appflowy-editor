@@ -52,6 +52,7 @@ dependencies:
   flutter_lints: ^2.0.3
   intl: ^0.18.1
   appwrite: ^11.0.0
+  flutter_markdown: ^0.6.17+3
 
 dev_dependencies:
   flutter_test:
