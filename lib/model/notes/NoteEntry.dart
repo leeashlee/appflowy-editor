@@ -19,7 +19,7 @@ abstract class NoteEntry {
     _onWrite();
   }
 
-  NoteEntry? getCurrNoteFile();
+  NoteFile? getCurrNoteFile();
 
   void looseFocus();
 
@@ -31,7 +31,7 @@ abstract class NoteEntry {
     print("NoteEntry fromJson $input");
     switch (input["type"]) {
       case "NoteCollection":
-        return NoteCollection.fromJson(input, withFocus);
+        return NoteFolder.fromJson(input, withFocus);
       case "NoteFile":
         return NoteFile.fromJson(input);
       default:
@@ -103,7 +103,7 @@ class NoteFile extends NoteEntry {
   }
 
   @override
-  NoteEntry? getCurrNoteFile() {
+  NoteFile? getCurrNoteFile() {
     return this;
   }
 

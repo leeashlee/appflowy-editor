@@ -4,12 +4,12 @@ import 'dart:developer' as dev;
 
 import 'NoteEntry.dart';
 
-class NoteCollection extends NoteEntry {
+class NoteFolder extends NoteEntry {
   List<NoteEntry> notes = [];
   NoteEntry? curr;
   Comparator? comparator;
 
-  NoteCollection(
+  NoteFolder(
     String name, [
     bool withFocus = false,
     List<NoteEntry> initial = const [],
@@ -58,15 +58,15 @@ class NoteCollection extends NoteEntry {
   }
 
   @override
-  NoteEntry? getCurrNoteFile() {
+  NoteFile? getCurrNoteFile() {
     return (curr != null) ? curr!.getCurrNoteFile() : null; // be recursive
   }
 
-  NoteCollection getCurrNoteCollection() {
+  NoteFolder getCurrNoteFolder() {
     if (curr is NoteFile) {
       return this;
-    } else if (curr != null && curr is NoteCollection) {
-      return (curr as NoteCollection).getCurrNoteCollection();
+    } else if (curr != null && curr is NoteFolder) {
+      return (curr as NoteFolder).getCurrNoteFolder();
     } else {
       throw UnimplementedError();
     }
@@ -87,7 +87,7 @@ class NoteCollection extends NoteEntry {
 
   void setCurr(NoteEntry? newCurr) {
     dev.log("$name: setCurr: from $curr to $newCurr");
-    if (curr != null && curr is NoteCollection) {
+    if (curr != null && curr is NoteFolder) {
       curr!.looseFocus();
     }
     curr = newCurr;
@@ -136,7 +136,7 @@ class NoteCollection extends NoteEntry {
     for (var inp in input["body"]!) {
       body.add(NoteEntry.fromJson(inp, false));
     }
-    return NoteCollection(
+    return NoteFolder(
       input["name"] as String,
       (withFocus || curr > -1),
       body,

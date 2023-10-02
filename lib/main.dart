@@ -88,12 +88,12 @@ class _AppViewState extends State<AppView> {
       supportedLocales: const [Locale('en', 'US')],
       debugShowCheckedModeBanner: false,
       home: value == AuthStatus.uninitialized
-            ? const Scaffold(
-                body: Center(child: CircularProgressIndicator()),
-              )
-            : value == AuthStatus.authenticated
-                ? HomePage(widget.storage, widget.settings)
-                : const LoginPage(),
+          ? const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            )
+          : value == AuthStatus.authenticated
+              ? HomePage(widget.storage, widget.settings)
+              : const LoginPage(),
     );
   }
 }

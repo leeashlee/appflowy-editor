@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   Timer? syncTimer;
   // ignore: unnecessary_new
-  late NoteCollection notes;
+  late NoteFolder notes;
   late WidgetBuilder _widgetBuilder;
 
   @override
@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
     );
 
     _widgetBuilder = (context) => Editor(
-          editorState: (notes.getCurrNoteFile() as NoteFile).getBody(),
+          editorState: notes.getCurrNoteFile()!.getBody(),
           onEditorStateChange: (editorState) {
             (notes.getCurrNoteFile() as NoteFile).setBody(editorState);
           },
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
     super.reassemble();
 
     _widgetBuilder = (context) => Editor(
-          editorState: (notes.getCurrNoteFile() as NoteFile).getBody(),
+          editorState: notes.getCurrNoteFile()!.getBody(),
           onEditorStateChange: (editorState) {
             (notes.getCurrNoteFile() as NoteFile).setBody(editorState);
           },
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
       drawer: _buildDrawer(context),
       appBar: CustomAppBar(
         notes.getCurrNoteFile()!.getName(),
-        notes.getCurrNoteCollection().getName(),
+        notes.getCurrNoteFolder().getName(),
         (input) {
           setState(() {
             notes.getCurrNoteFile()!.setName(input);
@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage> {
             AlertType.newCollec,
             (input) {
               setState(() {
-                notes.addEntry(NoteCollection(input!));
+                notes.addEntry(NoteFolder(input!));
                 sorting();
               });
             },
@@ -243,8 +243,8 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> buildNotes(
     BuildContext context,
-    NoteCollection currNotes, [
-    List<NoteCollection>? parents,
+    NoteFolder currNotes, [
+    List<NoteFolder>? parents,
   ]) {
     parents = (parents != null) ? List.from(parents) : [];
     parents.add(currNotes);
@@ -400,7 +400,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         );
-      } else if (currI is NoteCollection) {
+      } else if (currI is NoteFolder) {
         retVal.add(
           ExpansionTile(
             textColor: Theme.of(context).colorScheme.primary,
@@ -492,13 +492,13 @@ class _HomePageState extends State<HomePage> {
 
   void sorting() {
     notes.keepSorted((a, b) {
-      int res = boolToInt(b is NoteCollection) - boolToInt(a is NoteCollection);
+      int res = boolToInt(b is NoteFolder) - boolToInt(a is NoteFolder);
       return res;
     });
   }
 
   // note stuff
-  NoteFile addNote(String input, [NoteCollection? into]) {
+  NoteFile addNote(String input, [NoteFolder? into]) {
     NoteFile newNote = NoteFile(input, EditorState.blank());
     // if into is null use the root
     into = (into != null) ? into : notes;
@@ -510,7 +510,7 @@ class _HomePageState extends State<HomePage> {
     return newNote;
   }
 
-  void removeNote(NoteEntry old, [NoteCollection? into]) {
+  void removeNote(NoteEntry old, [NoteFolder? into]) {
     into = (into != null) ? into : notes;
     setState(
       () {
@@ -519,7 +519,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void switchNote(List<NoteCollection> parents, NoteFile file) {
+  void switchNote(List<NoteFolder> parents, NoteFile file) {
     setState(() {
       // switch the focus recursively for all parents (propagate)
       for (var i = 0; i < parents.length - 1; i++) {
@@ -624,11 +624,11 @@ class _HomePageState extends State<HomePage> {
     widget.storage.setItem("settings", widget.settings.toJson());
   }
 
-  NoteCollection initNotes() {
+  NoteFolder initNotes() {
     Map? lclNotes = widget.storage.getItem("notes");
 
     if (lclNotes == null) {
-      return NoteCollection(
+      return NoteFolder(
         "My Notes",
         true,
         [
@@ -639,7 +639,7 @@ class _HomePageState extends State<HomePage> {
         ],
       );
     } else {
-      return NoteCollection.fromJson(lclNotes, true) as NoteCollection;
+      return NoteFolder.fromJson(lclNotes, true) as NoteFolder;
     }
   }
 }
