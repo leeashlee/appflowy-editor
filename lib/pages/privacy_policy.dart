@@ -875,19 +875,7 @@ We may update this privacy notice from time to time. The updated version will be
 
   
 
-If you have questions or comments about this notice, you may email us at noeltugy@ashleehee.com or contact us by post at:
-
-  
-
-AshLee Hee
-
-\_\_\_\_\_\_\_\_\_\_
-
-\_\_\_\_\_\_\_\_\_\_
-
-Israel
-
-  
+If you have questions or comments about this notice, you may email us at noeltugy@ashleehee.com
 
 ## 15\. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
 
