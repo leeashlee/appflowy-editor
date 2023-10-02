@@ -8,7 +8,7 @@ import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:noel_notes/AppWrite/auth_api.dart';
-import 'package:noel_notes/pages/login_page.dart';
+import 'package:noel_notes/pages/login.dart';
 import 'package:provider/provider.dart';
 
 import 'component/themes.dart';

@@ -2,7 +2,7 @@
 
 import 'package:appflowy_editor/appflowy_editor.dart';
 
-import 'NoteCollection.dart';
+import 'NoteFolder.dart';
 import 'dart:developer' as dev;
 import 'package:intl/intl.dart';
 

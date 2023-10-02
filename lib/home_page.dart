@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_html/html.dart' as html;
 
 import 'model/settings/manager.dart';
-import 'model/notes/NoteCollection.dart';
+import 'model/notes/NoteFolder.dart';
 import 'model/notes/NoteEntry.dart';
 import 'component/alert_dialog.dart';
 import 'component/custom_app_bar.dart';

@@ -1,26 +1,26 @@
-// ignore_for_file: library_private_types_in_public_api, always_declare_return_types, use_build_context_synchronously
+// ignore_for_file: always_declare_return_types, use_build_context_synchronously, library_private_types_in_public_api
 
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:noel_notes/AppWrite/auth_api.dart';
 import 'package:noel_notes/component/icons/unicon_icons.dart';
-import 'package:noel_notes/pages/login_page.dart';
-import 'package:noel_notes/pages/privacy_policy.dart';
+import 'package:noel_notes/pages/register.dart';
 import 'package:provider/provider.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  final usernameTextController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
+  bool loading = false;
 
-  createAccount() async {
+  signIn() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -36,25 +36,17 @@ class _RegisterPageState extends State<RegisterPage> {
         );
       },
     );
+
     try {
       final AuthAPI appwrite = context.read<AuthAPI>();
-      await appwrite.createUser(
-        name: usernameTextController.text,
+      await appwrite.createEmailSession(
         email: emailTextController.text,
         password: passwordTextController.text,
       );
       Navigator.pop(context);
-      const snackbar = SnackBar(content: Text('Account created!'));
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginPage(),
-        ),
-      );
     } on AppwriteException catch (e) {
       Navigator.pop(context);
-      showAlert(title: 'Account creation failed', text: e.message.toString());
+      showAlert(title: 'Login failed', text: e.message.toString());
     }
   }
 
@@ -78,11 +70,19 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  signInWithProvider(String provider) {
+    try {
+      context.read<AuthAPI>().signInWithProvider(provider: provider);
+    } on AppwriteException catch (e) {
+      showAlert(title: 'Login failed', text: e.message.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create your account'),
+        title: const Text('Note Editor'),
       ),
       body: Center(
         child: Padding(
@@ -91,14 +91,6 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextField(
-                controller: usernameTextController,
-                decoration: const InputDecoration(
-                  labelText: 'Username',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 16),
               TextField(
                 controller: emailTextController,
                 decoration: const InputDecoration(
@@ -110,8 +102,8 @@ class _RegisterPageState extends State<RegisterPage> {
               TextField(
                 controller: passwordTextController,
                 decoration: const InputDecoration(
-                  labelText: 'Password',
                   helperText: "Password must contain 8 characters",
+                  labelText: 'Password',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
@@ -122,21 +114,35 @@ class _RegisterPageState extends State<RegisterPage> {
                   shadowColor: Colors.transparent,
                 ),
                 onPressed: () {
-                  createAccount();
+                  signIn();
                 },
-                icon: const Icon(Unicon.left_arrow_to_left),
-                label: const Text('Sign up'),
+                icon: const Icon(Unicon.entry),
+                label: const Text("Sign in"),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const PrivacyPolicy(),
+                      builder: (context) => const RegisterPage(),
                     ),
                   );
                 },
-                child: const Text("Privacy Policy"),
+                child: const Text('Create Account'),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    onPressed: () => signInWithProvider('google'),
+                    icon: const Icon(Unicon.google),
+                  ),
+                  IconButton(
+                    onPressed: () => signInWithProvider('github'),
+                    icon: const Icon(Unicon.github_alt),
+                  ),
+                ],
               ),
             ],
           ),
