@@ -45,19 +45,19 @@ class DatabaseAPI {
     );
   }
 
-  Future<Document> getNoteEntry({required String documentId}) {
+  Future<Document> getNoteEntry({required String id}) {
     return databases.getDocument(
       databaseId: APPWRITE_DATABASE_ID,
       collectionId: COLLECTION_NOTEENTRY,
-      documentId: documentId,
+      documentId: id,
     );
   }
 
-  Future<Document> updateNoteEntry({required String documentId}) {
+  Future<Document> updateNoteEntry({required String id}) {
     return databases.updateDocument(
       databaseId: APPWRITE_DATABASE_ID,
       collectionId: COLLECTION_NOTEENTRY,
-      documentId: documentId,
+      documentId: id,
     );
   }
 
