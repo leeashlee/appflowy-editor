@@ -24,7 +24,7 @@ class DatabaseAPI {
     databases = Databases(client);
   }
 
-  Future<DocumentList> getNoteEntry() {
+  Future<DocumentList> getNoteEntries() {
     return databases.listDocuments(
       databaseId: APPWRITE_DATABASE_ID,
       collectionId: COLLECTION_NOTEENTRY,
@@ -42,6 +42,22 @@ class DatabaseAPI {
         'createdAt': DateTime.now().toString(),
         'editedAt': DateTime.now().toString(),
       },
+    );
+  }
+
+  Future<Document> getNoteEntry({required String documentId}) {
+    return databases.getDocument(
+      databaseId: APPWRITE_DATABASE_ID,
+      collectionId: COLLECTION_NOTEENTRY,
+      documentId: documentId,
+    );
+  }
+
+  Future<Document> updateNoteEntry({required String documentId}) {
+    return databases.updateDocument(
+      databaseId: APPWRITE_DATABASE_ID,
+      collectionId: COLLECTION_NOTEENTRY,
+      documentId: documentId,
     );
   }
 
