@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PrivacyPolicy extends StatelessWidget {
   const PrivacyPolicy({super.key});
@@ -38,7 +39,7 @@ This privacy notice for AshLee Hee ('**we**', '**us**', or '**our**'), describes
 
   
 
-**_This summary provides key points from our privacy notice, but you can find out more details about any of these topics by clicking the link following each key point or by using our_** [**_table of contents_**](#toc) **_below to find the section you are looking for._**
+**_This summary provides key points from our privacy notice._**
 
   
 
@@ -75,46 +76,6 @@ This privacy notice for AshLee Hee ('**we**', '**us**', or '**our**'), describes
   
 
 Want to learn more about what we do with any information we collect? [Review the privacy notice in full](#toc).
-
-  
-
-  
-
-## TABLE OF CONTENTS
-
-  
-
-1\. WHAT INFORMATION DO WE COLLECT?
-
-2\. HOW DO WE PROCESS YOUR INFORMATION?
-
-3\. WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR PERSONAL INFORMATION?
-
-4\. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?
-
-5\. HOW DO WE HANDLE YOUR SOCIAL LOGINS?
-
-6\. HOW LONG DO WE KEEP YOUR INFORMATION?
-
-7\. HOW DO WE KEEP YOUR INFORMATION SAFE?
-
-8\. DO WE COLLECT INFORMATION FROM MINORS?
-
-9\. WHAT ARE YOUR PRIVACY RIGHTS?
-
-10\. CONTROLS FOR DO-NOT-TRACK FEATURES
-
-11\. DO UNITED STATES RESIDENTS HAVE SPECIFIC PRIVACY RIGHTS?
-
-12\. DO OTHER REGIONS HAVE SPECIFIC PRIVACY RIGHTS?
-
-13\. DO WE MAKE UPDATES TO THIS NOTICE?
-
-14\. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?
-
-15\. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?
-
-  
 
   
 
@@ -889,7 +850,9 @@ Based on the applicable laws of your country, you may have the right to request 
       ),
       body: Container(
         padding: const EdgeInsets.all(8),
-        child: Markdown(data: privacyPolicy),
+        child: Markdown(data: privacyPolicy, onTapLink:(text, href, title) {
+          launchUrl(Uri.parse(href!));
+        },),
         ),
     );
   }
