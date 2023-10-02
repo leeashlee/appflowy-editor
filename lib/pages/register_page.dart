@@ -128,15 +128,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 label: const Text('Sign up'),
               ),
               TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PrivacyPolicy(),
-                      ),
-                    );
-                  },
-                  child: const Text("Privacy Policy")),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PrivacyPolicy(),
+                    ),
+                  );
+                },
+                child: const Text("Privacy Policy"),
+              ),
             ],
           ),
         ),
