@@ -70,6 +70,7 @@ class _AccountPageState extends State<AccountPage> {
     Widget? content,
     TextEditingController controller1,
     TextEditingController controller2,
+    Function function,
   ) {
     showDialog<String>(
       context: context,
@@ -87,7 +88,7 @@ class _AccountPageState extends State<AccountPage> {
           ),
           TextButton(
             onPressed: () {
-              saveName();
+              function;
               controller1.clear();
               Navigator.pop(context, 'Save');
             },
@@ -150,6 +151,7 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                             usernameTextController,
                             usernameTextController,
+                            saveName(),
                           );
                         },
                         icon: const Icon(Unicon.edit),
@@ -194,6 +196,7 @@ class _AccountPageState extends State<AccountPage> {
                             ),
                             emailTextController,
                             passwordTextController,
+                            saveEmail(),
                           );
                         },
                         child: const Text("Change Email"),
@@ -219,6 +222,7 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     passwordTextController,
                     passwordTextController,
+                    savePassword(),
                   );
                 },
               ),
