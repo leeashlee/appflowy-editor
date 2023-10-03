@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -123,7 +125,7 @@ class _HomePageState extends State<HomePage> {
         child: _widgetBuilder(context),
       ),
       //endlessly load
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: FloatingActionButton.small(
         onPressed: () => showDialog<String>(
           context: context,
