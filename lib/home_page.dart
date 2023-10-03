@@ -123,6 +123,7 @@ class _HomePageState extends State<HomePage> {
         child: _widgetBuilder(context),
       ),
       //endlessly load
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: FloatingActionButton.small(
         onPressed: () => showDialog<String>(
           context: context,
