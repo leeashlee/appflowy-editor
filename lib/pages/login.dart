@@ -1,8 +1,6 @@
-// ignore_for_file: always_declare_return_types, use_build_context_synchronously, library_private_types_in_public_api
-
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:noel_notes/AppWrite/auth_api.dart';
+import 'package:noel_notes/appwrite/auth_api.dart';
 import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:noel_notes/pages/register.dart';
 import 'package:provider/provider.dart';

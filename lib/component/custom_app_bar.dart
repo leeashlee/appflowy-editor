@@ -1,5 +1,3 @@
-// ignore_for_file: always_declare_return_types
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +5,7 @@ import 'package:noel_notes/model/settings/manager.dart';
 import 'package:noel_notes/pages/about.dart';
 import 'package:noel_notes/pages/account_info.dart';
 import 'package:noel_notes/pages/settings.dart';
-import 'package:noel_notes/AppWrite/auth_api.dart';
+import 'package:noel_notes/appwrite/auth_api.dart';
 
 import 'icons/unicon_icons.dart';
 
@@ -30,7 +28,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     final AuthAPI appwrite = context.read<AuthAPI>();
     appwrite.signOut();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
