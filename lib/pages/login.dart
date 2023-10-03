@@ -2,7 +2,6 @@
 
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
 import 'package:noel_notes/AppWrite/auth_api.dart';
 import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:noel_notes/pages/register.dart';
