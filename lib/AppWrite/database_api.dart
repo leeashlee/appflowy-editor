@@ -31,16 +31,13 @@ class DatabaseAPI {
     );
   }
 
-  Future<Document> addNoteEntry({required String body, required String name}) {
+  Future<Document> addNoteEntry() { //required attributes inside the ().
     return databases.createDocument(
       databaseId: APPWRITE_DATABASE_ID,
       collectionId: COLLECTION_NOTEENTRY,
       documentId: ID.unique(),
       data: {
-        'name': name,
-        'body': body,
-        'createdAt': DateTime.now().toString(),
-        'editedAt': DateTime.now().toString(),
+        //Add attributes here.
       },
     );
   }
