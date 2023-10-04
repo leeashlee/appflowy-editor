@@ -14,7 +14,7 @@ class PrivacyPolicy extends StatelessWidget {
 
   
 
-**Last updated October 0F 2023**
+**Last updated October 02, 2023**
 
   
 
