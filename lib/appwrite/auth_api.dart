@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/widgets.dart';
-import 'package:noel_notes/appwrite/constants.dart';
+import 'package:encrypt/encrypt.dart' as crypto;
+
+import 'constants.dart';
 
 enum AuthStatus {
   uninitialized,
@@ -125,5 +129,20 @@ class AuthAPI extends ChangeNotifier {
 
   Future<User> updatePreferences({required String bio}) async {
     return account.updatePrefs(prefs: {'bio': bio});
+  }
+
+  Future<String> initSalt() async {
+    var p = (await account.getPrefs()).data;
+    try {
+      if (base64Decode(p["salt"]).length != 32) {
+        // must be 32 bytes
+        throw Exception("Not 32 bytes");
+      }
+    } catch (e) {
+      // override corrupted salt (will probably corrupt remote data)
+      p["salt"] = crypto.Key.fromSecureRandom(32).base64;
+      account.updatePrefs(prefs: p);
+    }
+    return p["salt"];
   }
 }

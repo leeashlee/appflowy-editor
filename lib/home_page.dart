@@ -4,12 +4,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:appflowy_editor/appflowy_editor.dart';
-import 'package:encrypt/encrypt.dart' as Crypto;
+import 'package:encrypt/encrypt.dart' as crypto;
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/appwrite/auth_api.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
@@ -608,7 +609,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void doSync(SyncTimer timer) {
+  void doSync(SyncTimer timer) async {
     switch (timer) {
       case SyncTimer.local:
         widget.storage.setItem("notes", notes);
@@ -619,19 +620,21 @@ class _HomePageState extends State<HomePage> {
 
         // seedphrase as password
         String seed = widget.settings.getValue<String>(Settings.seedphrase);
-        String salt = widget.settings.getValue<String>(Settings.salt);
+        String encodedSalt = widget.settings.getValue<String>(Settings.salt);
         if (seed == "") break; // need to wait for seedphrase
-        Crypto.Key key = Crypto.Key.fromUtf8(seed).stretch(
-          32,
-          salt: Crypto.Key.fromBase64(salt).bytes,
-        );
+        if (encodedSalt == "") {
+          encodedSalt = (await context.read<AuthAPI>().initSalt());
+          widget.settings.setValue<String>(Settings.salt, encodedSalt);
+        }
+        Uint8List salt = crypto.Key.fromBase64(encodedSalt).bytes;
+        crypto.Key key = crypto.Key.fromUtf8(seed).stretch(32, salt: salt);
 
         // initialization vector
-        Crypto.IV iv = Crypto.IV.fromLength(16);
+        crypto.IV iv = crypto.IV.fromLength(16);
         log(key.base64);
         // encrypt with key and output as base64 encoded
         String data =
-            Crypto.Encrypter(Crypto.AES(key, mode: Crypto.AESMode.gcm))
+            crypto.Encrypter(crypto.AES(key, mode: crypto.AESMode.gcm))
                 .encrypt(jsonEncode(notes.toJson()), iv: iv)
                 .base64;
         data += "|${iv.base64}"; // append IV
@@ -650,8 +653,9 @@ class _HomePageState extends State<HomePage> {
         //     data.split("|")[1],
         //   ),
         // );
-        //final DatabaseAPI db = context.read<DatabaseAPI>();
-        //db.updateNoteEntry(data);
+        break;
+        final DatabaseAPI db = context.read<DatabaseAPI>();
+        db.updateNoteEntry(data);
         break;
       default:
     }
