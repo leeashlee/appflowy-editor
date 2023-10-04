@@ -95,7 +95,9 @@ class _AccountPageState extends State<AccountPage> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Theme.of(context).colorScheme.surfaceVariant,
-                      image: const DecorationImage(image: AssetImage("assets/images/icon.png")),
+                      image: const DecorationImage(
+                        image: AssetImage("assets/images/icon.png"),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 4),
