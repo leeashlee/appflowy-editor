@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PrivacyPolicy extends StatelessWidget {
@@ -846,6 +847,10 @@ Based on the applicable laws of your country, you may have the right to request 
 """;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Unicon.arrow_left),
+        ),
         title: const Text("Privacy Policy"),
       ),
       body: Container(

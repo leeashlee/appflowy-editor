@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:noel_notes/component/alert_dialog.dart';
+import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:noel_notes/model/settings/manager.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -11,6 +12,10 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Unicon.arrow_left),
+        ),
         title: const Text("Settings"),
       ),
       body: Container(

@@ -103,6 +103,10 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Unicon.arrow_left),
+        ),
         title: const Text('My Account'),
       ),
       body: Center(

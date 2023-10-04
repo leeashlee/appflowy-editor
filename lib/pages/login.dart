@@ -82,6 +82,10 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Unicon.arrow_left),
+        ),
         title: const Text('Note Editor'),
       ),
       body: Center(

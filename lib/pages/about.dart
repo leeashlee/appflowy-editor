@@ -10,6 +10,10 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("About"),
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Unicon.arrow_left),
+        ),
       ),
       body: Container(
         padding: const EdgeInsets.all(8),
