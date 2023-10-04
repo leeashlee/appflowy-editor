@@ -1,21 +1,21 @@
-// ignore_for_file: avoid_print
-
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-import 'dart:math';
 
-import 'dart:developer' as dev;
 import 'package:appflowy_editor/appflowy_editor.dart';
+import 'package:encrypt/encrypt.dart' as Crypto;
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:universal_html/html.dart' as html;
 
+import 'appwrite/database_api.dart';
 import 'model/settings/manager.dart';
+import 'model/notes/note_file.dart';
 import 'model/notes/NoteFolder.dart';
 import 'model/notes/NoteEntry.dart';
 import 'component/alert_dialog.dart';
@@ -26,6 +26,16 @@ import 'component/icons/unicon_icons.dart';
 enum ExportFileType {
   markdown,
   html,
+}
+
+enum SyncTimer {
+  local(milliseconds: 500),
+  remote(seconds: 5);
+
+  const SyncTimer({this.milliseconds = 0, this.seconds = 0});
+
+  final int milliseconds;
+  final int seconds;
 }
 
 extension on ExportFileType {
@@ -41,13 +51,6 @@ extension on ExportFileType {
 
 // ignore: must_be_immutable
 class HomePage extends StatefulWidget {
-  final Future<SharedPreferences> prefs =
-      SharedPreferences.getInstance().onError((error, stackTrace) {
-    print("$error, $stackTrace");
-    dev.log("$error, $stackTrace");
-    return Future.error(error!);
-  }).timeout(const Duration(seconds: 10));
-
   LocalStorage storage;
   SettingsManager settings;
 
@@ -59,49 +62,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  Timer? syncTimer;
-  // ignore: unnecessary_new
+  Map<SyncTimer, Timer> syncTimers = {};
   late NoteFolder notes;
   late WidgetBuilder _widgetBuilder;
 
   @override
   void dispose() {
-    syncTimer?.cancel();
-    doSync();
+    syncTimers.forEach((k, v) {
+      v.cancel(); // stop all pending syncs
+      doSync(k); // do one last sync
+    });
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-
-    notes = initNotes();
-
-    syncTimer = Timer.periodic(
-      const Duration(seconds: 5),
-      (timer) {
-        doSync();
-      },
-    );
-
-    _widgetBuilder = (context) => Editor(
-          editorState: notes.getCurrNoteFile()!.getBody(),
-          onEditorStateChange: (editorState) {
-            (notes.getCurrNoteFile() as NoteFile).setBody(editorState);
-          },
-        );
+    initNotes();
+    initTimers();
+    _loadEditor(context, false);
   }
 
   @override
   void reassemble() {
     super.reassemble();
-
-    _widgetBuilder = (context) => Editor(
-          editorState: notes.getCurrNoteFile()!.getBody(),
-          onEditorStateChange: (editorState) {
-            (notes.getCurrNoteFile() as NoteFile).setBody(editorState);
-          },
-        );
+    _loadEditor(context, false);
   }
 
   @override
@@ -477,17 +462,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _loadEditor(BuildContext context) {
-    setState(
-      () {
-        _widgetBuilder = (context) => Editor(
-              editorState: (notes.getCurrNoteFile() as NoteFile).getBody(),
-              onEditorStateChange: (editorState) {
-                (notes.getCurrNoteFile() as NoteFile).setBody(editorState);
-              },
-            );
-      },
-    );
+  void _loadEditor(BuildContext context, bool notifyState) {
+    void exec() {
+      _widgetBuilder = (context) => Editor(
+            editorState: notes.getCurrNoteFile()!.getBody(),
+            onEditorStateChange: (editorState) {
+              (notes.getCurrNoteFile() as NoteFile).setBody(editorState);
+            },
+          );
+    }
+
+    if (notifyState) {
+      setState(exec);
+    } else {
+      exec();
+    }
   }
 
   void sorting() {
@@ -615,20 +604,64 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (mounted) {
-      _loadEditor(context);
+      _loadEditor(context, true);
     }
   }
 
-  void doSync() {
-    widget.storage.setItem("notes", notes);
-    widget.storage.setItem("settings", widget.settings.toJson());
+  void doSync(SyncTimer timer) {
+    switch (timer) {
+      case SyncTimer.local:
+        widget.storage.setItem("notes", notes);
+        widget.storage.setItem("settings", widget.settings.toJson());
+        break;
+      case SyncTimer.remote:
+        //TODO: extract into another class (maybe UploadManager, ...)
+
+        // seedphrase as password
+        String seed = widget.settings.getValue<String>(Settings.seedphrase);
+        String salt = widget.settings.getValue<String>(Settings.salt);
+        if (seed == "") break; // need to wait for seedphrase
+        Crypto.Key key = Crypto.Key.fromUtf8(seed).stretch(
+          32,
+          salt: Crypto.Key.fromBase64(salt).bytes,
+        );
+
+        // initialization vector
+        Crypto.IV iv = Crypto.IV.fromLength(16);
+        log(key.base64);
+        // encrypt with key and output as base64 encoded
+        String data =
+            Crypto.Encrypter(Crypto.AES(key, mode: Crypto.AESMode.gcm))
+                .encrypt(jsonEncode(notes.toJson()), iv: iv)
+                .base64;
+        data += "|${iv.base64}"; // append IV
+        log("Encrypted data: $data");
+        // DECRYPTION EXAMPLE
+        // Crypto.Encrypter(
+        //   Crypto.AES(
+        //       Crypto.Key.fromUtf8(seed).stretch(
+        //         32,
+        //         salt: Crypto.Key.fromBase64(salt).bytes,
+        //       ),
+        //       mode: Crypto.AESMode.gcm),
+        // ).decrypt64(
+        //   data.split("|")[0],
+        //   iv: Crypto.IV.fromBase64(
+        //     data.split("|")[1],
+        //   ),
+        // );
+        //final DatabaseAPI db = context.read<DatabaseAPI>();
+        //db.updateNoteEntry(data);
+        break;
+      default:
+    }
   }
 
-  NoteFolder initNotes() {
+  void initNotes() {
     Map? lclNotes = widget.storage.getItem("notes");
 
     if (lclNotes == null) {
-      return NoteFolder(
+      notes = NoteFolder(
         "My Notes",
         true,
         [
@@ -639,16 +672,21 @@ class _HomePageState extends State<HomePage> {
         ],
       );
     } else {
-      return NoteFolder.fromJson(lclNotes, true) as NoteFolder;
+      notes = NoteFolder.fromJson(lclNotes, true) as NoteFolder;
     }
   }
-}
 
-String generateRandomString(int len) {
-  var r = Random();
-  return String.fromCharCodes(
-    List.generate(len, (index) => r.nextInt(33) + 89),
-  );
+  void initTimers() {
+    // read the values from all timers and initialize them
+    for (SyncTimer e in SyncTimer.values) {
+      syncTimers[e] = Timer.periodic(
+        Duration(seconds: e.seconds, milliseconds: e.milliseconds),
+        (timer) {
+          doSync(e);
+        },
+      );
+    }
+  }
 }
 
 int boolToInt(bool input) {

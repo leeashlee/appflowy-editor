@@ -2,12 +2,13 @@
 
 import 'dart:developer' as dev;
 
+import 'package:noel_notes/model/notes/note_file.dart';
+
 import 'NoteEntry.dart';
 
 class NoteFolder extends NoteEntry {
   List<NoteEntry> notes = [];
   NoteEntry? curr;
-  Comparator? comparator;
 
   NoteFolder(
     String name, [
@@ -42,7 +43,7 @@ class NoteFolder extends NoteEntry {
   void addEntry(NoteEntry neww) {
     dev.log("New entry: ${neww.getName()}");
     notes.add(neww);
-    _onWrite();
+    notifyListeners();
   }
 
   void removeEntry(NoteEntry old) {
@@ -54,7 +55,7 @@ class NoteFolder extends NoteEntry {
       throw Exception("cant remove the Entry that your currently editing");
     }
     notes.remove(old);
-    _onWrite();
+    notifyListeners();
   }
 
   @override
@@ -91,7 +92,7 @@ class NoteFolder extends NoteEntry {
       curr!.looseFocus();
     }
     curr = newCurr;
-    _onWrite();
+    notifyListeners();
   }
 
   bool isInFocus() {
@@ -117,14 +118,10 @@ class NoteFolder extends NoteEntry {
   }
 
   void keepSorted(Comparator comparator) {
-    this.comparator = comparator;
+    addListener(() {
+      sortOnce(comparator);
+    });
     sortOnce(comparator);
-  }
-
-  void _onWrite() {
-    if (comparator != null) {
-      sortOnce(comparator!);
-    }
   }
 
   static NoteEntry fromJson(Map input, bool withFocus) {

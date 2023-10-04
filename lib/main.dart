@@ -1,13 +1,12 @@
 // ignore_for_file: avoid_print, must_be_immutable
 
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:noel_notes/AppWrite/auth_api.dart';
+import 'package:noel_notes/appwrite/auth_api.dart';
 import 'package:noel_notes/pages/login.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +15,6 @@ import 'home_page.dart';
 import 'model/settings/manager.dart';
 
 void main() {
-  Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   runApp(
@@ -29,6 +27,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   LocalStorage storage = LocalStorage("storage");
+  // FIXME: replace with ChangeNotifierProvider
+  // https://docs.flutter.dev/data-and-backend/state-mgmt/simple
   late SettingsManager settings;
 
   MyApp({Key? key}) : super(key: key);

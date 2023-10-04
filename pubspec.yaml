@@ -27,32 +27,25 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  appflowy_editor: ^1.4.2  # provides the Editor
+  appwrite: ^11.0.0  # provides the database & online connection
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.0
-  appflowy_editor: ^1.4.2
-  shared_preferences: ">=2.2.1"
-  localstorage: ^4.0.1+4
-  provider: ^6.0.3
-  url_launcher: ^6.1.14
-  path_provider: ^2.1.1
-  google_fonts: ^6.0.0
-  flutter_localizations:
+  cupertino_icons: ^1.0.0  # TODO: what does this package do
+  localstorage: ^4.0.1+4  # provides the storage for local caching
+  provider: ^6.0.3  # provides BuildContext.read / .watch / ....
+  url_launcher: ^6.1.14  # makes urls launchable
+  google_fonts: ^6.0.0  # does some font stuff
+  flutter_localizations:  # TODO: what does this package do
     sdk: flutter
-  file_picker: ^5.5.0
-  universal_html: ^2.0.8
-  highlight: ^0.7.0
-  http: ^1.0.0
-  show_fps: ^1.0.6
-  flutter_cache_manager: ^3.3.1
-  bloc: ^8.1.2
-  flutter_bloc: ^8.1.3
-  flutter_slidable: ^3.0.0
-  flutter_launcher_icons: ^0.13.1
-  flutter_lints: ^2.0.3
-  intl: ^0.18.1
-  appwrite: ^11.0.0
-  flutter_markdown: ^0.6.17+3
+  file_picker: ^5.5.0  # provides a native file picker
+  universal_html: ^2.0.8  # TODO: what does this package do
+  flutter_slidable: ^3.0.0  # implements slideable
+  flutter_launcher_icons: ^0.13.1  # TODO: what does this package do
+  flutter_lints: ^2.0.3  # TODO: what does this package do
+  intl: ^0.18.1  # TODO: what does this package do
+  flutter_markdown: ^0.6.17+3  # TODO: what does this package do
+  encrypt: ^5.0.3
 
 dev_dependencies:
   flutter_test:
