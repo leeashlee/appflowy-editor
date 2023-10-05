@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:noel_notes/appwrite/auth_api.dart';
 import 'package:noel_notes/component/icons/unicon_icons.dart';
+import 'package:noel_notes/pages/verify_carousel.dart';
 import 'package:provider/provider.dart';
 
 class AccountPage extends StatefulWidget {
@@ -107,9 +108,13 @@ class _AccountPageState extends State<AccountPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const IconButton(
-                        onPressed: null,
-                        icon: Icon(
+                      IconButton(
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const VerifyCarousel(),
+                          ),
+                        ),
+                        icon: const Icon(
                           Unicon.shield_check,
                           color: Colors.green,
                         ),
