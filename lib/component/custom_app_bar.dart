@@ -32,6 +32,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      leading: IconButton(
+          onPressed: () => Scaffold.of(context).openDrawer(),
+          icon: const Icon(Unicon.bars),
+        ),
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).colorScheme.background,
         systemNavigationBarColor: Theme.of(context).colorScheme.background,

@@ -280,12 +280,31 @@ class _HomePageState extends State<HomePage> {
                   foregroundColor: Theme.of(context).colorScheme.onError,
                   onPressed: (context) => showDialog<String>(
                     context: context,
-                    builder: (context) =>
-                        CustomAlertDialog(AlertType.delFile, (input) {
-                      setState(
-                        () => removeNote(currI, currNotes),
-                      );
-                    }),
+                    builder: (context) => AlertDialog(
+                      title: const Text('Do you wanna delete the note?'),
+                      content: const Text("It can't be undone."),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.error,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onError,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              Navigator.pop(context, 'OK');
+                              removeNote(currI, currNotes);
+                            });
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
