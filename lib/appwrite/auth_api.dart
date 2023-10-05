@@ -4,8 +4,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/widgets.dart';
 import 'package:encrypt/encrypt.dart' as crypto;
-
-import 'constants.dart';
+import 'package:noel_notes/appwrite/constants.dart';
 
 enum AuthStatus {
   uninitialized,
@@ -37,8 +36,8 @@ class AuthAPI extends ChangeNotifier {
   // Initialize the Appwrite client
   void init() {
     client
-        .setEndpoint(APPWRITE_URL)
-        .setProject(APPWRITE_PROJECT_ID)
+        .setEndpoint(appwriteUrl)
+        .setProject(appwriteProjectId)
         .setSelfSigned();
     account = Account(client);
   }

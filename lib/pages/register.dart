@@ -10,15 +10,15 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  RegisterPageState createState() => RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class RegisterPageState extends State<RegisterPage> {
   final usernameTextController = TextEditingController();
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
-  createAccount() async {
+  void createAccount() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -56,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  showAlert({required String title, required String text}) {
+  void showAlert({required String title, required String text}) {
     showDialog(
       context: context,
       builder: (context) {

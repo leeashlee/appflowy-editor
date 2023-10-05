@@ -14,22 +14,22 @@ class DatabaseAPI {
   }
 
   void init() {
-    client.setEndpoint(APPWRITE_URL).setProject(APPWRITE_PROJECT_ID);
+    client.setEndpoint(appwriteUrl).setProject(appwriteProjectId);
     account = Account(client);
     databases = Databases(client);
   }
 
   Future<DocumentList> getNoteEntries() {
     return databases.listDocuments(
-      databaseId: APPWRITE_DATABASE_ID,
-      collectionId: COLLECTION_NOTEENTRY,
+      databaseId: appwriteDatabaseId,
+      collectionId: collectionNoteEntry,
     );
   }
 
   Future<Document> updateNoteEntry(String data) {
     return databases.updateDocument(
-      databaseId: APPWRITE_DATABASE_ID,
-      collectionId: COLLECTION_NOTEENTRY,
+      databaseId: appwriteDatabaseId,
+      collectionId: collectionNoteEntry,
       documentId: data,
     );
   }

@@ -3,7 +3,7 @@
 import 'dart:developer' as dev;
 import 'package:appflowy_editor/appflowy_editor.dart';
 import 'package:intl/intl.dart';
-import 'package:noel_notes/model/notes/NoteEntry.dart';
+import 'package:noel_notes/model/notes/note_entry.dart';
 
 class NoteFile extends NoteEntry {
   EditorState body;

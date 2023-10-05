@@ -1,6 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/foundation.dart';
 import 'package:noel_notes/model/notes/note_file.dart';
-import 'NoteFolder.dart';
+import 'note_folder.dart';
 
 abstract class NoteEntry extends ChangeNotifier {
   String name;

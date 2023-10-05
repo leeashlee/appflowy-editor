@@ -4,7 +4,7 @@ import 'dart:developer' as dev;
 
 import 'package:noel_notes/model/notes/note_file.dart';
 
-import 'NoteEntry.dart';
+import 'note_entry.dart';
 
 class NoteFolder extends NoteEntry {
   List<NoteEntry> notes = [];

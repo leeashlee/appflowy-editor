@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
@@ -17,8 +19,8 @@ import 'package:universal_html/html.dart' as html;
 import 'appwrite/database_api.dart';
 import 'model/settings/manager.dart';
 import 'model/notes/note_file.dart';
-import 'model/notes/NoteFolder.dart';
-import 'model/notes/NoteEntry.dart';
+import 'model/notes/note_folder.dart';
+import 'model/notes/note_entry.dart';
 import 'component/alert_dialog.dart';
 import 'component/custom_app_bar.dart';
 import 'component/editor/editor.dart';
@@ -653,7 +655,6 @@ class _HomePageState extends State<HomePage> {
         //     data.split("|")[1],
         //   ),
         // );
-        break;
         final DatabaseAPI db = context.read<DatabaseAPI>();
         db.updateNoteEntry(data);
         break;
