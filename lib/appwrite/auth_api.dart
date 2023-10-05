@@ -1,9 +1,11 @@
-// ignore_for_file: always_declare_return_types
+import 'dart:convert';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/widgets.dart';
-import 'package:noel_notes/component/constants.dart';
+import 'package:encrypt/encrypt.dart' as crypto;
+
+import 'constants.dart';
 
 enum AuthStatus {
   uninitialized,
@@ -33,7 +35,7 @@ class AuthAPI extends ChangeNotifier {
   }
 
   // Initialize the Appwrite client
-  init() {
+  void init() {
     client
         .setEndpoint(APPWRITE_URL)
         .setProject(APPWRITE_PROJECT_ID)
@@ -41,7 +43,7 @@ class AuthAPI extends ChangeNotifier {
     account = Account(client);
   }
 
-  loadUser() async {
+  void loadUser() async {
     try {
       final user = await account.get();
       _status = AuthStatus.authenticated;
@@ -86,22 +88,22 @@ class AuthAPI extends ChangeNotifier {
     }
   }
 
-  updateEmail({
+  Future<User> updateEmail({
     required String email,
     required String password,
   }) async {
     return account.updateEmail(email: email, password: password);
   }
 
-  updateName({required String name}) async {
+  Future<User> updateName({required String name}) async {
     return account.updateName(name: name);
   }
 
-  updatePassword({required String password}) async {
+  Future<User> updatePassword({required String password}) async {
     return account.updatePassword(password: password);
   }
 
-  signInWithProvider({required String provider}) async {
+  Future<dynamic> signInWithProvider({required String provider}) async {
     try {
       final session = await account.createOAuth2Session(provider: provider);
       _currentUser = await account.get();
@@ -112,7 +114,7 @@ class AuthAPI extends ChangeNotifier {
     }
   }
 
-  signOut() async {
+  void signOut() async {
     try {
       await account.deleteSession(sessionId: 'current');
       _status = AuthStatus.unauthenticated;
@@ -125,7 +127,22 @@ class AuthAPI extends ChangeNotifier {
     return await account.getPrefs();
   }
 
-  updatePreferences({required String bio}) async {
+  Future<User> updatePreferences({required String bio}) async {
     return account.updatePrefs(prefs: {'bio': bio});
+  }
+
+  Future<String> initSalt() async {
+    var p = (await account.getPrefs()).data;
+    try {
+      if (base64Decode(p["salt"]).length != 32) {
+        // must be 32 bytes
+        throw Exception("Not 32 bytes");
+      }
+    } catch (e) {
+      // override corrupted salt (will probably corrupt remote data)
+      p["salt"] = crypto.Key.fromSecureRandom(32).base64;
+      account.updatePrefs(prefs: p);
+    }
+    return p["salt"];
   }
 }

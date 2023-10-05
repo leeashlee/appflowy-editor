@@ -1,9 +1,6 @@
-
-// ignore_for_file: library_private_types_in_public_api, always_declare_return_types, use_build_context_synchronously
-
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:noel_notes/AppWrite/auth_api.dart';
+import 'package:noel_notes/appwrite/auth_api.dart';
 import 'package:noel_notes/component/icons/unicon_icons.dart';
 import 'package:noel_notes/pages/register.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +17,7 @@ class LoginPageState extends State<LoginPage> {
   final passwordTextController = TextEditingController();
   bool loading = false;
 
-  signIn() async {
+  void signIn() {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -39,7 +36,7 @@ class LoginPageState extends State<LoginPage> {
 
     try {
       final AuthAPI appwrite = context.read<AuthAPI>();
-      await appwrite.createEmailSession(
+      appwrite.createEmailSession(
         email: emailTextController.text,
         password: passwordTextController.text,
       );
@@ -50,10 +47,11 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  showAlert({required String title, required String text}) {
+  void showAlert({required String title, required String text}) {
     showDialog(
       context: context,
       builder: (context) {
+        //FIXME: use customAlertDialog
         return AlertDialog(
           title: Text(title),
           content: Text(text),
@@ -70,7 +68,7 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  signInWithProvider(String provider) {
+  void signInWithProvider(String provider) {
     try {
       context.read<AuthAPI>().signInWithProvider(provider: provider);
     } on AppwriteException catch (e) {

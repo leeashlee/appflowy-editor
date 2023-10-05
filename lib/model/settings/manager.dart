@@ -77,7 +77,9 @@ enum Settings {
     Accent.values,
     Accent.peachPink,
     Unicon.palette,
-  );
+  ),
+  seedphrase(StringSetting.make, String, null, "", Unicon.yin_yang),
+  salt(StringSetting.make, String, null, "", Unicon.yin_yang);
 
   const Settings(
     this.klass,
@@ -87,7 +89,7 @@ enum Settings {
     this.icon,
   );
 
-  final SettingsField Function(Object value) klass;
+  final SettingsField Function(Object? value) klass;
   final Type allowedType; // only allow said type
   final List? allowedList; // only allow certain things of said type
   final Object value;
@@ -128,7 +130,7 @@ class SettingsManager {
   Object singleObjectFromJson(
     Type allowedType,
     List? allowedList,
-    Object input,
+    Object? input,
     Object def,
   ) {
     if (def is Enum) {

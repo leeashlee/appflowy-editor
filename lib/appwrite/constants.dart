@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 const String APPWRITE_PROJECT_ID = "65180b4ecc4e6f8eb1f9";
 const String APPWRITE_URL = "https://cloud.appwrite.io/v1";
 
