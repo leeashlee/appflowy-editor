@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:noel_notes/appwrite/auth_api.dart';
+import 'package:provider/provider.dart';
 
 class VerifyCarousel extends StatefulWidget {
   const VerifyCarousel({super.key});
@@ -11,7 +13,20 @@ class VerifyCarousel extends StatefulWidget {
 class _VerifyCarouselState extends State<VerifyCarousel> {
   int _current = 0;
   final CarouselController _controller = CarouselController();
-  final List<Widget> list = [const Text("1"), const Text("2"), const Text("3")];
+  final List<Widget> list = [
+    const Text("1"),
+    const Text("2"),
+    const Text("3"),
+    ];
+  late String? username;
+  
+  @override
+  void initState() {
+    super.initState();
+    final AuthAPI appwrite = context.read<AuthAPI>();
+    username = appwrite.username;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
