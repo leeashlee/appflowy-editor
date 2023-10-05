@@ -93,6 +93,9 @@ class _AccountPageState extends State<AccountPage> {
                     height: 65,
                     width: 65,
                     decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.outlineVariant,
+                      ),
                       shape: BoxShape.circle,
                       color: Theme.of(context).colorScheme.surfaceVariant,
                       image: const DecorationImage(
@@ -104,6 +107,14 @@ class _AccountPageState extends State<AccountPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const IconButton(
+                        onPressed: null,
+                        icon: Icon(
+                          Unicon.shield_check,
+                          color: Colors.green,
+                        ),
+                      ),
+                      //If session verified Unicon.shield_check, color: Colors.green, else Unicon.shield_exclamation, color: Colors.red
                       Text(
                         username!,
                         style: Theme.of(context).textTheme.headlineSmall,
@@ -244,6 +255,7 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                 ),
               ),
+              //TODO: Move change seedphase/salt here and verify session
             ],
           ),
         ),
