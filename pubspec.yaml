@@ -47,6 +47,7 @@ dependencies:
   flutter_markdown: ^0.6.17+3  # TODO: what does this package do
   encrypt: ^5.0.3
   carousel_slider: ^4.2.1
+  word_generator: ^0.4.3
 
 dev_dependencies:
   flutter_test:
