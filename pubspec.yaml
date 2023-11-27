@@ -42,7 +42,7 @@ dependencies:
   universal_html: ^2.0.8  # TODO: what does this package do
   flutter_slidable: ^3.0.0  # implements slideable
   flutter_launcher_icons: ^0.13.1  # TODO: what does this package do
-  flutter_lints: ^2.0.3  # TODO: what does this package do
+  flutter_lints: ^3.0.1  # TODO: what does this package do
   intl: ^0.18.1  # TODO: what does this package do
   flutter_markdown: ^0.6.17+3  # TODO: what does this package do
   encrypt: ^5.0.3
