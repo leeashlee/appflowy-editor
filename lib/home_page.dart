@@ -22,7 +22,7 @@ import 'model/notes/note_file.dart';
 import 'model/notes/note_folder.dart';
 import 'model/notes/note_entry.dart';
 import 'component/alert_dialog.dart';
-import 'component/custom_app_bar.dart';
+import 'component/app_bar.dart';
 import 'component/editor/editor.dart';
 import 'component/icons/unicon_icons.dart';
 
